@@ -1,2 +1,3 @@
 # Recipient lists - keep personal data off git
 comms/recipients.txt
+venv/
