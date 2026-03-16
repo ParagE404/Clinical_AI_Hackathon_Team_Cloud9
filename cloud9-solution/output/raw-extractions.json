@@ -30,21 +30,21 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy :",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "Colonoscopy complete",
-        "evidence": "Colonoscopy :",
+        "value": "Colonoscopy",
+        "evidence": "Colonoscopy : At 13cm from insertion there was a malignant looking mass with an abnormal pit pattern suspicious features for malignancy.",
         "confidence": "high"
       },
       "endoscopy_findings": {
@@ -59,8 +59,8 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy noted - Histo: Adenocarcinoma.",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "Deficient",
@@ -108,9 +108,9 @@
         "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "",
+        "value": "1",
         "evidence": "associated mesorectal lymph nodes",
-        "confidence": "low"
+        "confidence": "high"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -119,7 +119,7 @@
       },
       "baseline_ct_M": {
         "value": "1",
-        "evidence": "Multiple nodules within the lungs suspicious for lung metastases.",
+        "evidence": "Multiple nodules within the lungs suspicious for lung metastases",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -139,7 +139,7 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "decision RE treatment following further imaging and discussion.",
+        "evidence": "Outcome: MRI Rectum, PET CT. Rediscuss at MDT for formal staging. Patient aware, decision RE treatment following further imaging and discussion.",
         "confidence": "none"
       },
       "chemo_goal": {
@@ -459,17 +459,17 @@
       },
       "mrn": {
         "value": "9990002",
-        "evidence": "Hospital Number: 9990002",
+        "evidence": "9990002(d)",
         "confidence": "high"
       },
       "nhs_number": {
         "value": "9990000002",
-        "evidence": "NHS Number: 9990000002",
+        "evidence": "9990000002(c)",
         "confidence": "high"
       },
       "gender": {
         "value": "Male",
-        "evidence": "Male",
+        "evidence": "Male(e)",
         "confidence": "high"
       },
       "previous_cancer": {
@@ -484,13 +484,13 @@
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "evidence": "",
         "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "",
-        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
-        "confidence": "none"
+        "value": "Colonoscopy",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum",
+        "confidence": "high"
       },
       "endoscopy_findings": {
         "value": "polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
@@ -504,7 +504,7 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "evidence": "",
         "confidence": "none"
       },
       "mmr_status": {
@@ -533,7 +533,7 @@
         "confidence": "high"
       },
       "baseline_mri_mrCRM": {
-        "value": "unsafe",
+        "value": "threatened",
         "evidence": "CRM/ISP unsafe",
         "confidence": "high"
       },
@@ -553,9 +553,9 @@
         "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "0",
+        "evidence": "no lymphadenopathy",
+        "confidence": "high"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -564,7 +564,7 @@
       },
       "baseline_ct_M": {
         "value": "",
-        "evidence": "CT 22/2/2025: no lymphadenopathy.",
+        "evidence": "",
         "confidence": "none"
       },
       "baseline_ct_incidental_yn": {
@@ -579,7 +579,7 @@
       },
       "first_mdt_date": {
         "value": "07/03/2025",
-        "evidence": "Colorectal Multidisciplinary Meeting 07/03/2025",
+        "evidence": "07/03/2025",
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
@@ -929,13 +929,13 @@
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Multiple polyps within the colon, largest is 3 cm in the descending colon \u2013 2 cm polyp located at the ICV and multiple diminutive polyps seen elsewhere. Biopsies taken.",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_type": {
         "value": "Colonoscopy complete",
-        "evidence": "Multiple polyps within the colon",
-        "confidence": "high"
+        "evidence": "Multiple polyps within the colon, largest is 3 cm in the descending colon \u2013 2 cm polyp located at the ICV",
+        "confidence": "medium"
       },
       "endoscopy_findings": {
         "value": "Multiple polyps within the colon, largest is 3 cm in the descending colon \u2013 2 cm polyp located at the ICV and multiple diminutive polyps seen elsewhere.",
@@ -943,14 +943,14 @@
         "confidence": "high"
       },
       "biopsy_result": {
-        "value": "well differentiated adenocarcinoma, tubular adenoma with low grade dysplasia",
-        "evidence": "Descending colon polyp \u2013 well differentiated adenocarcinoma \nOther polyps \u2013 tubular adenoma with low grade dysplasia",
+        "value": "Descending colon polyp \u2013 well differentiated adenocarcinoma Other polyps \u2013 tubular adenoma with low grade dysplasia",
+        "evidence": "Descending colon polyp \u2013 well differentiated adenocarcinoma Other polyps \u2013 tubular adenoma with low grade dysplasia",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Biopsies taken.",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -988,14 +988,14 @@
         "confidence": "none"
       },
       "baseline_ct_date": {
-        "value": "Missing",
-        "evidence": "CT TAP:",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "",
-        "evidence": "fullness in the descending colon with no evidence of extramural spread.",
-        "confidence": "low"
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_N": {
         "value": "0",
@@ -1024,13 +1024,13 @@
       },
       "first_mdt_date": {
         "value": "07/03/2025",
-        "evidence": "Colorectal Multidisciplinary Meeting 07/03/2025",
+        "evidence": "07/03/2025",
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
-        "value": "",
+        "value": "straight to surgery",
         "evidence": "To see consultant next week to discuss possible surgery",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -1365,27 +1365,27 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_date": {
-        "value": "Missing",
-        "evidence": "Flexi sig: scar seen",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "flexi sig",
-        "evidence": "Flexi sig: scar seen",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_findings": {
-        "value": "scar seen",
-        "evidence": "scar seen",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "biopsy_result": {
         "value": "ADENOCARCINOMA, NOT OTHERWISE SPECIFIED",
@@ -1393,9 +1393,9 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "01/02/2025",
-        "evidence": "Feb 2025 \u2013 adenocarcinoma of low rectum",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "Deficient",
@@ -1403,13 +1403,13 @@
         "confidence": "high"
       },
       "baseline_mri_date": {
-        "value": "01/02/2025",
-        "evidence": "Feb 2025 \u2013 adenocarcinoma of low rectum with deficient MMR \nMRI stage",
-        "confidence": "high"
+        "value": "",
+        "evidence": "Feb 2025",
+        "confidence": "low"
       },
       "baseline_mri_mrT": {
         "value": "2",
-        "evidence": "T2",
+        "evidence": "MRI stage: T2",
         "confidence": "high"
       },
       "baseline_mri_mrN": {
@@ -1469,12 +1469,12 @@
       },
       "first_mdt_date": {
         "value": "07/03/2025",
-        "evidence": "Colorectal Multidisciplinary Meeting 07/03/2025",
+        "evidence": "07/03/2025",
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
-        "value": "downstaging nCRT",
-        "evidence": "CRT to downstage",
+        "value": "watch and wait",
+        "evidence": "for discussion with patient RE entering watch and wait",
         "confidence": "high"
       },
       "chemo_goal": {
@@ -1528,7 +1528,7 @@
         "confidence": "none"
       },
       "rt_concomitant_chemo": {
-        "value": "chemotherapy",
+        "value": "CRT",
         "evidence": "CRT to downstage",
         "confidence": "high"
       },
@@ -1568,13 +1568,13 @@
         "confidence": "none"
       },
       "second_mri_date": {
-        "value": "01/03/2025",
-        "evidence": "MRI 1/3/25",
-        "confidence": "high"
+        "value": "",
+        "evidence": "6 week MRI",
+        "confidence": "low"
       },
       "second_mri_pathway_status": {
-        "value": "Persistent low signal, may represent complete response",
-        "evidence": "MRI 1/3/25: Persistent low signal, may represent complete response",
+        "value": "may represent complete response",
+        "evidence": "may represent complete response",
         "confidence": "high"
       },
       "second_mri_mrT": {
@@ -1588,19 +1588,19 @@
         "confidence": "high"
       },
       "second_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "negative",
+        "evidence": "staging unchanged",
+        "confidence": "high"
       },
       "second_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "clear",
+        "evidence": "staging unchanged",
+        "confidence": "high"
       },
       "second_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "clear",
+        "evidence": "staging unchanged",
+        "confidence": "high"
       },
       "second_mri_trg": {
         "value": "",
@@ -1618,9 +1618,9 @@
         "confidence": "none"
       },
       "mri_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "01/03/2025",
+        "evidence": "MRI 1/3/25",
+        "confidence": "high"
       },
       "mri_12wk_mrT": {
         "value": "",
@@ -1653,13 +1653,13 @@
         "confidence": "none"
       },
       "flex_sig_date": {
-        "value": "Missing",
-        "evidence": "Flexi sig: scar seen",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "flex_sig_findings": {
         "value": "scar seen",
-        "evidence": "scar seen",
+        "evidence": "Flexi sig: scar seen",
         "confidence": "high"
       },
       "mdt_12wk_date": {
@@ -1678,9 +1678,9 @@
         "confidence": "none"
       },
       "ww_intent": {
-        "value": "entering watch and wait",
-        "evidence": "RE entering watch and wait",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "ww_frequency": {
         "value": "",
@@ -1903,14 +1903,14 @@
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Y",
+        "evidence": "sigmoid colon thickening",
+        "confidence": "high"
       },
       "baseline_ct_incidental_detail": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "sigmoid colon thickening",
+        "evidence": "sigmoid colon thickening",
+        "confidence": "high"
       },
       "first_mdt_date": {
         "value": "13/09/2024",
@@ -2259,7 +2259,7 @@
       },
       "previous_cancer_site": {
         "value": "breast",
-        "evidence": "breast cancer",
+        "evidence": "history of breast cancer",
         "confidence": "high"
       },
       "endoscopy_date": {
@@ -2705,11 +2705,11 @@
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
-        "value": "",
-        "evidence": "",
+        "value": "Missing",
+        "evidence": "Schedule colonoscopy + tattooing",
         "confidence": "none"
       },
       "endoscopy_type": {
@@ -2729,7 +2729,7 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "",
+        "evidence": "Diagnosis: Tubular adenoma with HGD",
         "confidence": "none"
       },
       "mmr_status": {
@@ -2778,9 +2778,9 @@
         "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "",
+        "value": "1",
         "evidence": "multiple enlarged mesenteric nodes",
-        "confidence": "low"
+        "confidence": "high"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -2810,7 +2810,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "Schedule colonoscopy + tattooing, plus MRI rectum.",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -3598,9 +3598,9 @@
         "confidence": "none"
       },
       "endoscopy_date": {
-        "value": "Missing",
-        "evidence": "Refer for colorectal surgical review colonoscopy",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_type": {
         "value": "",
@@ -3620,7 +3620,7 @@
       "biopsy_date": {
         "value": "Missing",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -3659,8 +3659,8 @@
       },
       "baseline_ct_date": {
         "value": "",
-        "evidence": "Refer for colorectal surgical review colonoscopy, and CT TAP",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "",
@@ -3678,9 +3678,9 @@
         "confidence": "none"
       },
       "baseline_ct_M": {
-        "value": "",
-        "evidence": "PET\u2011CT performed for ? Vasculitis on 13/03/2024: FDG\u2011avid lesion in the ascending colon, no distant uptake.",
-        "confidence": "none"
+        "value": "0",
+        "evidence": "no distant uptake.",
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -4063,7 +4063,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -4508,9 +4508,9 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Missing",
+        "evidence": "Diagnosis: Serrated adenoma with dysplasia",
+        "confidence": "low"
       },
       "mmr_status": {
         "value": "",
@@ -4590,7 +4590,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "Patient needs to be told, for colonoscopy, biopsy and MRI pelvis",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -4925,12 +4925,12 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "",
@@ -4953,7 +4953,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -5035,7 +5035,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "oncology consultation ? CRT and surgical review ? Straight to ELAPE",
-        "confidence": "none"
+        "confidence": "low"
       },
       "chemo_goal": {
         "value": "",
@@ -5374,18 +5374,18 @@
       },
       "previous_cancer_site": {
         "value": "breast",
-        "evidence": "Known breast cancer",
+        "evidence": "breast cancer",
         "confidence": "high"
       },
       "endoscopy_date": {
         "value": "Missing",
         "evidence": "Colpnoscopy, biopsy, MRI",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "Colonoscopy complete",
-        "evidence": "Colpnoscopy",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "endoscopy_findings": {
         "value": "",
@@ -5394,23 +5394,23 @@
       },
       "biopsy_result": {
         "value": "MMR\u2011deficient rectal adenocarcinoma",
-        "evidence": "Diagnosis: MMR\u2011deficient rectal adenocarcinoma",
+        "evidence": "MMR\u2011deficient rectal adenocarcinoma",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
         "evidence": "Colpnoscopy, biopsy, MRI",
-        "confidence": "high"
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "Deficient",
-        "evidence": "MMR\u2011deficient rectal adenocarcinoma",
+        "evidence": "MMR\u2011deficient",
         "confidence": "high"
       },
       "baseline_mri_date": {
         "value": "Missing",
-        "evidence": "Colpnoscopy, biopsy, MRI",
-        "confidence": "high"
+        "evidence": "MRI",
+        "confidence": "none"
       },
       "baseline_mri_mrT": {
         "value": "",
@@ -5459,18 +5459,18 @@
       },
       "baseline_ct_M": {
         "value": "",
-        "evidence": "",
+        "evidence": "FDG\u2011avid lesion in the rectum, avid breast lesion.",
         "confidence": "none"
       },
       "baseline_ct_incidental_yn": {
-        "value": "Y",
-        "evidence": "had PET-CT which also showed (29/12/2024): FDG\u2011avid lesion in the rectum, avid breast lesion.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_incidental_detail": {
-        "value": "FDG\u2011avid lesion in the rectum, avid breast lesion.",
-        "evidence": "had PET-CT which also showed (29/12/2024): FDG\u2011avid lesion in the rectum, avid breast lesion.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "first_mdt_date": {
         "value": "12/01/2025",
@@ -5479,8 +5479,8 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Colpnoscopy, biopsy, MRI",
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -5829,12 +5829,12 @@
       },
       "endoscopy_type": {
         "value": "flexi sig",
-        "evidence": "Flexi sig lesion",
+        "evidence": "Flexi sig lesion in the upper rectum",
         "confidence": "high"
       },
       "endoscopy_findings": {
         "value": "lesion in the upper rectum, unable to reach TI",
-        "evidence": "Flexi sig lesion in the upper rectum, unable to reach TI",
+        "evidence": "lesion in the upper rectum, unable to reach TI",
         "confidence": "high"
       },
       "biopsy_result": {
@@ -5844,12 +5844,12 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Flexi sig lesion in the upper rectum",
+        "evidence": "MMR\u2011deficient rectal adenocarcinoma",
         "confidence": "high"
       },
       "mmr_status": {
         "value": "Deficient",
-        "evidence": "MMR\u2011deficient",
+        "evidence": "MMR\u2011deficient rectal adenocarcinoma",
         "confidence": "high"
       },
       "baseline_mri_date": {
@@ -5908,14 +5908,14 @@
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
-        "value": "Y",
-        "evidence": "suspicious liver lesion",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_incidental_detail": {
-        "value": "suspicious liver lesion",
-        "evidence": "suspicious liver lesion",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "first_mdt_date": {
         "value": "27/02/2024",
@@ -5925,7 +5925,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "For MRI liver with contrast and PET-CT",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -6260,12 +6260,12 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_date": {
         "value": "",
@@ -6283,14 +6283,14 @@
         "confidence": "none"
       },
       "biopsy_result": {
-        "value": "Right-sided colonic tumour",
+        "value": "Right\u2011sided colonic tumour",
         "evidence": "Diagnosis: Right\u2011sided colonic tumour",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -6369,7 +6369,7 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "Review ? Local excision \nNeeds CT",
+        "evidence": "Needs CT",
         "confidence": "high"
       },
       "chemo_goal": {
@@ -6709,7 +6709,7 @@
       },
       "previous_cancer_site": {
         "value": "prostate",
-        "evidence": "prostate cancer",
+        "evidence": "history of prostate cancer",
         "confidence": "high"
       },
       "endoscopy_date": {
@@ -6868,9 +6868,9 @@
         "confidence": "none"
       },
       "rt_concomitant_chemo": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Yes",
+        "evidence": "For TNT, CRT first",
+        "confidence": "high"
       },
       "cea_date": {
         "value": "",
@@ -7158,7 +7158,7 @@
         "confidence": "none"
       },
       "endoscopy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -7179,8 +7179,8 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Diagnosis: Tubular adenoma with HGD",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -7238,9 +7238,9 @@
         "confidence": "none"
       },
       "baseline_ct_M": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "0",
+        "evidence": "no distant uptake",
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -7260,7 +7260,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "Needs MRI for local staging",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -7664,7 +7664,7 @@
       },
       "baseline_ct_date": {
         "value": "",
-        "evidence": "PET\u2011CT on 29/09/2024",
+        "evidence": "",
         "confidence": "none"
       },
       "baseline_ct_T": {
@@ -7683,9 +7683,9 @@
         "confidence": "none"
       },
       "baseline_ct_M": {
-        "value": "",
+        "value": "0",
         "evidence": "no distant uptake",
-        "confidence": "none"
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -7705,7 +7705,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "PET\u2011CT and oncology consultation.",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -8113,14 +8113,14 @@
         "confidence": "high"
       },
       "baseline_ct_T": {
-        "value": "3",
-        "evidence": "If malignant staging is T3 N0 M1- liver",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "0",
-        "evidence": "If malignant staging is T3 N0 M1- liver",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -8128,19 +8128,19 @@
         "confidence": "none"
       },
       "baseline_ct_M": {
-        "value": "1",
+        "value": "",
         "evidence": "If malignant staging is T3 N0 M1- liver",
-        "confidence": "high"
+        "confidence": "low"
       },
       "baseline_ct_incidental_yn": {
-        "value": "Y",
-        "evidence": "mural thickening at rectosigmoid junction, inflammatory vs neoplastic.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_incidental_detail": {
-        "value": "mural thickening at rectosigmoid junction, inflammatory vs neoplastic.",
-        "evidence": "mural thickening at rectosigmoid junction, inflammatory vs neoplastic.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "first_mdt_date": {
         "value": "30/01/2024",
@@ -8490,7 +8490,7 @@
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "",
@@ -8513,7 +8513,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "Missing",
+        "value": "",
         "evidence": "",
         "confidence": "none"
       },
@@ -9023,9 +9023,9 @@
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
-        "value": "N",
-        "evidence": "no distant disease",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_incidental_detail": {
         "value": "",
@@ -9049,7 +9049,7 @@
       },
       "chemo_drugs": {
         "value": "FOXTROT",
-        "evidence": "For consideration of FOXTROT.",
+        "evidence": "FOXTROT",
         "confidence": "high"
       },
       "chemo_cycles": {
@@ -9820,12 +9820,12 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "",
@@ -9898,9 +9898,9 @@
         "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "1",
+        "evidence": "multiple enlarged mesenteric nodes",
+        "confidence": "high"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -9929,8 +9929,8 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "For MRI rectum to stage.",
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -10358,9 +10358,9 @@
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "N",
+        "evidence": "mural thickening at descending colon, semiannular, stage early T3, N0, M0",
+        "confidence": "high"
       },
       "baseline_ct_incidental_detail": {
         "value": "",
@@ -11155,7 +11155,7 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
@@ -11178,12 +11178,12 @@
         "confidence": "none"
       },
       "biopsy_result": {
-        "value": "indeterminate pathology",
-        "evidence": "Descending colon mass (indeterminate pathology)",
+        "value": "Descending colon mass (indeterminate pathology)",
+        "evidence": "Diagnosis: Descending colon mass (indeterminate pathology)",
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -11264,8 +11264,8 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "For colonoscopy, need tissue",
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -11628,7 +11628,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -11710,7 +11710,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "For colonoscopy",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -12045,12 +12045,12 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "",
@@ -12073,9 +12073,9 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "mmr_status": {
         "value": "",
@@ -12133,9 +12133,9 @@
         "confidence": "high"
       },
       "baseline_ct_M": {
-        "value": "",
+        "value": "x",
         "evidence": "Mx",
-        "confidence": "low"
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -12155,7 +12155,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "Needs CT TAP, then consider surgery versus neoadjuvant chemotherapy",
-        "confidence": "low"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -12578,9 +12578,9 @@
         "confidence": "high"
       },
       "baseline_ct_M": {
-        "value": "",
+        "value": "x",
         "evidence": "Mx",
-        "confidence": "none"
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -12948,9 +12948,9 @@
         "confidence": "high"
       },
       "endoscopy_type": {
-        "value": "Colonoscopy complete",
+        "value": "",
         "evidence": "Colonoscopy \u2013 mass in rectum",
-        "confidence": "medium"
+        "confidence": "low"
       },
       "endoscopy_findings": {
         "value": "mass in rectum",
@@ -12998,13 +12998,13 @@
         "confidence": "high"
       },
       "baseline_mri_mrPSW": {
-        "value": "negative",
+        "value": "clear",
         "evidence": "PSW negative",
         "confidence": "high"
       },
       "baseline_ct_date": {
         "value": "",
-        "evidence": "",
+        "evidence": "Needs CT TAP",
         "confidence": "none"
       },
       "baseline_ct_T": {
@@ -13390,12 +13390,12 @@
       "endoscopy_date": {
         "value": "Missing",
         "evidence": "Colonoscopy: early annular cancer with abnormal pit pattern opposite ICV",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_type": {
         "value": "Colonoscopy complete",
-        "evidence": "Colonoscopy: early annular cancer",
-        "confidence": "medium"
+        "evidence": "Colonoscopy: early annular cancer with abnormal pit pattern opposite ICV",
+        "confidence": "high"
       },
       "endoscopy_findings": {
         "value": "early annular cancer with abnormal pit pattern opposite ICV",
@@ -13403,14 +13403,14 @@
         "confidence": "high"
       },
       "biopsy_result": {
-        "value": "Right\u2011sided colonic tumour",
-        "evidence": "Diagnosis: Right\u2011sided colonic tumour",
+        "value": "Right-sided colonic tumour, Moderately differentiated",
+        "evidence": "Diagnosis: Right\u2011sided colonic tumour\nDifferentiation: Moderately differentiated",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: early annular cancer with abnormal pit pattern opposite ICV",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -13454,12 +13454,12 @@
       },
       "baseline_ct_T": {
         "value": "2",
-        "evidence": "T2 N0 M0",
+        "evidence": "T2",
         "confidence": "high"
       },
       "baseline_ct_N": {
         "value": "0",
-        "evidence": "T2 N0 M0",
+        "evidence": "N0",
         "confidence": "high"
       },
       "baseline_ct_EMVI": {
@@ -13469,7 +13469,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "T2 N0 M0",
+        "evidence": "M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -13825,12 +13825,12 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_date": {
         "value": "",
@@ -13904,7 +13904,7 @@
       },
       "baseline_ct_N": {
         "value": "1",
-        "evidence": "N1",
+        "evidence": "few mildly enlarged mesenteric nodes; CT T3 N1",
         "confidence": "high"
       },
       "baseline_ct_EMVI": {
@@ -13914,7 +13914,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "M0",
+        "evidence": "no liver mets. CT T3 N1 M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -13934,7 +13934,7 @@
       },
       "first_mdt_treatment_approach": {
         "value": "straight to surgery",
-        "evidence": "For surgery (unsuitable for chemotherapy)",
+        "evidence": "For surgery",
         "confidence": "high"
       },
       "chemo_goal": {
@@ -14299,8 +14299,8 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Diagnosis: Serrated adenoma with dysplasia",
+        "confidence": "medium"
       },
       "mmr_status": {
         "value": "",
@@ -14743,7 +14743,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -15159,8 +15159,8 @@
       },
       "previous_cancer": {
         "value": "No",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Past medical history significant for type 2 diabetes.",
+        "confidence": "high"
       },
       "previous_cancer_site": {
         "value": "N/A",
@@ -15188,7 +15188,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -15234,12 +15234,12 @@
       },
       "baseline_ct_T": {
         "value": "2",
-        "evidence": "T2 N0 M0",
+        "evidence": "If cancer T2 N0 M0",
         "confidence": "high"
       },
       "baseline_ct_N": {
         "value": "0",
-        "evidence": "T2 N0 M0",
+        "evidence": "If cancer T2 N0 M0",
         "confidence": "high"
       },
       "baseline_ct_EMVI": {
@@ -15249,7 +15249,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "T2 N0 M0",
+        "evidence": "If cancer T2 N0 M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -15618,9 +15618,9 @@
         "confidence": "high"
       },
       "endoscopy_type": {
-        "value": "Colonoscopy complete",
+        "value": "incomplete colonoscopy",
         "evidence": "Colonoscopy 01/01/2024",
-        "confidence": "high"
+        "confidence": "medium"
       },
       "endoscopy_findings": {
         "value": "Large sessile polyp at descending colon with abnormal pit pattern",
@@ -16024,27 +16024,27 @@
     "fields": {
       "dob": {
         "value": "06/10/1947",
-        "evidence": "DOB: 06/10/1947",
+        "evidence": "06/10/1947",
         "confidence": "high"
       },
       "initials": {
         "value": "EF",
-        "evidence": "Name: Eljay Fraser",
+        "evidence": "Eljay Fraser",
         "confidence": "high"
       },
       "mrn": {
         "value": "9990037",
-        "evidence": "Hospital Number: 9990037",
+        "evidence": "9990037",
         "confidence": "high"
       },
       "nhs_number": {
         "value": "9990000037",
-        "evidence": "NHS Number: 9990000037",
+        "evidence": "9990000037",
         "confidence": "high"
       },
       "gender": {
         "value": "Male",
-        "evidence": "Gender: Male",
+        "evidence": "Male",
         "confidence": "high"
       },
       "previous_cancer": {
@@ -16059,13 +16059,13 @@
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: multiple polyps, is there a history of a polyposis syndrome? Suspicious cancers in the transverse and ascending colons.",
-        "confidence": "high"
+        "evidence": "Colonoscopy: multiple polyps",
+        "confidence": "none"
       },
       "endoscopy_type": {
         "value": "",
         "evidence": "Colonoscopy: multiple polyps",
-        "confidence": "low"
+        "confidence": "none"
       },
       "endoscopy_findings": {
         "value": "multiple polyps, is there a history of a polyposis syndrome? Suspicious cancers in the transverse and ascending colons.",
@@ -16073,14 +16073,14 @@
         "confidence": "high"
       },
       "biopsy_result": {
-        "value": "Right\u2011sided colonic tumour, Poorly differentiated",
-        "evidence": "Diagnosis: Right\u2011sided colonic tumour\nDifferentiation: Poorly differentiated",
+        "value": "Right\u2011sided colonic tumour",
+        "evidence": "Diagnosis: Right\u2011sided colonic tumour",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: multiple polyps",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -16118,18 +16118,18 @@
         "confidence": "none"
       },
       "baseline_ct_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "CT TAP:",
         "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "4b",
-        "evidence": "Ascending colon: T4b",
+        "evidence": "Transverse colon: T3 N1 EMVI negative, Ascending colon: T4b",
         "confidence": "high"
       },
       "baseline_ct_N": {
         "value": "1c",
-        "evidence": "Ascending colon: T4b, N1c",
+        "evidence": "Transverse colon: T3 N1 EMVI negative, Ascending colon: T4b, N1c",
         "confidence": "high"
       },
       "baseline_ct_EMVI": {
@@ -16154,7 +16154,7 @@
       },
       "first_mdt_date": {
         "value": "14/06/2024",
-        "evidence": "Colorectal Multidisciplinary Meeting 14/06/2024",
+        "evidence": "14/06/2024",
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
@@ -16495,22 +16495,22 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: sessile lesion in rectum, does not lift, unsuitable for local excision.",
-        "confidence": "high"
+        "evidence": "Colonoscopy: sessile lesion in rectum",
+        "confidence": "medium"
       },
       "endoscopy_type": {
-        "value": "Colonoscopy complete",
-        "evidence": "Colonoscopy: sessile lesion in rectum, does not lift, unsuitable for local excision.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "Colonoscopy:",
+        "confidence": "none"
       },
       "endoscopy_findings": {
         "value": "sessile lesion in rectum, does not lift, unsuitable for local excision.",
@@ -16524,8 +16524,8 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: sessile lesion in rectum, does not lift, unsuitable for local excision.",
-        "confidence": "high"
+        "evidence": "",
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -16533,9 +16533,9 @@
         "confidence": "none"
       },
       "baseline_mri_date": {
-        "value": "Missing",
+        "value": "",
         "evidence": "MRI rectum: T1 N0 EMVI \u2013 CRM \u2013 PSW \u2013",
-        "confidence": "high"
+        "confidence": "none"
       },
       "baseline_mri_mrT": {
         "value": "1",
@@ -16555,17 +16555,17 @@
       "baseline_mri_mrCRM": {
         "value": "",
         "evidence": "CRM \u2013",
-        "confidence": "high"
+        "confidence": "none"
       },
       "baseline_mri_mrPSW": {
         "value": "",
         "evidence": "PSW \u2013",
-        "confidence": "high"
+        "confidence": "none"
       },
       "baseline_ct_date": {
-        "value": "Missing",
+        "value": "",
         "evidence": "CT: no mets",
-        "confidence": "high"
+        "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "",
@@ -16603,7 +16603,7 @@
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
-        "value": "",
+        "value": "straight to surgery",
         "evidence": "Consider ESD",
         "confidence": "high"
       },
@@ -16914,7 +16914,7 @@
     "fields": {
       "dob": {
         "value": "05/03/1949",
-        "evidence": "05/03/1949",
+        "evidence": "DOB: 05/03/1949",
         "confidence": "high"
       },
       "initials": {
@@ -17400,7 +17400,7 @@
       "endoscopy_type": {
         "value": "Colonoscopy complete",
         "evidence": "Colonoscopy: polypoidal lesion in cecum",
-        "confidence": "high"
+        "confidence": "medium"
       },
       "endoscopy_findings": {
         "value": "polypoidal lesion in cecum",
@@ -17414,7 +17414,7 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: polypoidal lesion in cecum",
+        "evidence": "Diagnosis: Caecal adenocarcinoma",
         "confidence": "high"
       },
       "mmr_status": {
@@ -17459,12 +17459,12 @@
       },
       "baseline_ct_T": {
         "value": "x",
-        "evidence": "Tx N0 M0",
+        "evidence": "Tx",
         "confidence": "high"
       },
       "baseline_ct_N": {
         "value": "0",
-        "evidence": "Tx N0 M0",
+        "evidence": "N0",
         "confidence": "high"
       },
       "baseline_ct_EMVI": {
@@ -17474,7 +17474,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "no mets, Tx N0 M0",
+        "evidence": "no mets, M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -17830,7 +17830,7 @@
       "previous_cancer": {
         "value": "No",
         "evidence": "",
-        "confidence": "high"
+        "confidence": "none"
       },
       "previous_cancer_site": {
         "value": "N/A",
@@ -17898,9 +17898,9 @@
         "confidence": "high"
       },
       "baseline_ct_date": {
-        "value": "Missing",
-        "evidence": "CT TAP",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "",
@@ -18284,7 +18284,7 @@
       },
       "endoscopy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: polypoidal lesion in sigmoid colon",
+        "evidence": "",
         "confidence": "high"
       },
       "endoscopy_type": {
@@ -18304,7 +18304,7 @@
       },
       "biopsy_date": {
         "value": "Missing",
-        "evidence": "Colonoscopy: polypoidal lesion in sigmoid colon",
+        "evidence": "",
         "confidence": "high"
       },
       "mmr_status": {
@@ -18343,9 +18343,9 @@
         "confidence": "none"
       },
       "baseline_ct_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
-        "confidence": "none"
+        "confidence": "high"
       },
       "baseline_ct_T": {
         "value": "x",
@@ -18728,7 +18728,7 @@
         "confidence": "none"
       },
       "endoscopy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -18748,7 +18748,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -18809,7 +18809,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "no liver mets. T4a N1 EMVI- M0",
+        "evidence": "M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -19614,18 +19614,18 @@
       },
       "previous_cancer_site": {
         "value": "N/A",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Past medical history significant for coeliac disease.",
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "Missing",
         "evidence": "Colonoscopy: tumour at 18 cm, biopsied",
-        "confidence": "high"
+        "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "",
+        "value": "incomplete colonoscopy",
         "evidence": "Colonoscopy: tumour at 18 cm, biopsied",
-        "confidence": "none"
+        "confidence": "medium"
       },
       "endoscopy_findings": {
         "value": "tumour at 18 cm, biopsied",
@@ -19633,14 +19633,14 @@
         "confidence": "high"
       },
       "biopsy_result": {
-        "value": "Right\u2011sided colonic tumour",
-        "evidence": "Diagnosis: Right\u2011sided colonic tumour",
+        "value": "Right\u2011sided colonic tumour, Moderately differentiated",
+        "evidence": "Diagnosis: Right\u2011sided colonic tumour\nDifferentiation: Moderately differentiated",
         "confidence": "high"
       },
       "biopsy_date": {
         "value": "Missing",
         "evidence": "Colonoscopy: tumour at 18 cm, biopsied",
-        "confidence": "high"
+        "confidence": "none"
       },
       "mmr_status": {
         "value": "",
@@ -19680,7 +19680,7 @@
       "baseline_ct_date": {
         "value": "Missing",
         "evidence": "CT TAP: lesion in rectosigmoid junction. Multiple nodes, T2, N2, M0",
-        "confidence": "high"
+        "confidence": "none"
       },
       "baseline_ct_T": {
         "value": "2",
@@ -20218,9 +20218,9 @@
         "confidence": "none"
       },
       "rt_concomitant_chemo": {
-        "value": "Yes",
-        "evidence": "neoadjuvant CRT",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "cea_date": {
         "value": "",
@@ -20259,8 +20259,8 @@
       },
       "second_mri_date": {
         "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "repeat MRI rectum in 6 weeks.",
+        "confidence": "low"
       },
       "second_mri_pathway_status": {
         "value": "",
@@ -20508,18 +20508,18 @@
         "confidence": "none"
       },
       "endoscopy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Missing",
+        "evidence": "Colonoscopy + biopsy + tattoo",
+        "confidence": "high"
       },
       "endoscopy_type": {
         "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Colonoscopy + biopsy + tattoo",
+        "confidence": "low"
       },
       "endoscopy_findings": {
         "value": "",
-        "evidence": "",
+        "evidence": "Colonoscopy + biopsy + tattoo",
         "confidence": "none"
       },
       "biopsy_result": {
@@ -20528,9 +20528,9 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Missing",
+        "evidence": "Colonoscopy + biopsy + tattoo",
+        "confidence": "high"
       },
       "mmr_status": {
         "value": "",
@@ -20593,9 +20593,9 @@
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
-        "value": "N",
-        "evidence": "descending colon mural thickening, inflammatory vs neoplastic; no distant disease.",
-        "confidence": "high"
+        "value": "",
+        "evidence": "",
+        "confidence": "none"
       },
       "baseline_ct_incidental_detail": {
         "value": "",
@@ -20609,8 +20609,8 @@
       },
       "first_mdt_treatment_approach": {
         "value": "",
-        "evidence": "Colonoscopy + biopsy + tattoo; return to MDT with histology.",
-        "confidence": "none"
+        "evidence": "return to MDT with histology.",
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -21019,7 +21019,7 @@
       },
       "baseline_ct_T": {
         "value": "2",
-        "evidence": "T2",
+        "evidence": "T2 N1 M0 EMVI \u2013",
         "confidence": "high"
       },
       "baseline_ct_N": {
@@ -21034,7 +21034,7 @@
       },
       "baseline_ct_M": {
         "value": "0",
-        "evidence": "no liver metastases. T2 N1 M0",
+        "evidence": "M0",
         "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
@@ -21394,8 +21394,8 @@
       },
       "previous_cancer_site": {
         "value": "N/A",
-        "evidence": "",
-        "confidence": "none"
+        "evidence": "Past medical history significant for coeliac disease.",
+        "confidence": "high"
       },
       "endoscopy_date": {
         "value": "",
@@ -21418,7 +21418,7 @@
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
+        "value": "Missing",
         "evidence": "",
         "confidence": "none"
       },
@@ -21500,7 +21500,7 @@
       "first_mdt_treatment_approach": {
         "value": "",
         "evidence": "For colonoscopy",
-        "confidence": "none"
+        "confidence": "high"
       },
       "chemo_goal": {
         "value": "",
@@ -21903,9 +21903,9 @@
         "confidence": "none"
       },
       "baseline_ct_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "10/01/2025",
+        "evidence": "PET CT on 10/01/2025",
+        "confidence": "high"
       },
       "baseline_ct_T": {
         "value": "",

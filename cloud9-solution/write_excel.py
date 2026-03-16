@@ -5,6 +5,8 @@ Sheet 1: Patient data with prototype styling + cell comments (hover for evidence
 Sheet 2: Evidence Map — evidence quotes in every cell for audit trail
 """
 
+from __future__ import annotations
+
 from copy import copy
 from pathlib import Path
 
@@ -76,7 +78,7 @@ def write_styled_workbook(
             cell.protection = copy(style["protection"])
 
             # Write value (None for empty/NaN)
-            if pd.isna(value) or value == "":
+            if value is None or (isinstance(value, float) and pd.isna(value)) or value == "":
                 cell.value = None
             else:
                 cell.value = value

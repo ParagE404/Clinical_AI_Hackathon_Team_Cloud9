@@ -7,6 +7,8 @@ Produces three parallel DataFrames (50 rows × 88 columns each):
   confidence_df — confidence levels per cell
 """
 
+from __future__ import annotations
+
 import pandas as pd
 
 from extract_llm import CaseResult, FieldResult
@@ -19,6 +21,26 @@ def build_dataframes(
     """
     Build the main data, evidence, and confidence DataFrames from extraction results.
     """
+    # Pre-processing: infer endoscopy_type from evidence/findings when LLM left type blank
+    for result in results:
+        endo_type_fr = result.fields.get("endoscopy_type")
+        endo_findings_fr = result.fields.get("endoscopy_findings")
+        if endo_type_fr and not endo_type_fr.value:
+            # Check if we have evidence or findings that indicate the type
+            combined = (endo_type_fr.evidence or "") + " " + (
+                endo_findings_fr.evidence if endo_findings_fr else ""
+            )
+            combined_lower = combined.strip().lower()
+            if "flexi" in combined_lower or "sigmoidoscopy" in combined_lower:
+                endo_type_fr.value = "flexi sig"
+                endo_type_fr.confidence = "medium"
+            elif "colonoscop" in combined_lower:
+                if "incomplete" in combined_lower:
+                    endo_type_fr.value = "incomplete colonoscopy"
+                else:
+                    endo_type_fr.value = "Colonoscopy complete"
+                endo_type_fr.confidence = "medium"
+
     data_rows = []
     evidence_rows = []
     confidence_rows = []
@@ -60,11 +82,33 @@ def build_dataframes(
         data_df[dob_header], format="%d/%m/%Y", errors="coerce"
     )
 
+    # Post-processing: normalize endoscopy_type values
+    endo_header = KEY_TO_HEADER["endoscopy_type"]
+    endo_map = {
+        "colonoscopy": "Colonoscopy complete",
+        "colonoscopy complete": "Colonoscopy complete",
+        "complete colonoscopy": "Colonoscopy complete",
+        "incomplete colonoscopy": "incomplete colonoscopy",
+        "flexi sig": "flexi sig",
+        "flexible sigmoidoscopy": "flexi sig",
+    }
+    data_df[endo_header] = data_df[endo_header].apply(
+        lambda v: endo_map.get(str(v).strip().lower(), v) if pd.notna(v) else v
+    )
+
+    # Post-processing: normalize CRM values ("unsafe" -> "threatened")
+    for crm_key in ("baseline_mri_mrCRM", "second_mri_mrCRM", "mri_12wk_mrCRM"):
+        header = KEY_TO_HEADER.get(crm_key)
+        if header and header in data_df.columns:
+            data_df[header] = data_df[header].apply(
+                lambda v: "threatened" if pd.notna(v) and str(v).strip().lower() == "unsafe" else v
+            )
+
     # Sort by NHS number for consistent ordering
     nhs_header = KEY_TO_HEADER["nhs_number"]
-    sort_index = data_df[nhs_header].argsort(kind="stable")
-    data_df = data_df.iloc[sort_index].reset_index(drop=True)
-    evidence_df = evidence_df.iloc[sort_index].reset_index(drop=True)
-    confidence_df = confidence_df.iloc[sort_index].reset_index(drop=True)
+    sort_order = data_df[nhs_header].sort_values(na_position="last", kind="stable").index
+    data_df = data_df.loc[sort_order].reset_index(drop=True)
+    evidence_df = evidence_df.loc[sort_order].reset_index(drop=True)
+    confidence_df = confidence_df.loc[sort_order].reset_index(drop=True)
 
     return data_df, evidence_df, confidence_df

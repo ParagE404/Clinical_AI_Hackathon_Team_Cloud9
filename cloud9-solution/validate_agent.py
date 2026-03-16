@@ -5,6 +5,8 @@ Runs a second Gemini pass to cross-check every populated cell against
 the original document text. Produces a validation report.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import time
@@ -88,7 +90,7 @@ def validate_case(
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
             contents=prompt,
             config={
                 "system_instruction": VALIDATION_SYSTEM,
@@ -149,10 +151,15 @@ def validate_all(
         raise RuntimeError("GEMINI_API_KEY not set.")
 
     client = genai.Client(api_key=api_key)
+    # Build lookup from case_index to CaseText
+    case_lookup = {c.case_index: c for c in cases}
     validations = []
 
-    for case, extraction in zip(cases, extractions):
-        print(f"  [{case.case_index + 1}/{len(cases)}] Validating case {case.case_index}...")
+    for i, extraction in enumerate(extractions):
+        case = case_lookup.get(extraction.case_index)
+        if not case:
+            continue
+        print(f"  [{i + 1}/{len(extractions)}] Validating case {extraction.case_index}...")
         try:
             v = validate_case(case, extraction, client)
             status_icon = {"pass": "OK", "review_needed": "REVIEW", "fail": "FAIL"}

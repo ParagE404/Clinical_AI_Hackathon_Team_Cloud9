@@ -5,6 +5,8 @@ Each extracted field returns {"value", "evidence", "confidence"} so every
 cell in the output Excel can be traced back to the original document text.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import time
@@ -53,34 +55,65 @@ FIELD_DESCRIPTIONS = _build_field_descriptions()
 
 SYSTEM_INSTRUCTION = """You are a clinical data extraction specialist for colorectal cancer MDT (Multidisciplinary Team) meeting records. Your job is to extract structured data from MDT case discussion text with full source traceability.
 
+DOCUMENT STRUCTURE — MDT proformas have these sections:
+- [MDT HEADER]: Contains the meeting date.
+- [ROW 1]: Patient demographics — Hospital Number, NHS Number, Name, Gender, DOB.
+- [ROW 3]: Staging & Diagnosis — Diagnosis text, ICD10 code, differentiation, staging fields.
+- [ROW 5]: Clinical Details — Symptoms, history, imaging reports (CT, MRI), endoscopy findings. This section often contains MRI staging lines like "MRI pelvis on DD/MM/YYYY: T__, N__, CRM __, EMVI __" and CT reports like "CT TAP on DD/MM/YYYY: ..."
+- [ROW 7]: MDT Outcome — The MDT decision, may also contain additional imaging results and treatment plans.
+
 CRITICAL RULES:
 1. Extract ONLY information explicitly stated in the source text.
 2. For each field, return: {"value": "extracted value", "evidence": "exact verbatim quote from source", "confidence": "high|medium|low|none"}
-3. The "evidence" MUST be a character-for-character substring that appears in the SOURCE TEXT. Never paraphrase.
+3. The "evidence" MUST be a verbatim substring from the SOURCE TEXT. Never paraphrase.
 4. If a field's information is not present, return {"value": "", "evidence": "", "confidence": "none"}.
 5. A blank value is ALWAYS better than a wrong value. When uncertain, leave blank.
-6. Dates must be DD/MM/YYYY format. If only 2-digit year, prepend "20" (e.g. 25 → 2025).
-7. For staging values (T, N, M, EMVI, CRM, PSW), extract ONLY the value portion (e.g. "3b" not "T3b", "1c" not "N1c").
-8. For EMVI: normalize to "positive" or "negative". Also map "+" to "positive", "-" to "negative".
-9. For previous_cancer: answer "Yes" ONLY for cancers other than the current colorectal diagnosis. Default to "No" if no prior cancer is mentioned.
-10. For endoscopy_type: classify as "Colonoscopy complete", "incomplete colonoscopy", or "flexi sig".
-11. For treatment approach: classify using these mappings:
-    - FOXTROT/CAPOX/FOLFOX/neoadjuvant chemo → "downstaging chemotherapy"
-    - CRT/chemoradiotherapy/long course → "downstaging nCRT"
-    - Short course/SCPRT/5x5 → "downstaging shortcourse RT"
-    - Papillon/EBRT → "Papillon +/- EBRT"
-    - Surgery/hemicolectomy/resection/anterior resection/right hemi/eLAPE → "straight to surgery"
-    - TNT/total neoadjuvant → "TNT"
-    - Watch and wait → "watch and wait"
-    - If unclear or not yet decided, return ""
-12. For M staging from CT: infer "0" from "no metastases"/"no distant disease"/"no liver metastases". Infer "1" from explicit "metastases"/"liver lesions"/"lung metastases".
-13. For biopsy_date: if not explicitly stated but biopsy was taken during a dated endoscopy, use the endoscopy date. If endoscopy happened but date unknown, return "Missing".
-14. For endoscopy_date: if endoscopy happened but date not stated, return "Missing"."""
+
+DATE RULES:
+6. Dates must be DD/MM/YYYY format. Convert 2-digit years: prepend "20" (e.g. 25 → 2025, 24 → 2024).
+7. Convert dates like "4/3/25" → "04/03/2025", "22/2/2025" → "22/02/2025".
+
+STAGING RULES:
+8. For T, N staging: extract ONLY the value after the prefix (e.g. "T3b" → "3b", "N1c" → "1c", "T2" → "2", "N0" → "0").
+9. For EMVI: normalize to "positive" or "negative". Map "+" → "positive", "-" → "negative", "–" (dash) → "negative".
+10. For CRM: normalize to "clear", "involved", or "threatened". Map "unsafe" → "threatened", "-" or "–" (dash) → "clear".
+11. For PSW: normalize to "clear" or "unsafe". Map "-" or "–" (dash) → "clear".
+12. MRI staging can appear in BOTH [ROW 5] (Clinical Details) and [ROW 7] (MDT Outcome). Check both.
+13. For CT M staging: infer "0" from "no metastases"/"no distant disease"/"no distant metastases"/"no liver metastases"/"no mets". Infer "1" from "metastases"/"liver lesions"/"lung metastases"/"metastatic disease".
+14. CT staging may be embedded in free text like "CT TAP: sigmoid thickening, no metastases" or simply "CT: no mets" — extract what you can. If a CT is mentioned with findings but no date, set the CT date to "Missing".
+
+DEMOGRAPHICS RULES:
+15. For initials: first letter of first name + first letter of last name (e.g. "AIDEN O'CONNOR" → "AO", "Ziad Al-Farsi" → "ZA").
+16. For previous_cancer: answer "Yes" ONLY for cancers OTHER than the current colorectal diagnosis. History of breast cancer, prostate cancer, lymphoma, head and neck cancer etc. = "Yes". If no prior cancer mentioned, answer "No".
+17. For previous_cancer_site: state the site (e.g. "breast", "lymphoma", "prostate"). "N/A" if previous_cancer is "No".
+
+ENDOSCOPY/HISTOLOGY RULES:
+18. For endoscopy_type: classify as "Colonoscopy complete" (if colonoscopy reaches ileocaecal valve, described as complete, or simply described as "Colonoscopy" with findings — default to "Colonoscopy complete" unless explicitly stated as incomplete), "incomplete colonoscopy" (only if explicitly stated as incomplete), or "flexi sig" (flexible sigmoidoscopy / flexi sig). IMPORTANT: If the text says "Colonoscopy: findings..." or "Colonoscopy – findings...", classify as "Colonoscopy complete". If text says "Flexi sig: findings..." or "flexi sig" with findings, classify as "flexi sig".
+19. For endoscopy_date: if endoscopy happened but no date given, return "Missing".
+20. For biopsy_result: look in both [ROW 3] Diagnosis field AND [ROW 7] Outcome for histology results.
+21. For biopsy_date: if not explicitly stated but biopsy was during a dated endoscopy, use that date. If date unknown, return "Missing".
+
+TREATMENT APPROACH RULES:
+22. Classify the MDT decision using these exact mappings:
+    - FOXTROT/CAPOX/FOLFOX/neoadjuvant chemotherapy → "downstaging chemotherapy"
+    - CRT/chemoradiotherapy/long course radiotherapy/neoadjuvant CRT → "downstaging nCRT"
+    - Short course radiotherapy/SCPRT/5x5Gy → "downstaging shortcourse RT"
+    - TNT (and then specifying CRT first or chemo first) → "TNT"
+    - Papillon/contact radiotherapy/EBRT → "Papillon +/- EBRT"
+    - Surgery/hemicolectomy/resection/anterior resection/right hemicolectomy/eLAPE/surgical review/refer for surgical review/ESD/local excision/TEMS/TAMIS → "straight to surgery"
+    - Watch and wait/active surveillance → "watch and wait"
+    - If the outcome is for further investigations only (e.g. "for colonoscopy", "for MRI", "rediscuss"), return ""
+23. Look in [ROW 7] (MDT Outcome) for the treatment decision.
+
+IMPORTANT — SEARCH THOROUGHLY:
+- Clinical data is spread across ALL rows. MRI data may be in [ROW 5] OR [ROW 7]. CT data may be in [ROW 5] OR [ROW 7].
+- The [ROW 7] MDT Outcome often contains imaging results AND the treatment decision together.
+- Extract ALL available data from every row. Do not stop at one section."""
 
 
 def _build_extraction_prompt(case: CaseText) -> str:
     """Build the user prompt with all case sections and field definitions."""
-    return f"""Extract all available clinical data from this MDT case.
+    return f"""Extract all available clinical data from this MDT case. Search ALL sections thoroughly — imaging results and staging data can appear in Clinical Details (ROW 5) OR MDT Outcome (ROW 7) or both.
 
 ## SOURCE TEXT
 {case.full_text}
@@ -88,7 +121,8 @@ def _build_extraction_prompt(case: CaseText) -> str:
 ## FIELDS TO EXTRACT
 {FIELD_DESCRIPTIONS}
 
-Return a single JSON object where each key is the field name and each value is {{"value": "...", "evidence": "...", "confidence": "high|medium|low|none"}}."""
+Return a single JSON object where each key is the field name and each value is {{"value": "...", "evidence": "...", "confidence": "high|medium|low|none"}}.
+For fields not found in the text, return {{"value": "", "evidence": "", "confidence": "none"}}."""
 
 
 def _parse_response(response_text: str) -> dict[str, FieldResult]:
@@ -134,29 +168,38 @@ def _parse_response(response_text: str) -> dict[str, FieldResult]:
     return results
 
 
-def extract_case(case: CaseText, client: genai.Client) -> CaseResult:
-    """Extract all fields from one MDT case using Gemini."""
+def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> CaseResult:
+    """Extract all fields from one MDT case using Gemini with retry logic."""
     prompt = _build_extraction_prompt(case)
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-        config={
-            "system_instruction": SYSTEM_INSTRUCTION,
-            "temperature": 0.0,
-            "response_mime_type": "application/json",
-        },
-    )
+    last_error = None
+    for attempt in range(max_retries + 1):
+        try:
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
+                contents=prompt,
+                config={
+                    "system_instruction": SYSTEM_INSTRUCTION,
+                    "temperature": 0.0,
+                    "response_mime_type": "application/json",
+                },
+            )
 
-    response_text = response.text
-    fields = _parse_response(response_text)
+            response_text = response.text
+            fields = _parse_response(response_text)
 
-    return CaseResult(
-        case_index=case.case_index,
-        fields=fields,
-        raw_llm_response=response_text,
-        source_text=case.full_text,
-    )
+            return CaseResult(
+                case_index=case.case_index,
+                fields=fields,
+                raw_llm_response=response_text,
+                source_text=case.full_text,
+            )
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s
+                continue
+            raise last_error
 
 
 def extract_all_cases(

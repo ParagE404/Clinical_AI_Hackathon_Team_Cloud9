@@ -5,6 +5,8 @@ Walks the XML body elements to maintain paragraph/table interleaving,
 then extracts raw text per case table with row-level markers.
 """
 
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
