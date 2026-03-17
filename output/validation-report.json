@@ -1,210 +1,64 @@
 {
-  "total_cases": 5,
+  "total_cases": 4,
   "passed": 0,
-  "review_needed": 3,
-  "failed": 2,
-  "total_issues": 25,
-  "critical_issues": 3,
+  "review_needed": 1,
+  "failed": 3,
+  "total_issues": 26,
+  "critical_issues": 7,
   "cases": [
     {
-      "case_index": 0,
+      "case_index": 4,
       "status": "fail",
-      "fields_checked": 19,
-      "fields_ok": 14,
-      "fields_flagged": 5,
-      "issues": [
-        {
-          "field": "previous_cancer",
-          "type": "incorrect_value",
-          "description": "The value 'No' is an assumption. The source text does not explicitly state whether the patient has previous cancer; it is simply not mentioned.",
-          "suggested_value": "Unknown",
-          "severity": "warning"
-        },
-        {
-          "field": "previous_cancer_site",
-          "type": "incorrect_value",
-          "description": "The value 'N/A' is an assumption based on the unstated 'No' for previous cancer. The source text does not provide information on previous cancer sites.",
-          "suggested_value": "Unknown",
-          "severity": "warning"
-        },
-        {
-          "field": "endoscopy_type",
-          "type": "incorrect_value",
-          "description": "The value 'Colonoscopy complete' adds information ('complete') that is not present in the evidence 'Colonoscopy :'.",
-          "suggested_value": "Colonoscopy",
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_ct_N",
-          "type": "incorrect_value",
-          "description": "The value '1' for N stage is an interpretation. The source text describes findings ('associated mesorectal lymph nodes. Indeterminate retroperitoneal lymph nodes.') but does not explicitly state a numerical N stage.",
-          "suggested_value": "Not documented",
-          "severity": "critical"
-        },
-        {
-          "field": "baseline_ct_M",
-          "type": "incorrect_value",
-          "description": "The value '1' for M stage is an interpretation. The source text describes findings ('Multiple nodules within the lungs suspicious for lung metastases.') but does not explicitly state a numerical M stage.",
-          "suggested_value": "Not documented",
-          "severity": "critical"
-        }
-      ]
-    },
-    {
-      "case_index": 1,
-      "status": "review_needed",
-      "fields_checked": 21,
+      "fields_checked": 16,
       "fields_ok": 10,
-      "fields_flagged": 11,
+      "fields_flagged": 6,
       "issues": [
         {
-          "field": "endoscopy_type",
+          "field": "first_mdt_date",
           "type": "misquote",
-          "description": "The evidence 'Colonoscopy: polypoidal lesion in the low rectum' is a partial quote. The full sentence in the source is 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "endoscopy_type",
-          "type": "incorrect_value",
-          "description": "The value 'Colonoscopy complete' includes 'complete', which is an interpretation not explicitly stated in the provided evidence 'Colonoscopy: polypoidal lesion in the low rectum'.",
-          "suggested_value": "Colonoscopy",
-          "severity": "warning"
-        },
-        {
-          "field": "endoscopy_findings",
-          "type": "misquote",
-          "description": "The evidence 'polypoidal lesion in the low rectum' is a partial quote. The full sentence in the source is 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "biopsy_result",
-          "type": "misquote",
-          "description": "The evidence string concatenates multiple phrases. The phrase 'biopsy adenocarcinoma, poorly differentiated.' is a partial quote from the sentence 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_mri_mrT",
-          "type": "misquote",
-          "description": "The evidence 'T3c' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_mri_mrN",
-          "type": "misquote",
-          "description": "The evidence 'N1c' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_mri_mrEMVI",
-          "type": "misquote",
-          "description": "The evidence 'EMVI positive' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_mri_mrCRM",
-          "type": "misquote",
-          "description": "The evidence 'CRM/ISP unsafe' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_mri_mrPSW",
-          "type": "misquote",
-          "description": "The evidence 'PSW clear' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_ct_date",
-          "type": "misquote",
-          "description": "The evidence 'CT 22/2/2025' is a partial quote. The full sentence in the source is 'CT 22/2/2025: no lymphadenopathy. New semi-annular thickening in rectum'.",
-          "suggested_value": null,
-          "severity": "warning"
-        },
-        {
-          "field": "baseline_ct_N",
-          "type": "misquote",
-          "description": "The evidence 'no lymphadenopathy' is a partial quote. The full sentence in the source is 'CT 22/2/2025: no lymphadenopathy. New semi-annular thickening in rectum'.",
-          "suggested_value": null,
-          "severity": "warning"
-        }
-      ]
-    },
-    {
-      "case_index": 2,
-      "status": "review_needed",
-      "fields_checked": 17,
-      "fields_ok": 13,
-      "fields_flagged": 4,
-      "issues": [
-        {
-          "field": "previous_cancer",
-          "type": "incorrect_value",
-          "description": "The value 'No' is an assumption. The source text does not explicitly state whether the patient has previous cancer; it is silent on this. The value cannot be derived from empty evidence.",
-          "suggested_value": "Unknown",
-          "severity": "warning"
-        },
-        {
-          "field": "previous_cancer_site",
-          "type": "incorrect_value",
-          "description": "The value 'N/A' is based on the assumption that there is no previous cancer. Since the presence of previous cancer is not documented, the site cannot be determined as N/A.",
-          "suggested_value": "Unknown",
-          "severity": "warning"
-        },
-        {
-          "field": "endoscopy_type",
-          "type": "incorrect_value",
-          "description": "The value 'Colonoscopy complete' is an over-interpretation. While 'Multiple polyps within the colon' suggests a colonoscopy, the term 'complete' is not present in the evidence or source text.",
-          "suggested_value": "Colonoscopy",
+          "description": "The 'evidence' provided for first_mdt_date does not exactly match the source text. The source text includes '(i)' after the date.",
+          "suggested_value": "13/09/2024",
           "severity": "warning"
         },
         {
           "field": "first_mdt_treatment_approach",
           "type": "incorrect_value",
-          "description": "The value 'straight to surgery' is an over-interpretation of the evidence 'To see consultant next week to discuss possible surgery'. The MDT outcome is to *discuss* possible surgery, not a definitive decision for 'straight to surgery'.",
-          "suggested_value": "Discuss possible surgery",
-          "severity": "warning"
-        }
-      ]
-    },
-    {
-      "case_index": 3,
-      "status": "fail",
-      "fields_checked": 29,
-      "fields_ok": 26,
-      "fields_flagged": 3,
-      "issues": [
-        {
-          "field": "biopsy_date",
-          "type": "missing_data",
-          "description": "The biopsy date 'Feb 2025' is present in the source text ('Feb 2025 \u2013 adenocarcinoma') but marked as 'Missing' in the extracted value.",
-          "suggested_value": "Feb 2025",
+          "description": "The value 'straight to surgery' is an over-interpretation of the evidence. The MDT outcome is 'Refer for colorectal surgical review', which indicates a referral for assessment, not a definitive decision for immediate surgery.",
+          "suggested_value": "Refer for colorectal surgical review",
           "severity": "critical"
         },
         {
-          "field": "ww_entry_date",
-          "type": "misquote",
-          "description": "The evidence provided ('Colorectal Multidisciplinary Meeting 07/03/2025(i) ... RE entering watch and wait') is not verbatim from the source text due to the '...'. The extracted value '07/03/2025' is correct, derived from the MDT date.",
-          "suggested_value": "07/03/2025",
+          "field": "age",
+          "type": "missing_data",
+          "description": "The patient's age '76 Years' is present in the source text ('Age: 76 Years') but was not extracted.",
+          "suggested_value": "76 Years",
+          "severity": "info"
+        },
+        {
+          "field": "62_day_target_date",
+          "type": "missing_data",
+          "description": "The '62 DAY TARGET' date '14/11/2024' is present in the source text but was not extracted. This is a critical cancer pathway date.",
+          "suggested_value": "14/11/2024",
+          "severity": "critical"
+        },
+        {
+          "field": "icd10_code",
+          "type": "missing_data",
+          "description": "The 'ICD10 Code' 'C18.6' is present in the source text but was not extracted.",
+          "suggested_value": "C18.6",
           "severity": "warning"
         },
         {
-          "field": "ww_date_entered",
-          "type": "misquote",
-          "description": "The evidence provided ('Colorectal Multidisciplinary Meeting 07/03/2025(i) ... RE entering watch and wait') is not verbatim from the source text due to the '...'. The extracted value '07/03/2025' is correct, derived from the MDT date.",
-          "suggested_value": "07/03/2025",
+          "field": "differentiation",
+          "type": "missing_data",
+          "description": "The 'Differentiation' 'Moderately differentiated' is present in the source text but was not extracted.",
+          "suggested_value": "Moderately differentiated",
           "severity": "warning"
         }
       ]
     },
     {
-      "case_index": 4,
+      "case_index": 5,
       "status": "review_needed",
       "fields_checked": 16,
       "fields_ok": 14,
@@ -213,16 +67,160 @@
         {
           "field": "first_mdt_date",
           "type": "misquote",
-          "description": "The 'evidence' provided does not exactly match the source text. It is missing '(i)' at the end.",
-          "suggested_value": "Colorectal Multidisciplinary Meeting 13/09/2024(i)",
-          "severity": "warning"
+          "description": "The 'evidence' provided ('Colorectal Multidisciplinary Meeting 14/11/2024') does not exactly match the source text, which includes '(i)' at the end of the date: 'Colorectal Multidisciplinary Meeting 14/11/2024(i)'.",
+          "suggested_value": "14/11/2024",
+          "severity": "info"
         },
         {
           "field": "first_mdt_treatment_approach",
           "type": "incorrect_value",
-          "description": "The 'value' 'straight to surgery' is an over-interpretation of the 'evidence' 'Refer for colorectal surgical review.'. The evidence indicates a review, not a definitive decision for immediate surgery.",
-          "suggested_value": "Surgical review",
+          "description": "The 'value' 'straight to surgery' is an interpretation that goes beyond the 'evidence' 'Refer for colorectal surgical review.'. The source text indicates a referral for surgical review, which is not explicitly 'straight to surgery'.",
+          "suggested_value": "Refer for colorectal surgical review",
           "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 6,
+      "status": "fail",
+      "fields_checked": 13,
+      "fields_ok": 8,
+      "fields_flagged": 5,
+      "issues": [
+        {
+          "field": "baseline_ct_M",
+          "type": "misquote",
+          "description": "The 'evidence' does not exactly match the source text. A period is missing at the end.",
+          "suggested_value": "no distant metastases.",
+          "severity": "warning"
+        },
+        {
+          "field": "first_mdt_date",
+          "type": "misquote",
+          "description": "The 'evidence' does not exactly match the source text. '(i)' is missing at the end.",
+          "suggested_value": "Colorectal Multidisciplinary Meeting \u2014 21/06/2024(i)",
+          "severity": "warning"
+        },
+        {
+          "field": "icd10_code",
+          "type": "missing_data",
+          "description": "The ICD10 Code 'C19' is present in the source text but was not extracted.",
+          "suggested_value": "C19",
+          "severity": "critical"
+        },
+        {
+          "field": "differentiation",
+          "type": "missing_data",
+          "description": "The Differentiation 'Moderately differentiated' is present in the source text but was not extracted.",
+          "suggested_value": "Moderately differentiated",
+          "severity": "critical"
+        },
+        {
+          "field": "mdt_outcome_plan",
+          "type": "missing_data",
+          "description": "The MDT outcome/plan 'Schedule colonoscopy + tattooing, plus MRI rectum.' is present in the source text but was not extracted.",
+          "suggested_value": "Schedule colonoscopy + tattooing, plus MRI rectum.",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 7,
+      "status": "fail",
+      "fields_checked": 15,
+      "fields_ok": 2,
+      "fields_flagged": 13,
+      "issues": [
+        {
+          "field": "previous_cancer",
+          "type": "hallucination",
+          "description": "The value 'No' is an inference and not explicitly stated in the source text. The evidence is empty, correctly indicating no explicit mention.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "previous_cancer_site",
+          "type": "hallucination",
+          "description": "The value 'N/A' is an inference and not explicitly stated in the source text. The evidence is empty, correctly indicating no explicit mention.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "biopsy_result",
+          "type": "misquote",
+          "description": "The evidence 'Diagnosis: Right\u2011sided colonic tumour' uses a regular hyphen (-) instead of the non-breaking hyphen (\u2011) present in the source text.",
+          "suggested_value": "Diagnosis: Right\u2011sided colonic tumour",
+          "severity": "info"
+        },
+        {
+          "field": "baseline_mri_mrEMVI",
+          "type": "misquote",
+          "description": "The evidence 'EMVI positive' is missing the period at the end as found in the source text 'EMVI positive.'.",
+          "suggested_value": "EMVI positive.",
+          "severity": "info"
+        },
+        {
+          "field": "baseline_mri_mrCRM",
+          "type": "misquote",
+          "description": "The evidence 'CRM clear' is missing the comma at the end as found in the source text 'CRM clear,'.",
+          "suggested_value": "CRM clear,",
+          "severity": "info"
+        },
+        {
+          "field": "first_mdt_date",
+          "type": "misquote",
+          "description": "The evidence 'Colorectal Multidisciplinary Meeting 20/08/2024' is missing '(i)' at the end as found in the source text 'Colorectal Multidisciplinary Meeting 20/08/2024(i)'.",
+          "suggested_value": "Colorectal Multidisciplinary Meeting 20/08/2024(i)",
+          "severity": "info"
+        },
+        {
+          "field": "first_mdt_treatment_approach",
+          "type": "incorrect_value",
+          "description": "The value 'downstaging nCRT' is an over-interpretation. The source text only states 'neoadjuvant CRT' without explicitly mentioning 'downstaging'.",
+          "suggested_value": "neoadjuvant CRT",
+          "severity": "warning"
+        },
+        {
+          "field": "icd10_code",
+          "type": "missing_data",
+          "description": "The ICD10 Code 'C18.7' was not extracted from the source text.",
+          "suggested_value": "C18.7",
+          "severity": "critical"
+        },
+        {
+          "field": "differentiation",
+          "type": "missing_data",
+          "description": "The differentiation 'Moderately differentiated' was not extracted from the source text.",
+          "suggested_value": "Moderately differentiated",
+          "severity": "warning"
+        },
+        {
+          "field": "age",
+          "type": "missing_data",
+          "description": "The patient's age '75 Years' was not extracted from the source text.",
+          "suggested_value": "75 Years",
+          "severity": "info"
+        },
+        {
+          "field": "sixty_two_day_target",
+          "type": "missing_data",
+          "description": "The 62 Day Target date '21/10/2024' was not extracted from the source text.",
+          "suggested_value": "21/10/2024",
+          "severity": "critical"
+        },
+        {
+          "field": "integrated_tnm_stage",
+          "type": "missing_data",
+          "description": "The field 'Integrated TNM Stage' was not extracted. Although its value is empty in the source, the field itself is present.",
+          "suggested_value": "",
+          "severity": "info"
+        },
+        {
+          "field": "dukes_stage",
+          "type": "missing_data",
+          "description": "The field 'Dukes' was not extracted. Although its value is empty in the source, the field itself is present.",
+          "suggested_value": "",
+          "severity": "info"
         }
       ]
     }
