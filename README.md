@@ -27,7 +27,7 @@ The 50 unpopulated columns are downstream longitudinal fields (surgery dates, ch
 
 ## Architecture
 
-The pipeline runs in 5 sequential stages:
+The pipeline runs in 6 sequential stages:
 
 ```
 DOCX Input
@@ -47,7 +47,10 @@ DOCX Input
     |                           Sheet 2: Evidence Map (full audit trail)
     v
 [Stage 5] validate_agent.py -- (Optional) Second Gemini pass to cross-check
-                                extractions against source text
+    |                           extractions against source text
+    v
+[Stage 6] validate_agent.py -- (Optional) Fix agent that re-extracts flagged fields
+                                using validation feedback, then rebuilds the Excel
 ```
 
 ## Project Structure
@@ -60,13 +63,18 @@ cloud9-solution/
 ├── extract_llm.py        # Gemini-powered extraction with evidence tracing
 ├── build_dataframe.py    # DataFrame construction + post-processing normalizations
 ├── write_excel.py        # Styled Excel writer with evidence comments
-├── validate_agent.py     # AI validation agent for cross-checking extractions
+├── validate_agent.py     # AI validation agent + fix agent for cross-checking/correcting
 ├── requirements.txt      # Python dependencies
 ├── .env                  # API key (not committed)
 ├── .env.example          # Template for .env
+├── data/
+│   ├── hackathon-mdt-outcome-proformas.docx   # Input DOCX with 50 cases
+│   └── hackathon-database-prototype.xlsx       # Prototype Excel template
+├── issues/               # GitHub issue descriptions for team tasks
 └── output/
     ├── generated-database-cloud9.xlsx   # Final output workbook
-    └── raw-extractions.json             # Raw LLM results (50 cases, all fields)
+    ├── raw-extractions.json             # Raw LLM results (50 cases, all fields)
+    └── validation-report.json           # Validation agent results
 ```
 
 ## Module Details
@@ -85,7 +93,7 @@ cloud9-solution/
 - Provides derived lookups: `KEY_TO_HEADER`, `HEADER_TO_KEY`, `FIELD_GROUPS`
 
 ### `extract_llm.py` — LLM Extraction Engine
-- Uses Google Gemini API (`gemini-2.0-flash` by default, configurable via `GEMINI_MODEL` env var)
+- Uses Google Gemini API (`gemini-2.5-flash` by default, configurable via `GEMINI_MODEL` env var)
 - Comprehensive 23-rule system instruction covering:
   - Date format conversion (2-digit years, zero-padding)
   - TNM staging extraction (T/N values, EMVI/CRM/PSW normalization, dash notation)
