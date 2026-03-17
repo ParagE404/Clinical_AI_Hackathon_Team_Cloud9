@@ -1,0 +1,230 @@
+{
+  "total_cases": 5,
+  "passed": 0,
+  "review_needed": 3,
+  "failed": 2,
+  "total_issues": 25,
+  "critical_issues": 3,
+  "cases": [
+    {
+      "case_index": 0,
+      "status": "fail",
+      "fields_checked": 19,
+      "fields_ok": 14,
+      "fields_flagged": 5,
+      "issues": [
+        {
+          "field": "previous_cancer",
+          "type": "incorrect_value",
+          "description": "The value 'No' is an assumption. The source text does not explicitly state whether the patient has previous cancer; it is simply not mentioned.",
+          "suggested_value": "Unknown",
+          "severity": "warning"
+        },
+        {
+          "field": "previous_cancer_site",
+          "type": "incorrect_value",
+          "description": "The value 'N/A' is an assumption based on the unstated 'No' for previous cancer. The source text does not provide information on previous cancer sites.",
+          "suggested_value": "Unknown",
+          "severity": "warning"
+        },
+        {
+          "field": "endoscopy_type",
+          "type": "incorrect_value",
+          "description": "The value 'Colonoscopy complete' adds information ('complete') that is not present in the evidence 'Colonoscopy :'.",
+          "suggested_value": "Colonoscopy",
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_N",
+          "type": "incorrect_value",
+          "description": "The value '1' for N stage is an interpretation. The source text describes findings ('associated mesorectal lymph nodes. Indeterminate retroperitoneal lymph nodes.') but does not explicitly state a numerical N stage.",
+          "suggested_value": "Not documented",
+          "severity": "critical"
+        },
+        {
+          "field": "baseline_ct_M",
+          "type": "incorrect_value",
+          "description": "The value '1' for M stage is an interpretation. The source text describes findings ('Multiple nodules within the lungs suspicious for lung metastases.') but does not explicitly state a numerical M stage.",
+          "suggested_value": "Not documented",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 1,
+      "status": "review_needed",
+      "fields_checked": 21,
+      "fields_ok": 10,
+      "fields_flagged": 11,
+      "issues": [
+        {
+          "field": "endoscopy_type",
+          "type": "misquote",
+          "description": "The evidence 'Colonoscopy: polypoidal lesion in the low rectum' is a partial quote. The full sentence in the source is 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "endoscopy_type",
+          "type": "incorrect_value",
+          "description": "The value 'Colonoscopy complete' includes 'complete', which is an interpretation not explicitly stated in the provided evidence 'Colonoscopy: polypoidal lesion in the low rectum'.",
+          "suggested_value": "Colonoscopy",
+          "severity": "warning"
+        },
+        {
+          "field": "endoscopy_findings",
+          "type": "misquote",
+          "description": "The evidence 'polypoidal lesion in the low rectum' is a partial quote. The full sentence in the source is 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "biopsy_result",
+          "type": "misquote",
+          "description": "The evidence string concatenates multiple phrases. The phrase 'biopsy adenocarcinoma, poorly differentiated.' is a partial quote from the sentence 'Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_mri_mrT",
+          "type": "misquote",
+          "description": "The evidence 'T3c' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_mri_mrN",
+          "type": "misquote",
+          "description": "The evidence 'N1c' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_mri_mrEMVI",
+          "type": "misquote",
+          "description": "The evidence 'EMVI positive' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_mri_mrCRM",
+          "type": "misquote",
+          "description": "The evidence 'CRM/ISP unsafe' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_mri_mrPSW",
+          "type": "misquote",
+          "description": "The evidence 'PSW clear' is a partial quote. The full context in the source is 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_date",
+          "type": "misquote",
+          "description": "The evidence 'CT 22/2/2025' is a partial quote. The full sentence in the source is 'CT 22/2/2025: no lymphadenopathy. New semi-annular thickening in rectum'.",
+          "suggested_value": null,
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_N",
+          "type": "misquote",
+          "description": "The evidence 'no lymphadenopathy' is a partial quote. The full sentence in the source is 'CT 22/2/2025: no lymphadenopathy. New semi-annular thickening in rectum'.",
+          "suggested_value": null,
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 2,
+      "status": "review_needed",
+      "fields_checked": 17,
+      "fields_ok": 13,
+      "fields_flagged": 4,
+      "issues": [
+        {
+          "field": "previous_cancer",
+          "type": "incorrect_value",
+          "description": "The value 'No' is an assumption. The source text does not explicitly state whether the patient has previous cancer; it is silent on this. The value cannot be derived from empty evidence.",
+          "suggested_value": "Unknown",
+          "severity": "warning"
+        },
+        {
+          "field": "previous_cancer_site",
+          "type": "incorrect_value",
+          "description": "The value 'N/A' is based on the assumption that there is no previous cancer. Since the presence of previous cancer is not documented, the site cannot be determined as N/A.",
+          "suggested_value": "Unknown",
+          "severity": "warning"
+        },
+        {
+          "field": "endoscopy_type",
+          "type": "incorrect_value",
+          "description": "The value 'Colonoscopy complete' is an over-interpretation. While 'Multiple polyps within the colon' suggests a colonoscopy, the term 'complete' is not present in the evidence or source text.",
+          "suggested_value": "Colonoscopy",
+          "severity": "warning"
+        },
+        {
+          "field": "first_mdt_treatment_approach",
+          "type": "incorrect_value",
+          "description": "The value 'straight to surgery' is an over-interpretation of the evidence 'To see consultant next week to discuss possible surgery'. The MDT outcome is to *discuss* possible surgery, not a definitive decision for 'straight to surgery'.",
+          "suggested_value": "Discuss possible surgery",
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 3,
+      "status": "fail",
+      "fields_checked": 29,
+      "fields_ok": 26,
+      "fields_flagged": 3,
+      "issues": [
+        {
+          "field": "biopsy_date",
+          "type": "missing_data",
+          "description": "The biopsy date 'Feb 2025' is present in the source text ('Feb 2025 \u2013 adenocarcinoma') but marked as 'Missing' in the extracted value.",
+          "suggested_value": "Feb 2025",
+          "severity": "critical"
+        },
+        {
+          "field": "ww_entry_date",
+          "type": "misquote",
+          "description": "The evidence provided ('Colorectal Multidisciplinary Meeting 07/03/2025(i) ... RE entering watch and wait') is not verbatim from the source text due to the '...'. The extracted value '07/03/2025' is correct, derived from the MDT date.",
+          "suggested_value": "07/03/2025",
+          "severity": "warning"
+        },
+        {
+          "field": "ww_date_entered",
+          "type": "misquote",
+          "description": "The evidence provided ('Colorectal Multidisciplinary Meeting 07/03/2025(i) ... RE entering watch and wait') is not verbatim from the source text due to the '...'. The extracted value '07/03/2025' is correct, derived from the MDT date.",
+          "suggested_value": "07/03/2025",
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 4,
+      "status": "review_needed",
+      "fields_checked": 16,
+      "fields_ok": 14,
+      "fields_flagged": 2,
+      "issues": [
+        {
+          "field": "first_mdt_date",
+          "type": "misquote",
+          "description": "The 'evidence' provided does not exactly match the source text. It is missing '(i)' at the end.",
+          "suggested_value": "Colorectal Multidisciplinary Meeting 13/09/2024(i)",
+          "severity": "warning"
+        },
+        {
+          "field": "first_mdt_treatment_approach",
+          "type": "incorrect_value",
+          "description": "The 'value' 'straight to surgery' is an over-interpretation of the 'evidence' 'Refer for colorectal surgical review.'. The evidence indicates a review, not a definitive decision for immediate surgery.",
+          "suggested_value": "Surgical review",
+          "severity": "warning"
+        }
+      ]
+    }
+  ]
+}

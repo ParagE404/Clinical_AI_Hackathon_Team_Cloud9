@@ -4,6 +4,7 @@ main.py — Cloud9 MDT Extraction Pipeline
 Usage:
     python main.py                       # Full pipeline (50 cases + validation)
     python main.py --skip-validation     # Skip the validation agent pass
+    python main.py --skip-fix            # Validate but don't auto-fix issues
     python main.py --cases 0-4           # Process only cases 0 through 4
     python main.py --cases 0,5,10        # Process specific cases
     python main.py --from-json           # Rebuild Excel from existing raw-extractions.json
@@ -11,6 +12,7 @@ Usage:
 
 import argparse
 import json
+import os
 import time
 from pathlib import Path
 
@@ -64,6 +66,8 @@ def main():
     parser = argparse.ArgumentParser(description="Cloud9 MDT Extraction Pipeline")
     parser.add_argument("--skip-validation", action="store_true",
                         help="Skip the validation agent pass")
+    parser.add_argument("--skip-fix", action="store_true",
+                        help="Skip the fix agent (auto-correction) pass")
     parser.add_argument("--cases", type=str, default=None,
                         help="Case range: '0-4' or '0,5,10'")
     parser.add_argument("--delay", type=float, default=1.0,
@@ -93,6 +97,12 @@ def main():
             indices = set(map(int, args.cases.split(",")))
             cases = [c for c in all_cases if c.case_index in indices]
         print(f"  Filtered to {len(cases)} cases.")
+
+    # Limit number of cases via env var (useful for testing)
+    max_cases = os.getenv("MAX_CASES")
+    if max_cases:
+        cases = cases[:int(max_cases)]
+        print(f"  Limited to {len(cases)} cases (MAX_CASES={max_cases}).")
 
     # ════════════════════════════════════════════════════
     # STAGE 2: LLM Extraction (or reload from JSON)
@@ -175,6 +185,50 @@ def main():
               f"({report['critical_issues']} critical)")
     else:
         print("\n  Validation skipped (--skip-validation flag).")
+
+    # ════════════════════════════════════════════════════
+    # STAGE 6: Fix Agent — auto-correct flagged fields
+    # ════════════════════════════════════════════════════
+    if not args.skip_validation and not args.skip_fix:
+        if report['total_issues'] > 0:
+            print("\n" + "=" * 60)
+            print("STAGE 6: Running fix agent...")
+            print("=" * 60)
+            from validate_agent import fix_all
+            extractions = fix_all(cases, extractions, validations, batch_delay=args.delay)
+
+            # Save updated extractions
+            raw_data = []
+            for ext in extractions:
+                case_data = {"case_index": ext.case_index, "fields": {}}
+                for key, fr in ext.fields.items():
+                    case_data["fields"][key] = {
+                        "value": fr.value,
+                        "evidence": fr.evidence,
+                        "confidence": fr.confidence,
+                    }
+                raw_data.append(case_data)
+            with open(RAW_EXTRACTIONS, "w") as f:
+                json.dump(raw_data, f, indent=2)
+            print(f"  Updated extractions saved to {RAW_EXTRACTIONS}")
+
+            # Rebuild DataFrames and Excel with corrected data
+            print("\n  Rebuilding output with corrected data...")
+            data_df, evidence_df, confidence_df = build_dataframes(extractions)
+            non_empty = data_df.notna().sum().sum()
+            total_cells = data_df.shape[0] * data_df.shape[1]
+            print(f"  DataFrame shape: {data_df.shape}")
+            print(f"  Non-empty cells: {non_empty} / {total_cells} ({100*non_empty/total_cells:.1f}%)")
+            print(f"  Baseline best: 675 cells → our improvement: {non_empty - 675:+d}")
+            write_styled_workbook(
+                data_df, evidence_df, confidence_df,
+                PROTOTYPE_WORKBOOK, OUTPUT_WORKBOOK,
+            )
+            print(f"  Corrected workbook saved to {OUTPUT_WORKBOOK}")
+        else:
+            print("\n  No issues found — fix agent skipped.")
+    elif not args.skip_validation and args.skip_fix:
+        print("\n  Fix agent skipped (--skip-fix flag).")
 
     # ════════════════════════════════════════════════════
     print("\n" + "=" * 60)

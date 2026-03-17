@@ -118,7 +118,7 @@ def parse_docx(file_path: str | Path) -> list[CaseText]:
 
 if __name__ == "__main__":
     import sys
-    path = sys.argv[1] if len(sys.argv) > 1 else "../data/hackathon-mdt-outcome-proformas.docx"
+    path = sys.argv[1] if len(sys.argv) > 1 else "data/hackathon-mdt-outcome-proformas.docx"
     cases = parse_docx(path)
     print(f"Parsed {len(cases)} cases\n")
     for c in cases[:3]:

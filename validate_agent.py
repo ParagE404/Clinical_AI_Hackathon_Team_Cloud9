@@ -218,3 +218,186 @@ def generate_validation_report(
         json.dump(summary, f, indent=2)
 
     return summary
+
+
+# ════════════════════════════════════════════════════════════
+# Fix Agent — re-extract flagged fields using validation feedback
+# ════════════════════════════════════════════════════════════
+
+FIX_SYSTEM = """You are a clinical data extraction correction specialist. You are given:
+1. The original MDT source text.
+2. A list of fields that were flagged during validation, along with the issue type, description, and a suggested correction.
+
+Your job is to re-extract ONLY the flagged fields, producing corrected values with proper verbatim evidence from the source text.
+
+RULES:
+- The "evidence" MUST be a verbatim substring from the SOURCE TEXT. Never paraphrase.
+- If a field's information is truly not present in the source text, return {"value": "", "evidence": "", "confidence": "none"}.
+- A blank value is ALWAYS better than a wrong value.
+- For "missing_data" issues: search the source text carefully for the relevant information.
+- For "hallucination" issues: verify data actually exists in source; if not, return blank.
+- For "misquote" issues: find the correct verbatim quote from the source text.
+- For "incorrect_value" issues: re-derive the value from the correct evidence.
+- Return a JSON object with ONLY the flagged field keys."""
+
+
+def _build_fix_prompt(
+    case: CaseText,
+    extraction: CaseResult,
+    validation: CaseValidation,
+) -> str:
+    """Build a prompt for the fix agent to correct flagged fields."""
+    issues_block = []
+    for issue in validation.issues:
+        if issue.field_key == "_system":
+            continue
+        current = extraction.fields.get(issue.field_key)
+        current_value = current.value if current else ""
+        current_evidence = current.evidence if current else ""
+        issues_block.append(
+            f'  "{issue.field_key}": {{\n'
+            f'    "current_value": {json.dumps(current_value)},\n'
+            f'    "current_evidence": {json.dumps(current_evidence)},\n'
+            f'    "issue_type": "{issue.issue_type}",\n'
+            f'    "description": {json.dumps(issue.description)},\n'
+            f'    "suggested_value": {json.dumps(issue.suggested_value)}\n'
+            f'  }}'
+        )
+
+    issues_json = "{\n" + ",\n".join(issues_block) + "\n}"
+
+    return f"""Re-extract ONLY the flagged fields below, correcting the issues found during validation.
+
+## ORIGINAL SOURCE TEXT
+{case.full_text}
+
+## FLAGGED FIELDS WITH ISSUES
+{issues_json}
+
+For each flagged field, return a corrected extraction:
+{{"field_key": {{"value": "corrected value", "evidence": "exact verbatim quote from source", "confidence": "high|medium|low|none"}}}}
+
+Return ONLY the flagged fields as a JSON object. Do NOT include unflagged fields."""
+
+
+def fix_case(
+    case: CaseText,
+    extraction: CaseResult,
+    validation: CaseValidation,
+    client: genai.Client,
+) -> CaseResult:
+    """Re-extract flagged fields for one case using validation feedback."""
+    # Skip cases with no actionable issues
+    actionable = [i for i in validation.issues if i.field_key != "_system"]
+    if not actionable:
+        return extraction
+
+    prompt = _build_fix_prompt(case, extraction, validation)
+
+    try:
+        response = client.models.generate_content(
+            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+            contents=prompt,
+            config={
+                "system_instruction": FIX_SYSTEM,
+                "temperature": 0.0,
+                "response_mime_type": "application/json",
+            },
+        )
+        response_text = response.text
+    except Exception as e:
+        print(f"         → Fix API error: {e}")
+        return extraction
+
+    # Parse the corrected fields
+    try:
+        fixes = json.loads(response_text.strip())
+    except json.JSONDecodeError:
+        return extraction
+
+    if not isinstance(fixes, dict):
+        return extraction
+
+    # Merge fixes into a copy of the existing fields
+    updated_fields = dict(extraction.fields)
+    fixed_count = 0
+    for key, fix_data in fixes.items():
+        if key not in updated_fields:
+            continue
+        if not isinstance(fix_data, dict):
+            continue
+        new_value = str(fix_data.get("value", "") or "").strip()
+        new_evidence = str(fix_data.get("evidence", "") or "").strip()
+        new_confidence = str(fix_data.get("confidence", "medium") or "medium").strip()
+        old = updated_fields[key]
+        if new_value != old.value or new_evidence != old.evidence:
+            updated_fields[key] = FieldResult(
+                key=key,
+                value=new_value,
+                evidence=new_evidence,
+                confidence=new_confidence,
+            )
+            fixed_count += 1
+
+    return CaseResult(
+        case_index=extraction.case_index,
+        fields=updated_fields,
+        raw_llm_response=extraction.raw_llm_response,
+        source_text=extraction.source_text,
+    )
+
+
+def fix_all(
+    cases: list[CaseText],
+    extractions: list[CaseResult],
+    validations: list[CaseValidation],
+    batch_delay: float = 1.0,
+) -> list[CaseResult]:
+    """Fix all cases that have validation issues. Returns updated extractions."""
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY not set.")
+
+    client = genai.Client(api_key=api_key)
+    case_lookup = {c.case_index: c for c in cases}
+    val_lookup = {v.case_index: v for v in validations}
+    ext_lookup = {e.case_index: e for e in extractions}
+
+    # Identify cases that need fixing
+    to_fix = [v for v in validations if v.overall_status in ("fail", "review_needed")
+              and any(i.field_key != "_system" for i in v.issues)]
+
+    if not to_fix:
+        print("  No cases need fixing.")
+        return extractions
+
+    print(f"  {len(to_fix)} cases need fixing.")
+
+    updated = list(extractions)
+    ext_index = {e.case_index: idx for idx, e in enumerate(extractions)}
+
+    for i, val in enumerate(to_fix):
+        case = case_lookup.get(val.case_index)
+        ext = ext_lookup.get(val.case_index)
+        if not case or not ext:
+            continue
+
+        issue_count = len([j for j in val.issues if j.field_key != "_system"])
+        print(f"  [{i + 1}/{len(to_fix)}] Fixing case {val.case_index} ({issue_count} issues)...")
+
+        try:
+            fixed = fix_case(case, ext, val, client)
+            changed = sum(
+                1 for k in fixed.fields
+                if fixed.fields[k].value != ext.fields.get(k, FieldResult(k, "", "", "none")).value
+            )
+            print(f"         → {changed} fields corrected")
+            idx = ext_index.get(val.case_index)
+            if idx is not None:
+                updated[idx] = fixed
+        except Exception as e:
+            print(f"         → ERROR: {e}")
+
+        time.sleep(batch_delay)
+
+    return updated
