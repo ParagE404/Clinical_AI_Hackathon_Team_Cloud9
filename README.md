@@ -58,6 +58,7 @@ DOCX Input
 ```
 cloud9-solution/
 ├── main.py               # Pipeline orchestrator (CLI entry point)
+├── app.py                # Streamlit web UI (upload, run, browse, validate)
 ├── parse_docx.py         # DOCX parser — segments proformas into CaseText objects
 ├── schema.py             # Single source of truth: 88 column definitions with LLM hints
 ├── extract_llm.py        # Gemini-powered extraction with evidence tracing
@@ -163,34 +164,56 @@ All commands should be run from the project root with the venv activated:
 source venv/bin/activate
 ```
 
+### Web UI (Streamlit)
+
+The easiest way to run the pipeline is via the Streamlit app:
+
+```bash
+streamlit run app.py
+```
+
+The app has three pages accessible from the sidebar:
+
+| Page | Description |
+|---|---|
+| **Run Pipeline** | Upload a DOCX, choose case range, run extraction, download the Excel output |
+| **Browse Results** | Explore extracted values per case with evidence and confidence filters |
+| **Validation Report** | Run the AI validation agent and view critical/warning/info issues per field |
+
+Enter your Gemini API key and select a model in the sidebar before running.
+
+---
+
+### CLI
+
 ### Full pipeline (50 cases + validation)
 ```bash
-python cloud9-solution/main.py
+python main.py
 ```
 
 ### Skip validation (faster, no second API pass)
 ```bash
-python cloud9-solution/main.py --skip-validation
+python main.py --skip-validation
 ```
 
 ### Process specific cases only
 ```bash
 # Range of cases
-python cloud9-solution/main.py --cases 0-4 --skip-validation
+python main.py --cases 0-4 --skip-validation
 
 # Specific cases
-python cloud9-solution/main.py --cases 0,5,10 --skip-validation
+python main.py --cases 0,5,10 --skip-validation
 ```
 
 ### Rebuild Excel from existing extractions (no API calls)
 ```bash
-python cloud9-solution/main.py --from-json --skip-validation
+python main.py --from-json --skip-validation
 ```
 This reloads `output/raw-extractions.json` and rebuilds the Excel workbook with all post-processing normalizations. Useful for iterating on post-processing without re-running the LLM.
 
 ### Adjust API call delay
 ```bash
-python cloud9-solution/main.py --delay 0.5 --skip-validation
+python main.py --delay 0.5 --skip-validation
 ```
 
 ## Output Files
