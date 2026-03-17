@@ -1,178 +1,232 @@
-<img src="docs/digital_screen_1.jpg" alt="Clinical AI Hackathon" width="80%">
+# Cloud9 MDT Extraction Pipeline
 
-## Problem Statement - by Dr Anita Wale
+An AI-powered pipeline that automatically extracts structured clinical data from colorectal cancer MDT (Multidisciplinary Team) meeting proformas (Word documents) into a searchable Excel database.
 
-So this is the clinical problem: 
+Built for the **Clinical AI Hackathon** — solving the problem of manually transcribing MDT outcomes into longitudinal spreadsheets, a process that currently takes clinicians hours of copy-paste work per patient.
 
-We discuss patients with cancer in weekly meetings call multidisciplinary team meetings - MDTs. These consist of core members which cover the cancer treatment pathway, their initiation years ago have been one of the reasons cancer survival has been said to improve across the UK, other countries now adopt them.
-The process of creating these meetings is manual, patients are referred for discussion to an MDT co-ordinator who then collates a list of patients with their clinical histories, what treatment they have had so far, what the question for discussion is, what imaging and pathology needs discussion etc.
-This list is then circulated to everyone who goes to the meeting, we prepare for it. Radiologists look at the scans in light of the question, pathologists look at the slides etc. We all then come together and discuss the patient and the MDT decides what treatment the patient should have.
-This is recorded on a database called infoflex (there are different ones in different hospitals), the patient is treated as per the decision and then will be discussed again.
-The problem is - this data collection is inconsistent, and it is very difficult to get the data out of infoflex in any meaningful way if you want to get a group of patients with a specific cancer type etc together to audit or do research. 
+## Problem
 
+NHS colorectal cancer MDT meetings generate Word-based proformas for each patient discussion. These contain demographics, staging, imaging results, endoscopy findings, histology, and treatment decisions — all in semi-structured tables and free text. Clinicians need this data in a structured Excel database for auditing, outcome tracking, and research, but manual extraction is tedious and error-prone.
 
-A lot of people therefore keep manual databases of patients they treat etc. This as you can imagine is laborious. I'd love to say we could fix infoflex but thats unrealistic. 
+**Input:** `data/hackathon-mdt-outcome-proformas.docx` — 50 synthetic patient cases across MDT meeting proformas.
 
-So a more mobile solution is required, every cancer type has different treatment options, different things we'd want to record. For all MDTs they will want the staging and the TNM stage. 
+**Output:** A structured Excel workbook matching the 88-column schema in `data/hackathon-database-prototype.xlsx`, with full evidence tracing for every extracted value.
 
-I have tried to build databases but they require manual data input. @Charmaine Davies can share our last attempt. 
+## Results
 
-So, could we do something different? Utilise the MDT lists and outcome sheets that get circulated as word documents as a way of inputting into a database which could then be searched? 
+| Metric | Value |
+|---|---|
+| Cases processed | 50 / 50 |
+| Columns in schema | 88 |
+| Cells populated | 786 / 4,400 (17.9%) |
+| Improvement over baseline | +111 cells (+16.4%) |
+| Case 0 accuracy vs ground truth | 93.2% (82/88 match) |
+| Extraction errors | 0 |
 
-Across the NHS there are researchers laboriously looking through notes to find out what has happened to patients and improve care, can you help? 
+The 50 unpopulated columns are downstream longitudinal fields (surgery dates, chemotherapy cycles, watch-and-wait tracking) that are not present in the initial MDT discussion documents.
 
-## Dataset
+## Architecture
 
-**Input**: [`data/hackathon-mdt-outcome-proformas.docx`](data/hackathon-mdt-outcome-proformas.docx)
-- 50 synthetic MDT cases
-- Anonymised using dummy NHS numbers (starting with "NNN") and date shifting
-
-**Output**: [`data/hackathon-database-prototype.xlsx`](data/hackathon-database-prototype.xlsx)
-- Longitudinal patient data in sequential (linear) format
-- Attributes populated as they appear in the documents
-- Where information is missing or not discussed, cells are left null (empty)
-- Serves as the "ground truth" or expected output
-
-### Example MDT Outcome (Input - Word document)
-![MDT Outcome](docs/mdt_outcome.png)
-
-### Example Prototype (Output - Excel spreadsheet)
-![Prototype](docs/prototype.png)
-
-## Success Criteria
-
-Longitudinal patient data presented in Excel reflects patient history contained in Word document.
-
-## Technical Considerations - to be further discussed by Dr Alex Nicholls
-
-- **Technical Standards (DTAC)**: Software developed should ideally align with [Digital Technology Assessment Criteria (DTAC)](https://www.digitalregulations.innovation.nhs.uk/regulations-and-guidance-for-developers/all-developers-guidance/using-the-digital-technology-assessment-criteria-dtac/), specifically regarding clinical safety (DCB0129/DCB0160) and data residency.
-
-- **Medical Device Compliance**: Depending on the level of risk and clinical decision support, the software could be classified as a Software as a Medical Device (SaMD), requiring specific regulatory adherence.
-
-## Current Repository Structure
+The pipeline runs in 5 sequential stages:
 
 ```
-clinical-ai-hackathon/
-├── README.md                        # This file
-├── TODO.md                          # Hackathon preparation task list
-├── baseline-solution/
-│   ├── README.md                    # Baseline solution overview, attempts, and gap reports
-│   ├── work-diary.md                # Build diary and handoff notes
-│   ├── src/                         # Source code (pipeline, extraction, validation)
-│   ├── tests/                       # Test suite
-│   ├── output/                      # Generated Excel outputs (Claude, Codex, Gemini)
-│   ├── prompts/                     # Agent prompts
-│   │   ├── 00-prompt-starter.md
-│   │   ├── 01-implementation_plan.md
-│   │   ├── 02-claude-code-handoff.md
-│   │   ├── 03-deep-research-prompt.md
-│   │   └── 05-two-stage-parser-prompt.md
-│   └── reports/                     # Gap reports and research
-│       ├── codex-gap-report.md
-│       ├── gemini-gap-report.md
-│       ├── colorectal-cancer-primer.md
-│       └── deep-research-*.{md,docx}
-├── comms/
-│   ├── welcome-email.txt            # Participant welcome email
-│   └── mc-script-maeve.md          # MC script for opening/closing ceremonies
-├── data/
-│   ├── hackathon-mdt-outcome-proformas.docx    # Input data (50 synthetic MDT cases)
-│   └── hackathon-database-prototype.xlsx       # Expected output format
-└── docs/
-    ├── specification.md             # Clinical problem description
-    ├── minutes_february_12.md       # Problem definition meeting
-    ├── minutes_march_2nd.md         # Dataset and scope meeting
-    ├── room_bookings.md             # Room allocations
-    ├── judging-criteria.md          # Friday judging sheet
-    ├── work-diary.md                # Development session notes
-    ├── digital_screen_1.jpg         # Banner image
-    ├── logo_asset_2.jpg             # Alternate banner
-    ├── mdt_list.png                 # Example MDT list format
-    ├── mdt_outcome.png              # Example MDT outcome format
-    └── prototype.png                # Example prototype output
+DOCX Input
+    |
+    v
+[Stage 1] parse_docx.py     -- Deterministic DOCX parser, extracts 50 case tables
+    |                           with row-level markers ([ROW 0] - [ROW 7])
+    v
+[Stage 2] extract_llm.py    -- Gemini LLM extraction with 23 clinical rules
+    |                           Returns {value, evidence, confidence} per field
+    v
+[Stage 3] build_dataframe.py -- Builds 3 parallel DataFrames (data, evidence, confidence)
+    |                            Applies post-processing normalizations
+    v
+[Stage 4] write_excel.py    -- Writes styled Excel from prototype template
+    |                           Sheet 1: Data + hover comments with evidence
+    |                           Sheet 2: Evidence Map (full audit trail)
+    v
+[Stage 5] validate_agent.py -- (Optional) Second Gemini pass to cross-check
+                                extractions against source text
 ```
 
-## Next Steps
-
-Please read this README.md file carefully.
-
-## Q&A with NHS team Monday 16 10:00-10:30
-
-Please attend the online meeting with Dr Anita Wale (NHS) and Dr Alex Nicholls (MoD), together with domain expert Hitesh Patel and sythentic dataset curator Ellie Hickey, Monday 16 10:00-10:30 to clarify any doubts you may have - link below:
+## Project Structure
 
 ```
-Hackathon intro chat
-Mon 16/03/2026 10:00 - 10:30
-Microsoft Teams meeting
-Join: https://teams.microsoft.com/meet/37043891575225?p=OAaSEhT8PZcOsFp4Zs
-Meeting ID: 370 438 915 752 25
-Passcode: KR2Zk2XG 
-```
-Please take the time to add the Hackathon intro chat meeting to your calendar.
-
-## Baseline Solution
-
-A working starting point is provided in [`baseline-solution/`](baseline-solution/). We will look at this and other possibilities, starting Tuesday 17.
-
-## Workshops Tuesday 17 - Thursday 19
-
-All rooms in College Building. To attend online, use the [Activities Meeting Link](#activities-meeting-link).
-
-**Tuesday 17 — AI Agents**
-- AG01 — 09:00–17:30  
-  
-1h in person and online sessions, starting on the hour, every hour, join anytime that suits.
-
-**Wednesday 18 — Coding with LLM APIs**
-- A220 — 09:00–13:00 
-- A108 — 14:30–17:00
-
-**Thursday 19 — Documentation and Allnighter** *(late joiners welcome)*
-- A225 — 09:00–12:30
-- BLG08 — 14:00–17:30
-
-1h in person and online sessions, starting on the hour, every hour, join anytime that suits.
-
-- ELG08 (Study Area) — 23:00–09:00 (Monster + Pizza overnight)
-
-Join any time to fine tune your work, or start from scratch.
-  
-
-## Final Friday 20
-
-**Grand Opening** — Centenary Building HG01 (Birley) — 09:00–11:30
-
-**Presentations** — College Building — 11:00–14:30
-- A307
-- AG01
-- AG04
-- A218 (until 14:00 then A108)
-
-**Awards** — Tait Building C322 — 14:00–15:30
-
-## Activities Meeting Link
-
-```
-Clinical AI Hackathon Meeting Loop Tuesday 17 to Friday 20
-
-This is a continuous meeting invite for ALL activities involving the Clinical AI Hackathon:
-
-Microsoft Teams meeting
-
-Join:
-https://teams.microsoft.com/meet/33037306308339?p=5CBDbMszGpfSWTUoIK
-
-Meeting ID:
-330 373 063 083 39
-
-Passcode:
-Y4hu3WK2
+cloud9-solution/
+├── main.py               # Pipeline orchestrator (CLI entry point)
+├── parse_docx.py         # DOCX parser — segments proformas into CaseText objects
+├── schema.py             # Single source of truth: 88 column definitions with LLM hints
+├── extract_llm.py        # Gemini-powered extraction with evidence tracing
+├── build_dataframe.py    # DataFrame construction + post-processing normalizations
+├── write_excel.py        # Styled Excel writer with evidence comments
+├── validate_agent.py     # AI validation agent for cross-checking extractions
+├── requirements.txt      # Python dependencies
+├── .env                  # API key (not committed)
+├── .env.example          # Template for .env
+└── output/
+    ├── generated-database-cloud9.xlsx   # Final output workbook
+    └── raw-extractions.json             # Raw LLM results (50 cases, all fields)
 ```
 
----
+## Module Details
 
-## Credits
+### `parse_docx.py` — Document Parser
+- Walks DOCX XML body elements to maintain paragraph/table interleaving
+- Identifies MDT proforma tables by "Patient Details" header
+- Extracts text per table row with `[ROW N]:` markers for evidence tracing
+- Captures MDT meeting date from paragraph preceding each table
+- Output: `list[CaseText]` — one per patient, with `full_text`, `demographics_text`, `staging_text`, `clinical_text`, `outcome_text`
 
-Clinical problem statement by [Dr Anita Wale](https://www.stgeorges.nhs.uk/people/dr-anita-wale/).
+### `schema.py` — Column Definitions
+- Defines all 88 columns as `ColumnDef(key, header, group, extraction_hint)`
+- Headers are character-for-character copies from the prototype Excel (preserving newlines and typos)
+- Extraction hints provide clinical context and rules for each field (e.g., where to look in the document, how to interpret staging shorthand)
+- Provides derived lookups: `KEY_TO_HEADER`, `HEADER_TO_KEY`, `FIELD_GROUPS`
 
-Repository created by [Daniel Sikar](https://github.com/dsikar) with [Claude Code](https://code.claude.com/docs/en/overview), [OpenAI Codex](https://openai.com/codex/) and [Google Gemini](https://geminicli.com/).
+### `extract_llm.py` — LLM Extraction Engine
+- Uses Google Gemini API (`gemini-2.0-flash` by default, configurable via `GEMINI_MODEL` env var)
+- Comprehensive 23-rule system instruction covering:
+  - Date format conversion (2-digit years, zero-padding)
+  - TNM staging extraction (T/N values, EMVI/CRM/PSW normalization, dash notation)
+  - Demographics rules (initials generation, previous cancer logic)
+  - Endoscopy/histology classification
+  - Treatment approach mapping (7 categories + investigation-only exclusion)
+- Every extracted field returns `{value, evidence, confidence}` — the evidence must be a verbatim substring from the source
+- Retry logic with exponential backoff (1s, 2s) for transient API errors
+- Rate limiting with configurable delay between calls
+
+### `build_dataframe.py` — DataFrame Builder
+- Converts `list[CaseResult]` into three parallel 50x88 DataFrames: data, evidence, confidence
+- Pre-processing: infers `endoscopy_type` from LLM evidence when the value was left blank but colonoscopy/flexi sig evidence exists
+- Post-processing normalizations:
+  - MRN/NHS number to numeric
+  - DOB to datetime
+  - Endoscopy type normalization (`"colonoscopy"` → `"Colonoscopy complete"`, `"flexible sigmoidoscopy"` → `"flexi sig"`)
+  - CRM normalization (`"unsafe"` → `"threatened"`)
+- Sorts rows by NHS number for consistent output ordering
+
+### `write_excel.py` — Excel Writer
+- Clones styling (fonts, fills, borders, alignment, number formats) from the prototype workbook template
+- **Sheet 1 (Patient Data):** Extracted values with cell comments — hover any cell to see `[Confidence: HIGH/MEDIUM/LOW]` and the verbatim source evidence quote
+- **Sheet 2 (Evidence Map):** Full audit trail with `[confidence] evidence quote` in every cell
+
+### `validate_agent.py` — Validation Agent
+- Optional second LLM pass that cross-checks every populated cell against the original document
+- Checks: evidence actually appears verbatim in source, value correctly derived from evidence, no important data missed
+- Outputs a JSON report with issue types: `hallucination`, `misquote`, `incorrect_value`, `missing_data`
+- Each issue classified by severity: `critical`, `warning`, `info`
+
+## Setup
+
+### Prerequisites
+- Python 3.9+
+- A Google Gemini API key
+
+### Installation
+
+```bash
+cd cloud9-solution
+
+# Create virtual environment (from project root)
+python3 -m venv ../venv
+source ../venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure API key
+cp .env.example .env
+# Edit .env and add your GEMINI_API_KEY
+```
+
+### Environment Variables
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `GEMINI_API_KEY` | Yes | — | Google Gemini API key |
+| `GEMINI_MODEL` | No | `gemini-2.0-flash` | Gemini model to use (e.g., `gemini-2.5-flash` for higher quality) |
+
+## Usage
+
+All commands should be run from the project root with the venv activated:
+
+```bash
+source venv/bin/activate
+```
+
+### Full pipeline (50 cases + validation)
+```bash
+python cloud9-solution/main.py
+```
+
+### Skip validation (faster, no second API pass)
+```bash
+python cloud9-solution/main.py --skip-validation
+```
+
+### Process specific cases only
+```bash
+# Range of cases
+python cloud9-solution/main.py --cases 0-4 --skip-validation
+
+# Specific cases
+python cloud9-solution/main.py --cases 0,5,10 --skip-validation
+```
+
+### Rebuild Excel from existing extractions (no API calls)
+```bash
+python cloud9-solution/main.py --from-json --skip-validation
+```
+This reloads `output/raw-extractions.json` and rebuilds the Excel workbook with all post-processing normalizations. Useful for iterating on post-processing without re-running the LLM.
+
+### Adjust API call delay
+```bash
+python cloud9-solution/main.py --delay 0.5 --skip-validation
+```
+
+## Output Files
+
+| File | Description |
+|---|---|
+| `output/generated-database-cloud9.xlsx` | Final structured database (Sheet 1: data with evidence comments, Sheet 2: evidence map) |
+| `output/raw-extractions.json` | Raw LLM extraction results — 50 cases, 88 fields each, with value/evidence/confidence |
+| `output/validation-report.json` | Validation agent results (only when validation is run) |
+
+## Evidence Tracing
+
+Every cell in the output is traceable back to the source document:
+
+1. **Hover comments (Sheet 1):** Each populated cell has a comment showing the confidence level and the verbatim source quote the LLM used to extract the value.
+
+2. **Evidence Map (Sheet 2):** A parallel sheet with the evidence quote and confidence level in every cell, providing a complete audit trail.
+
+3. **Raw JSON (raw-extractions.json):** The full extraction output with all field-level metadata, useful for downstream analysis or debugging.
+
+## Clinical Field Groups
+
+The 88 columns are organized into these groups:
+
+| Group | Columns | Description |
+|---|---|---|
+| Demographics | 7 | DOB, initials, MRN, NHS number, gender, previous cancer |
+| Endoscopy | 3 | Date, type (colonoscopy/flexi sig), findings |
+| Histology | 3 | Biopsy result, date, MMR status |
+| Baseline MRI | 6 | Date, mrT, mrN, mrEMVI, mrCRM, mrPSW |
+| Baseline CT | 7 | Date, T, N, EMVI, M, incidental findings |
+| 1st MDT | 2 | Date, treatment approach |
+| Chemotherapy | 5 | Goals, drugs, cycles, dates, breaks |
+| Immunotherapy | 2 | Dates, regimen |
+| Radiotherapy | 4 | Dose, boost, dates, concomitant chemo |
+| CEA / DRE | 4 | CEA date/value, DRE date/finding |
+| Surgery | 3 | Defunctioned, date, intent |
+| 2nd MRI | 8 | Date, pathway status, staging, TRG score |
+| MDT follow-ups | 4 | 6-week and 12-week MDT dates/decisions |
+| 12-week MRI | 7 | Date, staging, TRG score |
+| Flex sig follow-up | 2 | Date, findings |
+| Watch and wait | 6 | Entry date, intent, frequency, progression, death |
+| W&W tracking | 15 | Longitudinal flexi/MRI dates and due dates |
+
+## Team
+
+**Team Cloud9** — Clinical AI Hackathon
