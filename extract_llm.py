@@ -240,38 +240,57 @@ def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> 
 
 def extract_all_cases(
     cases: list[CaseText],
-    batch_delay: float = 1.0,
+    batch_delay: float = 0.0,
+    max_workers: int = 5,
 ) -> list[CaseResult]:
-    """Extract fields from all cases with rate limiting and progress logging."""
+    """Extract fields from all cases with parallel processing and progress logging.
+
+    Args:
+        cases: List of CaseText objects to extract.
+        batch_delay: Delay between API calls (deprecated, kept for compatibility).
+        max_workers: Maximum number of parallel worker threads.
+
+    Returns:
+        List of CaseResult objects in the same order as input cases.
+    """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY not set. Export it or add to .env file.")
 
     client = genai.Client(api_key=api_key)
-    results: list[CaseResult] = []
+    results: list[CaseResult | None] = [None] * len(cases)
 
-    for i, case in enumerate(cases):
-        print(f"  [{i+1}/{len(cases)}] Extracting case {case.case_index}...")
-        try:
-            result = extract_case(case, client)
-            populated = sum(1 for fr in result.fields.values() if fr.value)
-            print(f"         → {populated} fields populated (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
-            results.append(result)
-        except Exception as e:
-            print(f"         → ERROR: {e}")
-            results.append(CaseResult(
-                case_index=case.case_index,
-                fields={
-                    col.key: FieldResult(key=col.key, value="", evidence="", confidence="none")
-                    for col in COLUMNS
-                },
-                raw_llm_response=f"ERROR: {e}",
-                source_text=case.full_text,
-                regex_field_count=0,
-                llm_field_count=0,
-            ))
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
-        if i < len(cases) - 1:
-            time.sleep(batch_delay)
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        # Submit all tasks with their index
+        futures = {
+            pool.submit(extract_case, case, client): (i, case)
+            for i, case in enumerate(cases)
+        }
+
+        # Process results as they complete
+        for future in as_completed(futures):
+            i, case = futures[future]
+            try:
+                result = future.result()
+                populated = sum(1 for fr in result.fields.values() if fr.value)
+                print(f"  [{i+1}/{len(cases)}] Extracting case {case.case_index}...")
+                print(f"         → {populated} fields populated (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
+                results[i] = result
+            except Exception as e:
+                print(f"  [{i+1}/{len(cases)}] Extracting case {case.case_index}...")
+                print(f"         → ERROR: {e}")
+                results[i] = CaseResult(
+                    case_index=case.case_index,
+                    fields={
+                        col.key: FieldResult(key=col.key, value="", evidence="", confidence="none")
+                        for col in COLUMNS
+                    },
+                    raw_llm_response=f"ERROR: {e}",
+                    source_text=case.full_text,
+                    regex_field_count=0,
+                    llm_field_count=0,
+                )
 
     return results
