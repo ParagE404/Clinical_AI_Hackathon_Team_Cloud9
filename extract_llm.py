@@ -37,13 +37,23 @@ class CaseResult:
     fields: dict[str, FieldResult]   # key -> FieldResult
     raw_llm_response: str
     source_text: str
+    regex_field_count: int = 0       # Number of fields extracted via regex
+    llm_field_count: int = 0         # Number of fields extracted via LLM
 
 
-def _build_field_descriptions() -> str:
-    """Build the field definition block for the prompt from schema COLUMNS."""
+def _build_field_descriptions(skip_keys: set | None = None) -> str:
+    """Build the field definition block for the prompt from schema COLUMNS.
+
+    Args:
+        skip_keys: Optional set of field keys to omit from the prompt because
+                   they have already been extracted by the regex pre-pass.
+    """
+    skip_keys = skip_keys or set()
     lines = []
     current_group = None
     for col in COLUMNS:
+        if col.key in skip_keys:
+            continue
         if col.group != current_group:
             current_group = col.group
             lines.append(f"\n### {current_group.replace('_', ' ').title()}")
@@ -111,15 +121,22 @@ IMPORTANT — SEARCH THOROUGHLY:
 - Extract ALL available data from every row. Do not stop at one section."""
 
 
-def _build_extraction_prompt(case: CaseText) -> str:
-    """Build the user prompt with all case sections and field definitions."""
+def _build_extraction_prompt(case: CaseText, skip_keys: set | None = None) -> str:
+    """Build the user prompt with all case sections and field definitions.
+
+    Args:
+        case: The parsed case text.
+        skip_keys: Optional set of field keys already extracted by regex;
+                   these are omitted from the LLM field list to save tokens.
+    """
+    field_desc = _build_field_descriptions(skip_keys)
     return f"""Extract all available clinical data from this MDT case. Search ALL sections thoroughly — imaging results and staging data can appear in Clinical Details (ROW 5) OR MDT Outcome (ROW 7) or both.
 
 ## SOURCE TEXT
 {case.full_text}
 
 ## FIELDS TO EXTRACT
-{FIELD_DESCRIPTIONS}
+{field_desc}
 
 Return a single JSON object where each key is the field name and each value is {{"value": "...", "evidence": "...", "confidence": "high|medium|low|none"}}.
 For fields not found in the text, return {{"value": "", "evidence": "", "confidence": "none"}}."""
@@ -169,8 +186,18 @@ def _parse_response(response_text: str) -> dict[str, FieldResult]:
 
 
 def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> CaseResult:
-    """Extract all fields from one MDT case using Gemini with retry logic."""
-    prompt = _build_extraction_prompt(case)
+    """Extract all fields from one MDT case using Gemini with retry logic.
+
+    Fields that can be extracted deterministically via regex are pre-filled
+    before the LLM call, which reduces token usage and hallucination risk.
+    """
+    # 1. Run regex pre-extraction (zero API cost, deterministic)
+    from extract_regex import regex_extract  # lazy import avoids circular dependency
+    pre_filled = regex_extract(case)
+    skip_keys = set(pre_filled.keys())
+
+    # 2. Build prompt excluding pre-filled keys
+    prompt = _build_extraction_prompt(case, skip_keys=skip_keys)
 
     last_error = None
     for attempt in range(max_retries + 1):
@@ -186,13 +213,22 @@ def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> 
             )
 
             response_text = response.text
-            fields = _parse_response(response_text)
+            llm_fields = _parse_response(response_text)
+
+            # 3. Merge: regex results take priority over LLM results
+            merged = {**llm_fields, **pre_filled}
+
+            # 4. Count fields with non-empty values from each source
+            regex_count = sum(1 for fr in pre_filled.values() if fr.value)
+            llm_count = sum(1 for key, fr in llm_fields.items() if fr.value and key not in skip_keys)
 
             return CaseResult(
                 case_index=case.case_index,
-                fields=fields,
+                fields=merged,
                 raw_llm_response=response_text,
                 source_text=case.full_text,
+                regex_field_count=regex_count,
+                llm_field_count=llm_count,
             )
         except Exception as e:
             last_error = e
@@ -219,7 +255,7 @@ def extract_all_cases(
         try:
             result = extract_case(case, client)
             populated = sum(1 for fr in result.fields.values() if fr.value)
-            print(f"         → {populated} fields populated")
+            print(f"         → {populated} fields populated (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
             results.append(result)
         except Exception as e:
             print(f"         → ERROR: {e}")
@@ -231,6 +267,8 @@ def extract_all_cases(
                 },
                 raw_llm_response=f"ERROR: {e}",
                 source_text=case.full_text,
+                regex_field_count=0,
+                llm_field_count=0,
             ))
 
         if i < len(cases) - 1:
