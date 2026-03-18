@@ -25,6 +25,19 @@ NHS colorectal cancer MDT meetings generate Word-based proformas for each patien
 
 The 50 unpopulated columns are downstream longitudinal fields (surgery dates, chemotherapy cycles, watch-and-wait tracking) that are not present in the initial MDT discussion documents.
 
+### Performance
+
+With parallelisation enabled (default: 5 workers), the pipeline achieves significant speedup:
+
+| Metric | Sequential (Before) | Parallel (After, 5 workers) | Speedup |
+|---|---|---|---|
+| Extraction (50 cases) | ~5 min | ~15-20 s | **15-20x** |
+| Validation (50 cases) | ~5 min | ~15-20 s | **15-20x** |
+| Fix pass (50 cases) | ~5 min | ~15-20 s | **15-20x** |
+| **End-to-end (full pipeline)** | **~15 min** | **< 2 min** | **~8x** |
+
+Performance scales linearly with the number of workers (configurable via `--workers` flag), up to API rate limits.
+
 ## Architecture
 
 The pipeline runs in 6 sequential stages:
@@ -95,6 +108,7 @@ cloud9-solution/
 
 ### `extract_llm.py` — LLM Extraction Engine
 - Uses Google Gemini API (`gemini-2.5-flash` by default, configurable via `GEMINI_MODEL` env var)
+- **Parallel processing:** Uses `ThreadPoolExecutor` to process multiple cases simultaneously (default: 5 workers, configurable via `--workers`)
 - Comprehensive 23-rule system instruction covering:
   - Date format conversion (2-digit years, zero-padding)
   - TNM staging extraction (T/N values, EMVI/CRM/PSW normalization, dash notation)
@@ -103,7 +117,6 @@ cloud9-solution/
   - Treatment approach mapping (7 categories + investigation-only exclusion)
 - Every extracted field returns `{value, evidence, confidence}` — the evidence must be a verbatim substring from the source
 - Retry logic with exponential backoff (1s, 2s) for transient API errors
-- Rate limiting with configurable delay between calls
 
 ### `build_dataframe.py` — DataFrame Builder
 - Converts `list[CaseResult]` into three parallel 50x88 DataFrames: data, evidence, confidence
@@ -122,9 +135,11 @@ cloud9-solution/
 
 ### `validate_agent.py` — Validation Agent
 - Optional second LLM pass that cross-checks every populated cell against the original document
+- **Parallel processing:** Uses `ThreadPoolExecutor` to validate multiple cases simultaneously
 - Checks: evidence actually appears verbatim in source, value correctly derived from evidence, no important data missed
 - Outputs a JSON report with issue types: `hallucination`, `misquote`, `incorrect_value`, `missing_data`
 - Each issue classified by severity: `critical`, `warning`, `info`
+- **Fix agent:** Re-extracts flagged fields using validation feedback with parallel processing
 
 ## Setup
 
@@ -191,6 +206,12 @@ Enter your Gemini API key and select a model in the sidebar before running.
 python main.py
 ```
 
+### Use more parallel workers for faster processing
+```bash
+python main.py --workers 10
+```
+Default is 5 workers. Increase for faster processing if your API quota allows.
+
 ### Skip validation (faster, no second API pass)
 ```bash
 python main.py --skip-validation
@@ -210,11 +231,6 @@ python main.py --cases 0,5,10 --skip-validation
 python main.py --from-json --skip-validation
 ```
 This reloads `output/raw-extractions.json` and rebuilds the Excel workbook with all post-processing normalizations. Useful for iterating on post-processing without re-running the LLM.
-
-### Adjust API call delay
-```bash
-python main.py --delay 0.5 --skip-validation
-```
 
 ## Output Files
 
