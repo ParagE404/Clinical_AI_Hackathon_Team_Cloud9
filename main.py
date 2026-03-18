@@ -2,7 +2,8 @@
 main.py — Cloud9 MDT Extraction Pipeline
 
 Usage:
-    python main.py                       # Full pipeline (50 cases + validation)
+    python main.py                       # Full pipeline (50 cases + validation) with 5 workers
+    python main.py --workers 10          # Use 10 parallel workers for faster processing
     python main.py --skip-validation     # Skip the validation agent pass
     python main.py --skip-fix            # Validate but don't auto-fix issues
     python main.py --cases 0-4           # Process only cases 0 through 4
@@ -70,8 +71,10 @@ def main():
                         help="Skip the fix agent (auto-correction) pass")
     parser.add_argument("--cases", type=str, default=None,
                         help="Case range: '0-4' or '0,5,10'")
-    parser.add_argument("--delay", type=float, default=1.0,
-                        help="Delay between API calls in seconds (default: 1.0)")
+    parser.add_argument("--delay", type=float, default=0.0,
+                        help="Delay between API calls in seconds (default: 0.0, deprecated)")
+    parser.add_argument("--workers", type=int, default=5,
+                        help="Number of parallel worker threads (default: 5)")
     parser.add_argument("--from-json", action="store_true",
                         help="Rebuild Excel from existing raw-extractions.json (skip LLM)")
     args = parser.parse_args()
@@ -119,9 +122,10 @@ def main():
     else:
         print("\n" + "=" * 60)
         print("STAGE 2: Extracting fields with Gemini...")
+        print(f"  Using {args.workers} parallel workers")
         print("=" * 60)
         t0 = time.time()
-        extractions = extract_all_cases(cases, batch_delay=args.delay)
+        extractions = extract_all_cases(cases, batch_delay=args.delay, max_workers=args.workers)
         elapsed = time.time() - t0
         print(f"\n  Extraction complete in {elapsed:.1f}s.")
 
@@ -173,9 +177,10 @@ def main():
     if not args.skip_validation:
         print("\n" + "=" * 60)
         print("STAGE 5: Running validation agent...")
+        print(f"  Using {args.workers} parallel workers")
         print("=" * 60)
         from validate_agent import validate_all, generate_validation_report
-        validations = validate_all(cases, extractions, batch_delay=args.delay)
+        validations = validate_all(cases, extractions, batch_delay=args.delay, max_workers=args.workers)
         report = generate_validation_report(validations, str(VALIDATION_REPORT))
         print(f"\n  Validation report saved to {VALIDATION_REPORT}")
         print(f"  Results: {report['passed']} passed, "
@@ -193,9 +198,10 @@ def main():
         if report['total_issues'] > 0:
             print("\n" + "=" * 60)
             print("STAGE 6: Running fix agent...")
+            print(f"  Using {args.workers} parallel workers")
             print("=" * 60)
             from validate_agent import fix_all
-            extractions = fix_all(cases, extractions, validations, batch_delay=args.delay)
+            extractions = fix_all(cases, extractions, validations, batch_delay=args.delay, max_workers=args.workers)
 
             # Save updated extractions
             raw_data = []

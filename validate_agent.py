@@ -143,9 +143,20 @@ def validate_case(
 def validate_all(
     cases: list[CaseText],
     extractions: list[CaseResult],
-    batch_delay: float = 1.0,
+    batch_delay: float = 0.0,
+    max_workers: int = 5,
 ) -> list[CaseValidation]:
-    """Run validation on all cases."""
+    """Run validation on all cases with parallel processing.
+
+    Args:
+        cases: List of CaseText objects.
+        extractions: List of CaseResult objects.
+        batch_delay: Delay between API calls (deprecated, kept for compatibility).
+        max_workers: Maximum number of parallel worker threads.
+
+    Returns:
+        List of CaseValidation objects in the same order as extractions.
+    """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY not set.")
@@ -153,29 +164,38 @@ def validate_all(
     client = genai.Client(api_key=api_key)
     # Build lookup from case_index to CaseText
     case_lookup = {c.case_index: c for c in cases}
-    validations = []
+    validations: list[CaseValidation | None] = [None] * len(extractions)
 
-    for i, extraction in enumerate(extractions):
-        case = case_lookup.get(extraction.case_index)
-        if not case:
-            continue
-        print(f"  [{i + 1}/{len(extractions)}] Validating case {extraction.case_index}...")
-        try:
-            v = validate_case(case, extraction, client)
-            status_icon = {"pass": "OK", "review_needed": "REVIEW", "fail": "FAIL"}
-            print(f"         → {status_icon.get(v.overall_status, '?')} ({v.fields_flagged} issues)")
-            validations.append(v)
-        except Exception as e:
-            print(f"         → ERROR: {e}")
-            validations.append(CaseValidation(
-                case_index=case.case_index,
-                issues=[FieldIssue("_system", "error", str(e), "", "critical")],
-                overall_status="fail",
-                fields_checked=0, fields_ok=0, fields_flagged=1,
-            ))
-        time.sleep(batch_delay)
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
-    return validations
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        # Submit all tasks with their index
+        futures = {}
+        for i, extraction in enumerate(extractions):
+            case = case_lookup.get(extraction.case_index)
+            if case:
+                futures[pool.submit(validate_case, case, extraction, client)] = (i, extraction)
+
+        # Process results as they complete
+        for future in as_completed(futures):
+            i, extraction = futures[future]
+            print(f"  [{i + 1}/{len(extractions)}] Validating case {extraction.case_index}...")
+            try:
+                v = future.result()
+                status_icon = {"pass": "OK", "review_needed": "REVIEW", "fail": "FAIL"}
+                print(f"         → {status_icon.get(v.overall_status, '?')} ({v.fields_flagged} issues)")
+                validations[i] = v
+            except Exception as e:
+                print(f"         → ERROR: {e}")
+                validations[i] = CaseValidation(
+                    case_index=extraction.case_index,
+                    issues=[FieldIssue("_system", "error", str(e), "", "critical")],
+                    overall_status="fail",
+                    fields_checked=0, fields_ok=0, fields_flagged=1,
+                )
+
+    # Filter out None values (cases where case_lookup failed)
+    return [v for v in validations if v is not None]
 
 
 def generate_validation_report(
@@ -351,9 +371,21 @@ def fix_all(
     cases: list[CaseText],
     extractions: list[CaseResult],
     validations: list[CaseValidation],
-    batch_delay: float = 1.0,
+    batch_delay: float = 0.0,
+    max_workers: int = 5,
 ) -> list[CaseResult]:
-    """Fix all cases that have validation issues. Returns updated extractions."""
+    """Fix all cases that have validation issues with parallel processing.
+
+    Args:
+        cases: List of CaseText objects.
+        extractions: List of CaseResult objects.
+        validations: List of CaseValidation objects.
+        batch_delay: Delay between API calls (deprecated, kept for compatibility).
+        max_workers: Maximum number of parallel worker threads.
+
+    Returns:
+        Updated list of CaseResult objects.
+    """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY not set.")
@@ -376,28 +408,34 @@ def fix_all(
     updated = list(extractions)
     ext_index = {e.case_index: idx for idx, e in enumerate(extractions)}
 
-    for i, val in enumerate(to_fix):
-        case = case_lookup.get(val.case_index)
-        ext = ext_lookup.get(val.case_index)
-        if not case or not ext:
-            continue
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
-        issue_count = len([j for j in val.issues if j.field_key != "_system"])
-        print(f"  [{i + 1}/{len(to_fix)}] Fixing case {val.case_index} ({issue_count} issues)...")
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        # Submit all fix tasks
+        futures = {}
+        for i, val in enumerate(to_fix):
+            case = case_lookup.get(val.case_index)
+            ext = ext_lookup.get(val.case_index)
+            if case and ext:
+                futures[pool.submit(fix_case, case, ext, val, client)] = (i, val, ext)
 
-        try:
-            fixed = fix_case(case, ext, val, client)
-            changed = sum(
-                1 for k in fixed.fields
-                if fixed.fields[k].value != ext.fields.get(k, FieldResult(k, "", "", "none")).value
-            )
-            print(f"         → {changed} fields corrected")
-            idx = ext_index.get(val.case_index)
-            if idx is not None:
-                updated[idx] = fixed
-        except Exception as e:
-            print(f"         → ERROR: {e}")
+        # Process results as they complete
+        for future in as_completed(futures):
+            i, val, ext = futures[future]
+            issue_count = len([j for j in val.issues if j.field_key != "_system"])
+            print(f"  [{i + 1}/{len(to_fix)}] Fixing case {val.case_index} ({issue_count} issues)...")
 
-        time.sleep(batch_delay)
+            try:
+                fixed = future.result()
+                changed = sum(
+                    1 for k in fixed.fields
+                    if fixed.fields[k].value != ext.fields.get(k, FieldResult(k, "", "", "none")).value
+                )
+                print(f"         → {changed} fields corrected")
+                idx = ext_index.get(val.case_index)
+                if idx is not None:
+                    updated[idx] = fixed
+            except Exception as e:
+                print(f"         → ERROR: {e}")
 
     return updated

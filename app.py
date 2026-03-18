@@ -214,7 +214,7 @@ if page == "Run Pipeline":
     with col2:
         run_fix = st.checkbox("Run Fix Agent", value=True)
     with col3:
-        batch_delay = st.slider("API delay (seconds)", 0.5, 5.0, 1.0, 0.5)
+        max_workers = st.slider("Parallel workers", 1, 20, 5, 1)
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -270,9 +270,9 @@ if page == "Run Pipeline":
 
             # ── Stage 2: LLM Extraction ──
             progress.progress(20, text="Stage 2: Extracting with Gemini...")
-            status_area.info(f"Extracting fields from {len(cases)} cases...")
+            status_area.info(f"Extracting fields from {len(cases)} cases with {max_workers} workers...")
             t0 = time.time()
-            extractions = extract_all_cases(cases, batch_delay=batch_delay)
+            extractions = extract_all_cases(cases, batch_delay=0.0, max_workers=max_workers)
             elapsed = time.time() - t0
             st.toast(f"Extraction complete in {elapsed:.1f}s")
 
@@ -302,8 +302,8 @@ if page == "Run Pipeline":
             # ── Stage 5: Validation ──
             if run_validation:
                 progress.progress(82, text="Stage 5: Running validation agent...")
-                status_area.info("Validating extractions against source...")
-                validations = validate_all(cases, extractions, batch_delay=batch_delay)
+                status_area.info(f"Validating extractions against source with {max_workers} workers...")
+                validations = validate_all(cases, extractions, batch_delay=0.0, max_workers=max_workers)
                 report = generate_validation_report(
                     validations, str(OUTPUT_DIR / "validation-report.json")
                 )
@@ -314,8 +314,8 @@ if page == "Run Pipeline":
                 # ── Stage 6: Fix Agent ──
                 if run_fix and report["total_issues"] > 0:
                     progress.progress(92, text="Stage 6: Running fix agent...")
-                    status_area.info("Auto-correcting flagged fields...")
-                    extractions = fix_all(cases, extractions, validations, batch_delay=batch_delay)
+                    status_area.info(f"Auto-correcting flagged fields with {max_workers} workers...")
+                    extractions = fix_all(cases, extractions, validations, batch_delay=0.0, max_workers=max_workers)
 
                     raw_data = _extractions_to_json(extractions)
                     with open(RAW_EXTRACTIONS, "w") as f:
