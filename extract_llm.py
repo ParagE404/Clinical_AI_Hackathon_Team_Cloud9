@@ -37,6 +37,8 @@ class CaseResult:
     fields: dict[str, FieldResult]   # key -> FieldResult
     raw_llm_response: str
     source_text: str
+    regex_field_count: int = 0       # Number of fields extracted via regex
+    llm_field_count: int = 0         # Number of fields extracted via LLM
 
 
 def _build_field_descriptions(skip_keys: set | None = None) -> str:
@@ -216,11 +218,17 @@ def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> 
             # 3. Merge: regex results take priority over LLM results
             merged = {**llm_fields, **pre_filled}
 
+            # 4. Count fields with non-empty values from each source
+            regex_count = sum(1 for fr in pre_filled.values() if fr.value)
+            llm_count = sum(1 for key, fr in llm_fields.items() if fr.value and key not in skip_keys)
+
             return CaseResult(
                 case_index=case.case_index,
                 fields=merged,
                 raw_llm_response=response_text,
                 source_text=case.full_text,
+                regex_field_count=regex_count,
+                llm_field_count=llm_count,
             )
         except Exception as e:
             last_error = e
@@ -247,7 +255,7 @@ def extract_all_cases(
         try:
             result = extract_case(case, client)
             populated = sum(1 for fr in result.fields.values() if fr.value)
-            print(f"         → {populated} fields populated")
+            print(f"         → {populated} fields populated (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
             results.append(result)
         except Exception as e:
             print(f"         → ERROR: {e}")
@@ -259,6 +267,8 @@ def extract_all_cases(
                 },
                 raw_llm_response=f"ERROR: {e}",
                 source_text=case.full_text,
+                regex_field_count=0,
+                llm_field_count=0,
             ))
 
         if i < len(cases) - 1:
