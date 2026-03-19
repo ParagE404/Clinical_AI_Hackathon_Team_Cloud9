@@ -1,0 +1,25 @@
+# Optimized Llama 3.1 for clinical data extraction
+# Usage: ollama create llama3.1-clinical -f Modelfile.llama3.1-clinical
+
+FROM llama3.1:8b
+
+# Increase context window for large prompts
+PARAMETER num_ctx 8192
+
+# Temperature 0 for deterministic extraction
+PARAMETER temperature 0.0
+
+# Reduce repetition
+PARAMETER repeat_penalty 1.1
+
+# Enable JSON mode
+PARAMETER response_format json
+
+# Performance tuning
+PARAMETER num_thread 8
+PARAMETER num_gpu 99  # Use all available GPU layers
+
+# System message emphasizing verbatim extraction
+SYSTEM """You are a clinical data extraction specialist.
+CRITICAL RULE: When providing evidence, you MUST copy the text EXACTLY as it appears in the source, including all punctuation, parentheses, and annotations like (a), (b), (c).
+NEVER paraphrase or clean up the evidence field. Copy it character-by-character."""

@@ -185,7 +185,7 @@ if llm_provider == "ollama":
     st.sidebar.info("Using local Ollama LLM (hackathon compliant)")
     ollama_model = st.sidebar.selectbox(
         "Ollama Model",
-        ["llama3.1:8b", "mistral:7b", "qwen2.5:7b"],
+        ["llama3.1:8b", "mistral:7b", "qwen3.5:9b"],
         index=0,
         help="Choose a model ≤5GB for hackathon compliance",
     )

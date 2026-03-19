@@ -219,7 +219,7 @@ If extraction is still slow despite parallelization:
 4. **Profile Model Inference**: Use faster models for testing
    ```bash
    ollama pull mistral:7b    # Faster but may be less accurate
-   ollama pull qwen2.5:7b    # Good balance of speed/accuracy
+   ollama pull qwen3.5:9b    # Good balance of speed/accuracy
    ```
 
 5. **Check System Resources**:

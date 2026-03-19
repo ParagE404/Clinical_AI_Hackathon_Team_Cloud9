@@ -1,956 +1,66 @@
 [
   {
-    "case_index": 4,
+    "case_index": 1,
     "fields": {
       "dob": {
-        "value": "16/11/1950",
-        "evidence": "DOB: 16/11/1950",
+        "value": "30/03/1944",
+        "evidence": "30/03/1944 Age",
         "confidence": "high"
       },
       "initials": {
-        "value": "GG",
-        "evidence": "Graham Green",
+        "value": "ZA",
+        "evidence": "ZIAD AL-FARSI(b)",
         "confidence": "high"
       },
       "mrn": {
-        "value": "9999005",
-        "evidence": "Hospital Number: 9999005",
+        "value": "9990002",
+        "evidence": "Hospital Number: 9990002",
         "confidence": "high"
       },
       "nhs_number": {
-        "value": "9998009005",
-        "evidence": "NHS Number: 9998009005",
+        "value": "9990000002",
+        "evidence": "NHS Number: 9990000002",
         "confidence": "high"
       },
       "gender": {
         "value": "Male",
         "evidence": "Male",
-        "confidence": "high"
-      },
-      "previous_cancer": {
-        "value": "No",
-        "evidence": "Relevant history includes chronic kidney disease stage 3.",
-        "confidence": "high"
-      },
-      "previous_cancer_site": {
-        "value": "N/A",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_type": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "biopsy_result": {
-        "value": "Sigmoid adenocarcinoma",
-        "evidence": "Diagnosis: Sigmoid adenocarcinoma",
-        "confidence": "high"
-      },
-      "biopsy_date": {
-        "value": "Missing",
-        "evidence": "Diagnosis: Sigmoid adenocarcinoma",
-        "confidence": "low"
-      },
-      "mmr_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_date": {
-        "value": "06/09/2024",
-        "evidence": "CT TAP on 06/09/2024",
-        "confidence": "high"
-      },
-      "baseline_ct_T": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_N": {
-        "value": "0",
-        "evidence": "no enlarged mesenteric nodes",
-        "confidence": "high"
-      },
-      "baseline_ct_EMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_M": {
-        "value": "0",
-        "evidence": "no distant metastases",
-        "confidence": "high"
-      },
-      "baseline_ct_incidental_yn": {
-        "value": "Y",
-        "evidence": "sigmoid colon thickening",
-        "confidence": "high"
-      },
-      "baseline_ct_incidental_detail": {
-        "value": "sigmoid colon thickening",
-        "evidence": "sigmoid colon thickening",
-        "confidence": "high"
-      },
-      "first_mdt_date": {
-        "value": "13/09/2024",
-        "evidence": "13/09/2024(i)",
-        "confidence": "high"
-      },
-      "first_mdt_treatment_approach": {
-        "value": "Refer for colorectal surgical review",
-        "evidence": "Refer for colorectal surgical review.",
-        "confidence": "high"
-      },
-      "chemo_goal": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_drugs": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_cycles": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_breaks": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_total_dose": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_boost": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_concomitant_chemo": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_value": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_finding": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_defunctioned": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_pathway_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_entry_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_frequency": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_site": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_death_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_date_entered": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      }
-    }
-  },
-  {
-    "case_index": 5,
-    "fields": {
-      "dob": {
-        "value": "18/08/1937",
-        "evidence": "DOB: 18/08/1937",
-        "confidence": "high"
-      },
-      "initials": {
-        "value": "AC",
-        "evidence": "Ava Clarke",
-        "confidence": "high"
-      },
-      "mrn": {
-        "value": "9999006",
-        "evidence": "Hospital Number: 9999006",
-        "confidence": "high"
-      },
-      "nhs_number": {
-        "value": "9998009006",
-        "evidence": "NHS Number: 9998009006",
-        "confidence": "high"
-      },
-      "gender": {
-        "value": "Female",
-        "evidence": "Female",
         "confidence": "high"
       },
       "previous_cancer": {
         "value": "Yes",
-        "evidence": "Relevant history includes history of breast cancer (treated).",
+        "evidence": "lymphoma",
         "confidence": "high"
       },
       "previous_cancer_site": {
-        "value": "breast",
-        "evidence": "history of breast cancer",
+        "value": "lymphoma",
+        "evidence": "lymphoma",
         "confidence": "high"
       },
       "endoscopy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_type": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "biopsy_result": {
-        "value": "Villous adenoma with focal invasion",
-        "evidence": "Diagnosis: Villous adenoma with focal invasion",
-        "confidence": "high"
-      },
-      "biopsy_date": {
         "value": "Missing",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mmr_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_date": {
-        "value": "31/10/2024",
-        "evidence": "MRI pelvis on 31/10/2024",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
         "confidence": "high"
-      },
-      "baseline_mri_mrT": {
-        "value": "1 sm2/3",
-        "evidence": "T1 sm2/3",
-        "confidence": "high"
-      },
-      "baseline_mri_mrN": {
-        "value": "0",
-        "evidence": "N0",
-        "confidence": "high"
-      },
-      "baseline_mri_mrEMVI": {
-        "value": "negative",
-        "evidence": "EMVI negative",
-        "confidence": "high"
-      },
-      "baseline_mri_mrCRM": {
-        "value": "clear",
-        "evidence": "CRM clear",
-        "confidence": "high"
-      },
-      "baseline_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_T": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_N": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_EMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_M": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_incidental_yn": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_incidental_detail": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "first_mdt_date": {
-        "value": "14/11/2024",
-        "evidence": "Colorectal Multidisciplinary Meeting 14/11/2024(i)",
-        "confidence": "high"
-      },
-      "first_mdt_treatment_approach": {
-        "value": "Refer for colorectal surgical review",
-        "evidence": "Refer for colorectal surgical review.",
-        "confidence": "high"
-      },
-      "chemo_goal": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_drugs": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_cycles": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_breaks": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_total_dose": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_boost": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_concomitant_chemo": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_value": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_finding": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_defunctioned": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_pathway_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_entry_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_frequency": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_site": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_death_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_date_entered": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      }
-    }
-  },
-  {
-    "case_index": 6,
-    "fields": {
-      "dob": {
-        "value": "27/12/1947",
-        "evidence": "DOB: 27/12/1947",
-        "confidence": "high"
-      },
-      "initials": {
-        "value": "MB",
-        "evidence": "Mason Barker",
-        "confidence": "high"
-      },
-      "mrn": {
-        "value": "9999007",
-        "evidence": "Hospital Number: 9999007",
-        "confidence": "high"
-      },
-      "nhs_number": {
-        "value": "9998009007",
-        "evidence": "NHS Number: 9998009007",
-        "confidence": "high"
-      },
-      "gender": {
-        "value": "Male",
-        "evidence": "Male",
-        "confidence": "high"
-      },
-      "previous_cancer": {
-        "value": "No",
-        "evidence": "Relevant history includes ischaemic heart disease.",
-        "confidence": "high"
-      },
-      "previous_cancer_site": {
-        "value": "N/A",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
       },
       "endoscopy_type": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "Colonoscopy complete",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "confidence": "high"
       },
       "endoscopy_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "confidence": "high"
       },
       "biopsy_result": {
-        "value": "Tubular adenoma with HGD",
-        "evidence": "Diagnosis: Tubular adenoma with HGD",
+        "value": "ADENOCARCINOMA, NOT OTHERWISE SPECIFIED",
+        "evidence": "Diagnosis: ADENOCARCINOMA, NOT OTHERWISE SPECIFIED",
         "confidence": "high"
       },
       "biopsy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "07/03/2025",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
+        "confidence": "high"
       },
       "mmr_status": {
         "value": "",
@@ -958,458 +68,13 @@
         "confidence": "none"
       },
       "baseline_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_date": {
-        "value": "14/06/2024",
-        "evidence": "CT TAP on 14/06/2024",
-        "confidence": "high"
-      },
-      "baseline_ct_T": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_N": {
-        "value": "1",
-        "evidence": "multiple enlarged mesenteric nodes",
-        "confidence": "high"
-      },
-      "baseline_ct_EMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_ct_M": {
-        "value": "0",
-        "evidence": "no distant metastases.",
-        "confidence": "high"
-      },
-      "baseline_ct_incidental_yn": {
-        "value": "N",
-        "evidence": "upper rectum thickening with multiple enlarged mesenteric nodes; no distant metastases.",
-        "confidence": "high"
-      },
-      "baseline_ct_incidental_detail": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "first_mdt_date": {
-        "value": "21/06/2024",
-        "evidence": "Colorectal Multidisciplinary Meeting \u2014 21/06/2024(i)",
-        "confidence": "high"
-      },
-      "first_mdt_treatment_approach": {
-        "value": "",
-        "evidence": "Schedule colonoscopy + tattooing, plus MRI rectum.",
-        "confidence": "high"
-      },
-      "chemo_goal": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_drugs": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_cycles": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "chemo_breaks": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "immunotherapy": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_total_dose": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_boost": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_dates": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "rt_concomitant_chemo": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_value": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "cea_dre_finding": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_defunctioned": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "surgery_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_pathway_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "second_mri_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_6wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mri_12wk_trg": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "flex_sig_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mdt_12wk_decision": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_entry_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_intent": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_frequency": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_progression_site": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_death_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_date_entered": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_date_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_flexi_due_4": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_1": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_2": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_date_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "ww_mri_due_3": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      }
-    }
-  },
-  {
-    "case_index": 7,
-    "fields": {
-      "dob": {
-        "value": "08/08/1951",
-        "evidence": "DOB: 08/08/1951",
-        "confidence": "high"
-      },
-      "initials": {
-        "value": "FS",
-        "evidence": "Freida Smale",
-        "confidence": "high"
-      },
-      "mrn": {
-        "value": "9999008",
-        "evidence": "Hospital Number: 9999008",
-        "confidence": "high"
-      },
-      "nhs_number": {
-        "value": "9998009008",
-        "evidence": "NHS Number: 9998009008",
-        "confidence": "high"
-      },
-      "gender": {
-        "value": "Female",
-        "evidence": "Female",
-        "confidence": "high"
-      },
-      "previous_cancer": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "previous_cancer_site": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_type": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "endoscopy_findings": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "biopsy_result": {
-        "value": "Right\u2011sided colonic tumour",
-        "evidence": "Diagnosis: Right\u2011sided colonic tumour",
-        "confidence": "high"
-      },
-      "biopsy_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "mmr_status": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
-      },
-      "baseline_mri_date": {
-        "value": "30/07/2024",
-        "evidence": "MRI pelvis on 30/07/2024",
+        "value": "04/03/2025",
+        "evidence": "MRI 4/3/25",
         "confidence": "high"
       },
       "baseline_mri_mrT": {
-        "value": "3a",
-        "evidence": "T3a",
+        "value": "3c",
+        "evidence": "T3c",
         "confidence": "high"
       },
       "baseline_mri_mrN": {
@@ -1419,23 +84,23 @@
       },
       "baseline_mri_mrEMVI": {
         "value": "positive",
-        "evidence": "EMVI positive.",
+        "evidence": "EMVI positive",
         "confidence": "high"
       },
       "baseline_mri_mrCRM": {
-        "value": "clear",
-        "evidence": "CRM clear,",
+        "value": "threatened",
+        "evidence": "CRM/ISP unsafe",
         "confidence": "high"
       },
       "baseline_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "clear",
+        "evidence": "PSW clear",
+        "confidence": "high"
       },
       "baseline_ct_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "22/02/2025",
+        "evidence": "CT 22/2/2025",
+        "confidence": "high"
       },
       "baseline_ct_T": {
         "value": "",
@@ -1443,9 +108,9 @@
         "confidence": "none"
       },
       "baseline_ct_N": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "0",
+        "evidence": "CT 22/2/2025: no lymphadenopathy.",
+        "confidence": "high"
       },
       "baseline_ct_EMVI": {
         "value": "",
@@ -1453,9 +118,9 @@
         "confidence": "none"
       },
       "baseline_ct_M": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "0",
+        "evidence": "CT 22/2/2025: no lymphadenopathy.",
+        "confidence": "high"
       },
       "baseline_ct_incidental_yn": {
         "value": "",
@@ -1468,13 +133,13 @@
         "confidence": "none"
       },
       "first_mdt_date": {
-        "value": "20/08/2024",
-        "evidence": "Colorectal Multidisciplinary Meeting 20/08/2024(i)",
+        "value": "07/03/2025",
+        "evidence": "07/03/2025",
         "confidence": "high"
       },
       "first_mdt_treatment_approach": {
-        "value": "neoadjuvant CRT",
-        "evidence": "Plan neoadjuvant CRT",
+        "value": "straight to surgery",
+        "evidence": "Colonoscopy: polypoidal lesion in the low rectum, biopsy adenocarcinoma, poorly differentiated.",
         "confidence": "high"
       },
       "chemo_goal": {
@@ -1568,9 +233,9 @@
         "confidence": "none"
       },
       "second_mri_date": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "4/3/25",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted.",
+        "confidence": "high"
       },
       "second_mri_pathway_status": {
         "value": "",
@@ -1578,29 +243,29 @@
         "confidence": "none"
       },
       "second_mri_mrT": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "3c",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted. Some high signal change consistent with mucus.",
+        "confidence": "high"
       },
       "second_mri_mrN": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "1c",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted. Some high signal change consistent with mucus.",
+        "confidence": "high"
       },
       "second_mri_mrEMVI": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "positive",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted. Some high signal change consistent with mucus.",
+        "confidence": "high"
       },
       "second_mri_mrCRM": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "unsafe",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted. Some high signal change consistent with mucus.",
+        "confidence": "high"
       },
       "second_mri_mrPSW": {
-        "value": "",
-        "evidence": "",
-        "confidence": "none"
+        "value": "clear",
+        "evidence": "MRI 4/3/25 \u2013 low rectal lesion with a low signal stalk, area of ulceration noted. Some high signal change consistent with mucus.",
+        "confidence": "high"
       },
       "second_mri_trg": {
         "value": "",
