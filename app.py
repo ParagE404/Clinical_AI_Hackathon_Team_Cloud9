@@ -156,6 +156,20 @@ def _build_excel_bytes(
         Path(tmp_path).unlink(missing_ok=True)
 
 
+def _persist_reviewed_extractions(raw_data: list[dict]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Persist reviewed extractions and rebuild header-based DataFrames."""
+    with open(RAW_EXTRACTIONS, "w") as f:
+        json.dump(raw_data, f, indent=2)
+
+    st.session_state["extractions"] = raw_data
+    reviewed_extractions = _json_to_extractions(raw_data)
+    data_df, evidence_df, confidence_df = build_dataframes(reviewed_extractions)
+    st.session_state["excel_data_df"] = data_df
+    st.session_state["excel_evidence_df"] = evidence_df
+    st.session_state["excel_confidence_df"] = confidence_df
+    return data_df, evidence_df, confidence_df
+
+
 # ════════════════════════════════════════════════════════
 # Sidebar
 # ════════════════════════════════════════════════════════
@@ -303,7 +317,7 @@ if page == "Run Pipeline":
             progress.progress(15, text=f"Stage 1 complete: {len(cases)} cases")
 
             # ── Stage 2: LLM Extraction ──
-            progress.progress(20, text="Stage 2: Extracting with Gemini...")
+            progress.progress(20, text=f"Stage 2: Extracting with {llm_provider}...")
             status_area.info(f"Extracting fields from {len(cases)} cases with {max_workers} workers...")
             t0 = time.time()
             extractions = extract_all_cases(cases, batch_delay=0.0, max_workers=max_workers)
@@ -570,6 +584,12 @@ elif page == "Validation Report":
         st.warning("No validation report found. Run the pipeline with validation enabled.")
         st.stop()
 
+    raw_data = st.session_state.get("extractions")
+    if raw_data is None and RAW_EXTRACTIONS.exists():
+        with open(RAW_EXTRACTIONS) as f:
+            raw_data = json.load(f)
+        st.session_state["extractions"] = raw_data
+
     # ── Summary metrics ──
     m1, m2, m3, m4 = st.columns(4)
     m1.metric("Total Cases", report["total_cases"])
@@ -643,6 +663,83 @@ elif page == "Validation Report":
 
     if matched == 0:
         st.info("No cases match the selected filters.")
+
+    if raw_data:
+        st.markdown("---")
+        st.markdown("### Clinician Review & Overrides")
+        st.caption("Apply reviewed corrections and export workbook from reviewed values.")
+
+        cases_with_issues = [c for c in report.get("cases", []) if c.get("issues")]
+        if not cases_with_issues:
+            st.info("No field issues available for manual overrides.")
+        else:
+            selected_case = st.selectbox(
+                "Select case to review",
+                options=cases_with_issues,
+                format_func=lambda c: f"Case {c['case_index']} ({len(c.get('issues', []))} issues)",
+            )
+            case_index = selected_case["case_index"]
+            case_payload = next((c for c in raw_data if c.get("case_index") == case_index), None)
+
+            if case_payload is None:
+                st.warning("Selected case was not found in raw extraction data.")
+            else:
+                updates: list[tuple[str, str]] = []
+                for issue in selected_case.get("issues", []):
+                    field_key = issue.get("field", "")
+                    field_data = case_payload.get("fields", {}).get(field_key)
+                    if not isinstance(field_data, dict):
+                        continue
+
+                    current_value = str(field_data.get("value", "") or "")
+                    suggested_value = str(issue.get("suggested_value", "") or "")
+                    default_value = suggested_value if suggested_value else current_value
+
+                    st.markdown(
+                        f"**{field_key}**  \n"
+                        f"Current: `{current_value}`  \n"
+                        f"Issue: {issue.get('description', '')}"
+                    )
+                    new_value = st.text_input(
+                        f"Reviewed value for {field_key}",
+                        value=default_value,
+                        key=f"review_value_{case_index}_{field_key}",
+                    )
+                    use_override = st.checkbox(
+                        f"Apply reviewed value for {field_key}",
+                        value=bool(suggested_value),
+                        key=f"review_apply_{case_index}_{field_key}",
+                    )
+                    if use_override:
+                        updates.append((field_key, new_value.strip()))
+
+                if st.button("Apply selected overrides", type="primary", use_container_width=True):
+                    applied = 0
+                    for field_key, new_value in updates:
+                        fd = case_payload["fields"][field_key]
+                        if str(fd.get("value", "") or "") == new_value:
+                            continue
+                        fd["value"] = new_value
+                        fd["evidence"] = str(fd.get("evidence", "") or "")
+                        fd["confidence"] = "manual"
+                        applied += 1
+
+                    if applied:
+                        reviewed_data_df, reviewed_evidence_df, reviewed_confidence_df = _persist_reviewed_extractions(raw_data)
+                        excel_bytes = _build_excel_bytes(
+                            reviewed_data_df, reviewed_evidence_df, reviewed_confidence_df
+                        )
+                        st.success(f"Applied {applied} override(s). Reviewed extractions are now the export source of truth.")
+                        if excel_bytes:
+                            st.download_button(
+                                "Download Reviewed Excel Workbook",
+                                data=excel_bytes,
+                                file_name="generated-database-reviewed.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                use_container_width=True,
+                            )
+                    else:
+                        st.info("No value changes were selected.")
 
     # ── Download report ──
     st.markdown("---")

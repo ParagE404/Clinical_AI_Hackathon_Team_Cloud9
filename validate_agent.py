@@ -23,6 +23,10 @@ from llm_client import LLMClient
 
 load_dotenv()
 
+ALLOWED_FIELD_KEYS = {col.key for col in COLUMNS}
+ALLOWED_ISSUE_TYPES = {"hallucination", "misquote", "incorrect_value", "missing_data"}
+ALLOWED_SEVERITIES = {"critical", "warning", "info"}
+
 VALIDATION_SYSTEM = """You are a clinical data validation specialist. Your task is to verify AI-extracted data against the original MDT source document.
 
 For each extracted field, check:
@@ -54,14 +58,18 @@ class CaseValidation:
 
 def _build_validation_prompt(case: CaseText, extraction: CaseResult) -> str:
     fields_block = []
+    empty_schema_fields = []
     for col in COLUMNS:
         fr = extraction.fields.get(col.key)
         if fr and fr.value:
             fields_block.append(
                 f'  "{col.key}": {{"value": {json.dumps(fr.value)}, "evidence": {json.dumps(fr.evidence)}}}'
             )
+        else:
+            empty_schema_fields.append(col.key)
 
     fields_json = "{\n" + ",\n".join(fields_block) + "\n}"
+    empty_fields_json = json.dumps(empty_schema_fields, ensure_ascii=False)
 
     return f"""Verify these AI-extracted fields against the original source document.
 
@@ -71,10 +79,18 @@ def _build_validation_prompt(case: CaseText, extraction: CaseResult) -> str:
 ## EXTRACTED DATA TO VALIDATE
 {fields_json}
 
+## VALID SCHEMA FIELD KEYS
+You MUST only use these field keys in your response and nowhere else:
+{json.dumps(sorted(ALLOWED_FIELD_KEYS), ensure_ascii=False)}
+
+## EMPTY SCHEMA FIELDS
+Only consider these keys for missing_data checks:
+{empty_fields_json}
+
 For each field, check:
 1. Does the "evidence" appear verbatim in the source text?
 2. Is the "value" correct given the evidence?
-3. Are there fields that SHOULD be populated but are empty?
+3. Are there fields in the EMPTY SCHEMA FIELDS list that should be populated but are empty?
 
 Return a JSON array of issues. Each issue:
 {{"field_key": "...", "issue_type": "hallucination|misquote|incorrect_value|missing_data", "description": "...", "suggested_value": "...", "severity": "critical|warning|info"}}
@@ -115,14 +131,26 @@ def validate_case(
     issues = []
     if isinstance(issues_data, list):
         for item in issues_data:
-            if isinstance(item, dict) and item.get("issue_type", "ok") != "ok":
-                issues.append(FieldIssue(
-                    field_key=item.get("field_key", "unknown"),
-                    issue_type=item.get("issue_type", "unknown"),
-                    description=item.get("description", ""),
-                    suggested_value=item.get("suggested_value", ""),
-                    severity=item.get("severity", "info"),
-                ))
+            if not isinstance(item, dict):
+                continue
+            issue_type = item.get("issue_type", "ok")
+            field_key = str(item.get("field_key", "")).strip()
+            if (
+                issue_type == "ok"
+                or issue_type not in ALLOWED_ISSUE_TYPES
+                or field_key not in ALLOWED_FIELD_KEYS
+            ):
+                continue
+            severity = item.get("severity", "info")
+            if severity not in ALLOWED_SEVERITIES:
+                severity = "info"
+            issues.append(FieldIssue(
+                field_key=field_key,
+                issue_type=issue_type,
+                description=item.get("description", ""),
+                suggested_value=item.get("suggested_value", ""),
+                severity=severity,
+            ))
 
     populated = sum(1 for fr in extraction.fields.values() if fr.value)
 
@@ -304,7 +332,7 @@ def fix_case(
 ) -> CaseResult:
     """Re-extract flagged fields for one case using validation feedback."""
     # Skip cases with no actionable issues
-    actionable = [i for i in validation.issues if i.field_key != "_system"]
+    actionable = [i for i in validation.issues if i.field_key in ALLOWED_FIELD_KEYS]
     if not actionable:
         return extraction
 

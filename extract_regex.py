@@ -550,15 +550,20 @@ def _extract_treatment_approach(outcome_text: str):
     if m:
         return "Papillon +/- EBRT", m.group(0).strip()
 
-    m = re.search(
+    # Ambiguous phrasing ("surgical review") should not be treated as a
+    # confirmed surgery decision unless a definitive surgery term is present.
+    review_m = re.search(r"surgical\s+review|refer\s+for\s+surgical\s+review", outcome_text, re.IGNORECASE)
+    definitive_m = re.search(
         r"\bsurgery\b|hemicolectomy|resection|anterior\s+resection|right\s+hemicolectomy"
-        r"|\beLAPE\b|surgical\s+review|refer\s+for\s+surgical\s+review|\bESD\b"
-        r"|local\s+excision|\bTEMS\b|\bTAMIS\b",
+        r"|\beLAPE\b|\bESD\b|local\s+excision|\bTEMS\b|\bTAMIS\b",
         outcome_text,
         re.IGNORECASE,
     )
-    if m:
-        return "straight to surgery", m.group(0).strip()
+    if review_m and not definitive_m:
+        return None
+
+    if definitive_m:
+        return "straight to surgery", definitive_m.group(0).strip()
 
     m = re.search(r"watch\s+and\s+wait|active\s+surveillance", outcome_text, re.IGNORECASE)
     if m:

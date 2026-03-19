@@ -121,7 +121,7 @@ def main():
         print(f"  Loaded {len(extractions)} extractions from {RAW_EXTRACTIONS}")
     else:
         print("\n" + "=" * 60)
-        print("STAGE 2: Extracting fields with Gemini...")
+        print("STAGE 2: Extracting fields with configured LLM...")
         print(f"  Using {args.workers} parallel workers")
         print("=" * 60)
         t0 = time.time()
