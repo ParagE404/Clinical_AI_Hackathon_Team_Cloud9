@@ -86,7 +86,7 @@ Successfully migrated the Cloud9 MDT Extraction Pipeline from Google Gemini API 
 ✅ **Model size ≤5GB** — Recommended models:
    - llama3.1:8b (4.7GB)
    - mistral:7b (4.1GB)
-   - qwen2.5:7b (4.5GB)
+   - qwen3.5:9b (4.5GB)
 ✅ **On-device execution** — Runs entirely on MacBook M4
 ✅ **No external dependencies** — Ollama runs locally, no internet required after model download
 ✅ **Reproducible** — Deterministic outputs with `temperature=0.0`

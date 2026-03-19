@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 import time
+import threading
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -120,7 +121,28 @@ TREATMENT APPROACH RULES:
 IMPORTANT — SEARCH THOROUGHLY:
 - Clinical data is spread across ALL rows. MRI data may be in [ROW 5] OR [ROW 7]. CT data may be in [ROW 5] OR [ROW 7].
 - The [ROW 7] MDT Outcome often contains imaging results AND the treatment decision together.
-- Extract ALL available data from every row. Do not stop at one section."""
+- Extract ALL available data from every row. Do not stop at one section.
+
+EVIDENCE EXTRACTION EXAMPLES:
+Example 1 — CORRECT verbatim evidence:
+  Source: "DOB: 26/05/1970(a)"
+  ✓ Correct: {"value": "26/05/1970", "evidence": "26/05/1970(a)", "confidence": "high"}
+  ✗ Wrong:   {"value": "26/05/1970", "evidence": "26/05/1970", "confidence": "high"}  ← Missing "(a)"
+
+Example 2 — CORRECT handling of no evidence:
+  Source: "Colonoscopy: mass at 13cm"  (no mention of previous cancer)
+  ✓ Correct: {"value": "", "evidence": "", "confidence": "none"}
+  ✗ Wrong:   {"value": "No", "evidence": "", "confidence": "high"}  ← Don't infer without evidence
+
+Example 3 — CORRECT extraction without adding words:
+  Source: "Colonoscopy: At 13cm from insertion there was a malignant looking mass"
+  ✓ Correct: {"value": "Colonoscopy complete", "evidence": "Colonoscopy: At 13cm from insertion there was a malignant looking mass", "confidence": "high"}
+  Note: "Colonoscopy complete" is the classification per rule 18, but evidence must be verbatim
+
+Example 4 — CORRECT staging extraction:
+  Source: "MRI pelvis: T3b, N1c, CRM clear, EMVI +"
+  ✓ Correct for mri_t_stage: {"value": "3b", "evidence": "T3b", "confidence": "high"}
+  ✓ Correct for mri_emvi:    {"value": "positive", "evidence": "EMVI +", "confidence": "high"}"""
 
 
 def _build_extraction_prompt(case: CaseText, skip_keys: set | None = None) -> str:
@@ -193,6 +215,12 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
     Fields that can be extracted deterministically via regex are pre-filled
     before the LLM call, which reduces token usage and hallucination risk.
     """
+    thread_id = threading.get_ident()
+    start_time = time.time()
+
+    # Print immediate feedback when case starts processing
+    print(f"[Thread {thread_id}] Case {case.case_index}: starting extraction...")
+
     # 1. Run regex pre-extraction (zero API cost, deterministic)
     from extract_regex import regex_extract  # lazy import avoids circular dependency
     pre_filled = regex_extract(case)
@@ -204,11 +232,14 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
     last_error = None
     for attempt in range(max_retries + 1):
         try:
+            print(f"[Thread {thread_id}] Case {case.case_index}: calling LLM API (attempt {attempt + 1}/{max_retries + 1})...")
+            api_start = time.time()
             response = client.generate(
                 prompt=prompt,
                 system_instruction=SYSTEM_INSTRUCTION,
                 json_mode=True,
             )
+            api_time = time.time() - api_start
 
             response_text = response["text"]
             llm_fields = _parse_response(response_text)
@@ -219,6 +250,9 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
             # 4. Count fields with non-empty values from each source
             regex_count = sum(1 for fr in pre_filled.values() if fr.value)
             llm_count = sum(1 for key, fr in llm_fields.items() if fr.value and key not in skip_keys)
+
+            elapsed = time.time() - start_time
+            print(f"[Thread {thread_id}] Case {case.case_index}: completed in {elapsed:.2f}s (API: {api_time:.2f}s)")
 
             return CaseResult(
                 case_index=case.case_index,
@@ -253,9 +287,21 @@ def extract_all_cases(
     """
     # Initialize LLM client (automatically selects provider from env vars)
     client = LLMClient()
+
+    # Auto-adjust workers for local models if not explicitly overridden
+    # Local models can be overwhelmed by too many parallel requests
+    if client.provider.value == "ollama" and max_workers > 2:
+        adjusted_workers = int(os.getenv("LOCAL_LLM_MAX_WORKERS", "2"))
+        if adjusted_workers != max_workers:
+            print(f"⚠️  Local model detected: reducing workers from {max_workers} to {adjusted_workers}")
+            print(f"   (Set LOCAL_LLM_MAX_WORKERS env var to override)")
+            max_workers = adjusted_workers
+
     print(f"Using LLM: {client}")
+    print(f"Parallel extraction: {max_workers} worker threads")
 
     results: list[CaseResult | None] = [None] * len(cases)
+    pipeline_start = time.time()
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -265,19 +311,21 @@ def extract_all_cases(
             pool.submit(extract_case, case, client): (i, case)
             for i, case in enumerate(cases)
         }
+        print(f"\nSubmitted {len(cases)} cases for parallel processing...")
+        print("Waiting for results (this may take a while with local models)...\n")
 
         # Process results as they complete
+        completed = 0
         for future in as_completed(futures):
             i, case = futures[future]
+            completed += 1
             try:
                 result = future.result()
                 populated = sum(1 for fr in result.fields.values() if fr.value)
-                print(f"  [{i+1}/{len(cases)}] Extracting case {case.case_index}...")
-                print(f"         → {populated} fields populated (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
+                print(f"✓ [{completed}/{len(cases)}] Case {case.case_index} completed: {populated} fields (regex: {result.regex_field_count}, LLM: {result.llm_field_count})")
                 results[i] = result
             except Exception as e:
-                print(f"  [{i+1}/{len(cases)}] Extracting case {case.case_index}...")
-                print(f"         → ERROR: {e}")
+                print(f"✗ [{completed}/{len(cases)}] Case {case.case_index} FAILED: {e}")
                 results[i] = CaseResult(
                     case_index=case.case_index,
                     fields={
@@ -289,5 +337,9 @@ def extract_all_cases(
                     regex_field_count=0,
                     llm_field_count=0,
                 )
+
+    pipeline_time = time.time() - pipeline_start
+    print(f"\nPipeline completed in {pipeline_time:.2f}s total")
+    print(f"Average time per case: {pipeline_time/len(cases):.2f}s")
 
     return results

@@ -9,7 +9,7 @@ Built for the **Clinical AI Hackathon** — solving the problem of manually tran
 ## 🎯 Hackathon Compliance
 
 ✅ **Zero cloud API calls** — Uses [Ollama](https://ollama.ai) for 100% local LLM inference
-✅ **Model size ≤5GB** — llama3.1:8b (4.7GB), mistral:7b (4.1GB), or qwen2.5:7b (4.5GB)
+✅ **Model size ≤5GB** — llama3.1:8b (4.7GB), mistral:7b (4.1GB), or qwen3.5:9b (4.5GB)
 ✅ **On-device execution** — Runs entirely on MacBook M4
 ✅ **Reproducible results** — Deterministic outputs with temperature=0.0
 

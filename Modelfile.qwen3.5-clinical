@@ -1,0 +1,26 @@
+# Optimized Qwen 3.5 9B for clinical data extraction
+# Usage: ollama create qwen3.5-clinical -f Modelfile.qwen3.5-clinical
+
+FROM qwen3.5:9b
+
+# Increase context window for large prompts
+PARAMETER num_ctx 8192
+
+# Temperature 0 for deterministic extraction
+PARAMETER temperature 0.0
+
+# Reduce repetition
+PARAMETER repeat_penalty 1.1
+
+# Top-p sampling for better quality
+PARAMETER top_p 0.9
+
+# Performance tuning
+PARAMETER num_thread 8
+PARAMETER num_gpu 99  # Use all available GPU layers
+
+# System message emphasizing verbatim extraction
+SYSTEM """You are a clinical data extraction specialist.
+CRITICAL RULE: When providing evidence, you MUST copy the text EXACTLY as it appears in the source, including all punctuation, parentheses, and annotations like (a), (b), (c).
+NEVER paraphrase or clean up the evidence field. Copy it character-by-character from the source text.
+Always prefer returning empty values over guessing or inferring information not explicitly stated."""

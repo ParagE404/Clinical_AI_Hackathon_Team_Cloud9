@@ -63,7 +63,7 @@ ollama pull llama3.1:8b
 ollama pull mistral:7b
 
 # Option 3: Qwen 2.5 7B (Good for medical text - 4.5GB)
-ollama pull qwen2.5:7b
+ollama pull qwen3.5:9b
 ```
 
 **Verify the model is downloaded:**
@@ -400,7 +400,7 @@ python main.py
 |-------|------|--------------|-------|---------------|
 | llama3.1:8b | 4.7GB | 8GB | Fast | ✅ Yes |
 | mistral:7b | 4.1GB | 8GB | Faster | ✅ Yes |
-| qwen2.5:7b | 4.5GB | 8GB | Fast | ✅ Yes |
+| qwen3.5:9b | 4.5GB | 8GB | Fast | ✅ Yes |
 | llama3.3:70b | 40GB | 64GB | Slow | ❌ No (>5GB) |
 | qwen2.5:14b | 9GB | 16GB | Medium | ❌ No (>5GB) |
 
