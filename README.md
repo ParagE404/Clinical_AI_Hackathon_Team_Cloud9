@@ -1,8 +1,19 @@
 # Cloud9 MDT Extraction Pipeline
 
+**🏥 AI-powered clinical data extraction using local LLMs (hackathon compliant)**
+
 An AI-powered pipeline that automatically extracts structured clinical data from colorectal cancer MDT (Multidisciplinary Team) meeting proformas (Word documents) into a searchable Excel database.
 
 Built for the **Clinical AI Hackathon** — solving the problem of manually transcribing MDT outcomes into longitudinal spreadsheets, a process that currently takes clinicians hours of copy-paste work per patient.
+
+## 🎯 Hackathon Compliance
+
+✅ **Zero cloud API calls** — Uses [Ollama](https://ollama.ai) for 100% local LLM inference
+✅ **Model size ≤5GB** — llama3.1:8b (4.7GB), mistral:7b (4.1GB), or qwen2.5:7b (4.5GB)
+✅ **On-device execution** — Runs entirely on MacBook M4
+✅ **Reproducible results** — Deterministic outputs with temperature=0.0
+
+See **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** for full setup instructions.
 
 ## Problem
 
@@ -49,7 +60,7 @@ DOCX Input
 [Stage 1] parse_docx.py     -- Deterministic DOCX parser, extracts 50 case tables
     |                           with row-level markers ([ROW 0] - [ROW 7])
     v
-[Stage 2] extract_llm.py    -- Gemini LLM extraction with 23 clinical rules
+[Stage 2] extract_llm.py    -- Local LLM extraction (Ollama) with 23 clinical rules
     |                           Returns {value, evidence, confidence} per field
     v
 [Stage 3] build_dataframe.py -- Builds 3 parallel DataFrames (data, evidence, confidence)
@@ -59,7 +70,7 @@ DOCX Input
     |                           Sheet 1: Data + hover comments with evidence
     |                           Sheet 2: Evidence Map (full audit trail)
     v
-[Stage 5] validate_agent.py -- (Optional) Second Gemini pass to cross-check
+[Stage 5] validate_agent.py -- (Optional) Second LLM pass to cross-check
     |                           extractions against source text
     v
 [Stage 6] validate_agent.py -- (Optional) Fix agent that re-extracts flagged fields
@@ -72,15 +83,18 @@ DOCX Input
 cloud9-solution/
 ├── main.py               # Pipeline orchestrator (CLI entry point)
 ├── app.py                # Streamlit web UI (upload, run, browse, validate)
+├── llm_client.py         # 🆕 LLM abstraction layer (Ollama/Gemini support)
+├── verify_ollama_setup.py # 🆕 Setup verification script
 ├── parse_docx.py         # DOCX parser — segments proformas into CaseText objects
 ├── schema.py             # Single source of truth: 88 column definitions with LLM hints
-├── extract_llm.py        # Gemini-powered extraction with evidence tracing
+├── extract_llm.py        # LLM-powered extraction with evidence tracing
 ├── build_dataframe.py    # DataFrame construction + post-processing normalizations
 ├── write_excel.py        # Styled Excel writer with evidence comments
 ├── validate_agent.py     # AI validation agent + fix agent for cross-checking/correcting
 ├── requirements.txt      # Python dependencies
-├── .env                  # API key (not committed)
-├── .env.example          # Template for .env
+├── .env                  # Environment config (not committed)
+├── .env.example          # 🆕 Template for .env with Ollama settings
+├── MIGRATION_GUIDE.md    # 🆕 Full local LLM setup guide
 ├── data/
 │   ├── hackathon-mdt-outcome-proformas.docx   # Input DOCX with 50 cases
 │   └── hackathon-database-prototype.xlsx       # Prototype Excel template
@@ -106,8 +120,15 @@ cloud9-solution/
 - Extraction hints provide clinical context and rules for each field (e.g., where to look in the document, how to interpret staging shorthand)
 - Provides derived lookups: `KEY_TO_HEADER`, `HEADER_TO_KEY`, `FIELD_GROUPS`
 
+### `llm_client.py` — LLM Abstraction Layer (NEW)
+- Unified interface for local (Ollama) and cloud (Gemini) LLM providers
+- Automatically selects provider based on environment variables
+- OpenAI-compatible API for Ollama (seamless integration)
+- JSON mode support for structured output
+- Token usage tracking
+
 ### `extract_llm.py` — LLM Extraction Engine
-- Uses Google Gemini API (`gemini-2.5-flash` by default, configurable via `GEMINI_MODEL` env var)
+- Uses local LLM via Ollama (hackathon compliant) or Gemini (testing only)
 - **Parallel processing:** Uses `ThreadPoolExecutor` to process multiple cases simultaneously (default: 5 workers, configurable via `--workers`)
 - Comprehensive 23-rule system instruction covering:
   - Date format conversion (2-digit years, zero-padding)
@@ -144,32 +165,61 @@ cloud9-solution/
 ## Setup
 
 ### Prerequisites
-- Python 3.9+
-- A Google Gemini API key
+- **Python 3.9+**
+- **MacBook M4** (or any system capable of running Ollama)
+- **16GB+ RAM** (recommended for llama3.1:8b)
 
-### Installation
+### Quick Start (Local LLM - Hackathon Compliant)
 
 ```bash
-cd cloud9-solution
+# 1. Install Ollama
+brew install ollama
 
-# Create virtual environment (from project root)
-python3 -m venv ../venv
-source ../venv/bin/activate
+# 2. Start Ollama service
+ollama serve &
 
-# Install dependencies
+# 3. Pull a local LLM model (≤5GB)
+ollama pull llama3.1:8b  # 4.7GB - RECOMMENDED
+
+# 4. Clone repository and install dependencies
+cd Clinical_AI_Hackathon_Team_Cloud9
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 
-# Configure API key
+# 5. Configure environment
 cp .env.example .env
-# Edit .env and add your GEMINI_API_KEY
+# Edit .env to set:
+#   LOCAL_LLM_PROVIDER=ollama
+#   LOCAL_LLM_MODEL=llama3.1:8b
+
+# 6. Verify setup
+python verify_ollama_setup.py
+
+# 7. Run pipeline
+python main.py
 ```
+
+**📖 Full setup guide:** See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed instructions, troubleshooting, and model comparisons.
 
 ### Environment Variables
 
+**For Local LLM (Ollama - Hackathon Compliant):**
+
 | Variable | Required | Default | Description |
 |---|---|---|---|
+| `LOCAL_LLM_PROVIDER` | Yes | `ollama` | LLM provider (`ollama` or `gemini`) |
+| `LOCAL_LLM_MODEL` | Yes | `llama3.1:8b` | Ollama model name |
+| `LOCAL_LLM_BASE_URL` | No | `http://localhost:11434/v1` | Ollama API endpoint |
+| `LOCAL_LLM_TEMPERATURE` | No | `0.0` | Generation temperature (deterministic) |
+
+**For Cloud LLM (Gemini - Testing Only, NOT Hackathon Compliant):**
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `LOCAL_LLM_PROVIDER` | Yes | — | Set to `gemini` |
 | `GEMINI_API_KEY` | Yes | — | Google Gemini API key |
-| `GEMINI_MODEL` | No | `gemini-2.0-flash` | Gemini model to use (e.g., `gemini-2.5-flash` for higher quality) |
+| `GEMINI_MODEL` | No | `gemini-2.5-flash` | Gemini model to use |
 
 ## Usage
 
@@ -195,7 +245,7 @@ The app has three pages accessible from the sidebar:
 | **Browse Results** | Explore extracted values per case with evidence and confidence filters |
 | **Validation Report** | Run the AI validation agent and view critical/warning/info issues per field |
 
-Enter your Gemini API key and select a model in the sidebar before running.
+**Important:** Select **"ollama"** as LLM Provider in the sidebar for hackathon compliance. The UI will show a warning if you select "gemini" (cloud-based, testing only).
 
 ---
 
