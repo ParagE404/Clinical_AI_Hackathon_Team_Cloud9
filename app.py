@@ -171,51 +171,22 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 
-# LLM Provider selection
-llm_provider = st.sidebar.selectbox(
-    "LLM Provider",
-    ["ollama", "gemini"],
-    index=0,
-    help="For hackathon: Use 'ollama' (local LLM). 'gemini' is for testing only.",
+# API key input
+api_key = st.sidebar.text_input(
+    "Gemini API Key",
+    value=os.getenv("GEMINI_API_KEY", ""),
+    type="password",
+    help="Required for LLM extraction and validation. Also reads from .env",
 )
-os.environ["LOCAL_LLM_PROVIDER"] = llm_provider
+if api_key:
+    os.environ["GEMINI_API_KEY"] = api_key
 
-# Provider-specific configuration
-if llm_provider == "ollama":
-    st.sidebar.info("Using local Ollama LLM (hackathon compliant)")
-    ollama_model = st.sidebar.selectbox(
-        "Ollama Model",
-        ["llama3.1:8b", "mistral:7b", "qwen2.5:7b"],
-        index=0,
-        help="Choose a model ≤5GB for hackathon compliance",
-    )
-    os.environ["LOCAL_LLM_MODEL"] = ollama_model
-
-    ollama_url = st.sidebar.text_input(
-        "Ollama Base URL",
-        value=os.getenv("LOCAL_LLM_BASE_URL", "http://localhost:11434/v1"),
-        help="URL where Ollama is running",
-    )
-    os.environ["LOCAL_LLM_BASE_URL"] = ollama_url
-
-elif llm_provider == "gemini":
-    st.sidebar.warning("⚠️ Gemini is cloud-based. NOT allowed for hackathon submission!")
-    # API key input
-    api_key = st.sidebar.text_input(
-        "Gemini API Key",
-        value=os.getenv("GEMINI_API_KEY", ""),
-        type="password",
-        help="Required for Gemini LLM (testing only)",
-    )
-    if api_key:
-        os.environ["GEMINI_API_KEY"] = api_key
-
-    gemini_model = st.sidebar.selectbox(
-        "Gemini Model",
-        ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"],
-        index=0,
-    )
-    os.environ["GEMINI_MODEL"] = gemini_model
+gemini_model = st.sidebar.selectbox(
+    "Gemini Model",
+    ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"],
+    index=0,
+)
+os.environ["GEMINI_MODEL"] = gemini_model
 
 st.sidebar.markdown("---")
 st.sidebar.caption("Cloud9 Clinical AI Hackathon")
@@ -257,14 +228,9 @@ if page == "Run Pipeline":
 
     # ── Run button ──
     if st.button("Run Pipeline", type="primary", use_container_width=True):
-        # Validation checks based on provider
-        if llm_provider == "gemini":
-            if not os.getenv("GEMINI_API_KEY"):
-                st.error("Please enter your Gemini API key in the sidebar.")
-                st.stop()
-        elif llm_provider == "ollama":
-            # No API key needed for Ollama
-            pass
+        if not api_key:
+            st.error("Please enter your Gemini API key in the sidebar.")
+            st.stop()
 
         if not uploaded_file:
             st.error("Please upload a DOCX file first.")
