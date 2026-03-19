@@ -1,8 +1,10 @@
 """
 validate_agent.py — Post-generation AI validation agent.
 
-Runs a second Gemini pass to cross-check every populated cell against
+Runs a second LLM pass to cross-check every populated cell against
 the original document text. Produces a validation report.
+
+Supports both local LLMs (Ollama) and cloud LLMs (Gemini) via llm_client abstraction.
 """
 
 from __future__ import annotations
@@ -12,12 +14,12 @@ import os
 import time
 from dataclasses import dataclass, field
 
-from google import genai
 from dotenv import load_dotenv
 
 from extract_llm import CaseResult, FieldResult
 from parse_docx import CaseText
 from schema import COLUMNS
+from llm_client import LLMClient
 
 load_dotenv()
 
@@ -83,22 +85,18 @@ Only report fields with ACTUAL issues. Return empty array [] if all fields are c
 def validate_case(
     case: CaseText,
     extraction: CaseResult,
-    client: genai.Client,
+    client: LLMClient,
 ) -> CaseValidation:
     """Validate one case's extractions against source text."""
     prompt = _build_validation_prompt(case, extraction)
 
     try:
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            contents=prompt,
-            config={
-                "system_instruction": VALIDATION_SYSTEM,
-                "temperature": 0.0,
-                "response_mime_type": "application/json",
-            },
+        response = client.generate(
+            prompt=prompt,
+            system_instruction=VALIDATION_SYSTEM,
+            json_mode=True,
         )
-        response_text = response.text
+        response_text = response["text"]
     except Exception as e:
         return CaseValidation(
             case_index=case.case_index,
@@ -157,11 +155,9 @@ def validate_all(
     Returns:
         List of CaseValidation objects in the same order as extractions.
     """
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY not set.")
+    # Initialize LLM client (automatically selects provider from env vars)
+    client = LLMClient()
 
-    client = genai.Client(api_key=api_key)
     # Build lookup from case_index to CaseText
     case_lookup = {c.case_index: c for c in cases}
     validations: list[CaseValidation | None] = [None] * len(extractions)
@@ -304,7 +300,7 @@ def fix_case(
     case: CaseText,
     extraction: CaseResult,
     validation: CaseValidation,
-    client: genai.Client,
+    client: LLMClient,
 ) -> CaseResult:
     """Re-extract flagged fields for one case using validation feedback."""
     # Skip cases with no actionable issues
@@ -315,16 +311,12 @@ def fix_case(
     prompt = _build_fix_prompt(case, extraction, validation)
 
     try:
-        response = client.models.generate_content(
-            model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            contents=prompt,
-            config={
-                "system_instruction": FIX_SYSTEM,
-                "temperature": 0.0,
-                "response_mime_type": "application/json",
-            },
+        response = client.generate(
+            prompt=prompt,
+            system_instruction=FIX_SYSTEM,
+            json_mode=True,
         )
-        response_text = response.text
+        response_text = response["text"]
     except Exception as e:
         print(f"         → Fix API error: {e}")
         return extraction
@@ -386,11 +378,9 @@ def fix_all(
     Returns:
         Updated list of CaseResult objects.
     """
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY not set.")
+    # Initialize LLM client (automatically selects provider from env vars)
+    client = LLMClient()
 
-    client = genai.Client(api_key=api_key)
     case_lookup = {c.case_index: c for c in cases}
     val_lookup = {v.case_index: v for v in validations}
     ext_lookup = {e.case_index: e for e in extractions}
