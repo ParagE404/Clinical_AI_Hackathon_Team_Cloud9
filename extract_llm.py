@@ -1,10 +1,8 @@
 """
-extract_llm.py — LLM-powered extraction with source evidence tracing.
+extract_llm.py — Gemini-powered extraction with source evidence tracing.
 
 Each extracted field returns {"value", "evidence", "confidence"} so every
 cell in the output Excel can be traced back to the original document text.
-
-Supports both local LLMs (Ollama) and cloud LLMs (Gemini) via llm_client abstraction.
 """
 
 from __future__ import annotations
@@ -14,11 +12,11 @@ import os
 import time
 from dataclasses import dataclass, field
 
+from google import genai
 from dotenv import load_dotenv
 
 from parse_docx import CaseText
 from schema import COLUMNS, ColumnDef, FIELD_GROUPS
-from llm_client import LLMClient
 
 load_dotenv()
 
@@ -187,8 +185,8 @@ def _parse_response(response_text: str) -> dict[str, FieldResult]:
     return results
 
 
-def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> CaseResult:
-    """Extract all fields from one MDT case using LLM with retry logic.
+def extract_case(case: CaseText, client: genai.Client, max_retries: int = 2) -> CaseResult:
+    """Extract all fields from one MDT case using Gemini with retry logic.
 
     Fields that can be extracted deterministically via regex are pre-filled
     before the LLM call, which reduces token usage and hallucination risk.
@@ -204,13 +202,17 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
     last_error = None
     for attempt in range(max_retries + 1):
         try:
-            response = client.generate(
-                prompt=prompt,
-                system_instruction=SYSTEM_INSTRUCTION,
-                json_mode=True,
+            response = client.models.generate_content(
+                model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                contents=prompt,
+                config={
+                    "system_instruction": SYSTEM_INSTRUCTION,
+                    "temperature": 0.0,
+                    "response_mime_type": "application/json",
+                },
             )
 
-            response_text = response["text"]
+            response_text = response.text
             llm_fields = _parse_response(response_text)
 
             # 3. Merge: regex results take priority over LLM results
@@ -251,10 +253,11 @@ def extract_all_cases(
     Returns:
         List of CaseResult objects in the same order as input cases.
     """
-    # Initialize LLM client (automatically selects provider from env vars)
-    client = LLMClient()
-    print(f"Using LLM: {client}")
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY not set. Export it or add to .env file.")
 
+    client = genai.Client(api_key=api_key)
     results: list[CaseResult | None] = [None] * len(cases)
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
