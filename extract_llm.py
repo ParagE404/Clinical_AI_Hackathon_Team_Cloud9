@@ -113,7 +113,8 @@ TREATMENT APPROACH RULES:
     - Short course radiotherapy/SCPRT/5x5Gy → "downstaging shortcourse RT"
     - TNT (and then specifying CRT first or chemo first) → "TNT"
     - Papillon/contact radiotherapy/EBRT → "Papillon +/- EBRT"
-    - Surgery/hemicolectomy/resection/anterior resection/right hemicolectomy/eLAPE/surgical review/refer for surgical review/ESD/local excision/TEMS/TAMIS → "straight to surgery"
+    - Surgery/hemicolectomy/resection/anterior resection/right hemicolectomy/eLAPE/ESD/local excision/TEMS/TAMIS → "straight to surgery"
+    - "surgical review" or "refer for surgical review" alone is ambiguous and should NOT be classified as "straight to surgery" unless a definitive surgery term is also present
     - Watch and wait/active surveillance → "watch and wait"
     - If the outcome is for further investigations only (e.g. "for colonoscopy", "for MRI", "rediscuss"), return ""
 23. Look in [ROW 7] (MDT Outcome) for the treatment decision.

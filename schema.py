@@ -140,7 +140,7 @@ COLUMNS: list[ColumnDef] = [
     ColumnDef("first_mdt_treatment_approach",
               '1st MDT: Treatment approach \n(TNT, downstaging chemotherapy, downstaging nCRT, downstaging shortcourse RT, Papillon +/- EBRT, straight to surgery(h)',
               "first_mdt",
-              'Classify MDT decision from ROW 7. Mappings: FOXTROT/CAPOX/FOLFOX/neoadjuvant chemo→"downstaging chemotherapy"; CRT/chemoradiotherapy→"downstaging nCRT"; short course RT/SCPRT/5x5→"downstaging shortcourse RT"; TNT→"TNT"; Papillon/EBRT→"Papillon +/- EBRT"; surgery/hemicolectomy/resection/surgical review/refer for surgical→"straight to surgery"; watch and wait→"watch and wait". If outcome is only for investigations (colonoscopy, MRI, rediscuss), return empty.'),
+              'Classify MDT decision from ROW 7. Mappings: FOXTROT/CAPOX/FOLFOX/neoadjuvant chemo→"downstaging chemotherapy"; CRT/chemoradiotherapy→"downstaging nCRT"; short course RT/SCPRT/5x5→"downstaging shortcourse RT"; TNT→"TNT"; Papillon/EBRT→"Papillon +/- EBRT"; surgery/hemicolectomy/resection/ESD/local excision/TEMS/TAMIS→"straight to surgery"; watch and wait→"watch and wait". Treat "surgical review"/"refer for surgical review" alone as ambiguous (do not force straight-to-surgery). If outcome is only for investigations (colonoscopy, MRI, rediscuss), return empty.'),
 
     # ── CHEMOTHERAPY (cols 29-33) ──
     ColumnDef("chemo_goal",
