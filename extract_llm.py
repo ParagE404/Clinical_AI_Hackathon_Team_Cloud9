@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 import time
+import threading
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -193,6 +194,9 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
     Fields that can be extracted deterministically via regex are pre-filled
     before the LLM call, which reduces token usage and hallucination risk.
     """
+    thread_id = threading.get_ident()
+    start_time = time.time()
+
     # 1. Run regex pre-extraction (zero API cost, deterministic)
     from extract_regex import regex_extract  # lazy import avoids circular dependency
     pre_filled = regex_extract(case)
@@ -204,11 +208,13 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
     last_error = None
     for attempt in range(max_retries + 1):
         try:
+            api_start = time.time()
             response = client.generate(
                 prompt=prompt,
                 system_instruction=SYSTEM_INSTRUCTION,
                 json_mode=True,
             )
+            api_time = time.time() - api_start
 
             response_text = response["text"]
             llm_fields = _parse_response(response_text)
@@ -219,6 +225,9 @@ def extract_case(case: CaseText, client: LLMClient, max_retries: int = 2) -> Cas
             # 4. Count fields with non-empty values from each source
             regex_count = sum(1 for fr in pre_filled.values() if fr.value)
             llm_count = sum(1 for key, fr in llm_fields.items() if fr.value and key not in skip_keys)
+
+            elapsed = time.time() - start_time
+            print(f"[Thread {thread_id}] Case {case.case_index}: completed in {elapsed:.2f}s (API: {api_time:.2f}s)")
 
             return CaseResult(
                 case_index=case.case_index,
@@ -254,8 +263,10 @@ def extract_all_cases(
     # Initialize LLM client (automatically selects provider from env vars)
     client = LLMClient()
     print(f"Using LLM: {client}")
+    print(f"Parallel extraction: {max_workers} worker threads")
 
     results: list[CaseResult | None] = [None] * len(cases)
+    pipeline_start = time.time()
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -289,5 +300,9 @@ def extract_all_cases(
                     regex_field_count=0,
                     llm_field_count=0,
                 )
+
+    pipeline_time = time.time() - pipeline_start
+    print(f"\nPipeline completed in {pipeline_time:.2f}s total")
+    print(f"Average time per case: {pipeline_time/len(cases):.2f}s")
 
     return results

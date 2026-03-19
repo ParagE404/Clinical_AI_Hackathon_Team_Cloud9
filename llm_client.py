@@ -68,9 +68,12 @@ class LLMClient:
             )
 
         base_url = os.getenv("LOCAL_LLM_BASE_URL", "http://localhost:11434/v1")
+        # Configure with reasonable timeout and retries for better reliability
         self.client = OpenAI(
             base_url=base_url,
-            api_key="ollama"  # Required but unused for Ollama
+            api_key="ollama",  # Required but unused for Ollama
+            timeout=60.0,  # 60 second timeout for slow local models
+            max_retries=2,  # Retry failed requests
         )
 
     def _init_gemini(self):
@@ -88,7 +91,7 @@ class LLMClient:
                 "GEMINI_API_KEY not set. Export it or add to .env file."
             )
 
-        genai.configure(api_key=api_key)
+        # Create client directly - no configure() method in google.genai
         self.client = genai.Client(api_key=api_key)
 
     def generate(
