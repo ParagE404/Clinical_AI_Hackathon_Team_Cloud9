@@ -37,8 +37,11 @@ def build_dataframes(
             elif "colonoscop" in combined_lower:
                 if "incomplete" in combined_lower:
                     endo_type_fr.value = "incomplete colonoscopy"
-                else:
+                elif "complete" in combined_lower or "ileocaecal" in combined_lower or "terminal ileum" in combined_lower:
                     endo_type_fr.value = "Colonoscopy complete"
+                else:
+                    # Just "colonoscopy" without completeness indicator
+                    endo_type_fr.value = "Colonoscopy"
                 endo_type_fr.confidence = "medium"
 
     data_rows = []
@@ -85,7 +88,7 @@ def build_dataframes(
     # Post-processing: normalize endoscopy_type values
     endo_header = KEY_TO_HEADER["endoscopy_type"]
     endo_map = {
-        "colonoscopy": "Colonoscopy complete",
+        "colonoscopy": "Colonoscopy",  # Standalone colonoscopy (not stated as complete)
         "colonoscopy complete": "Colonoscopy complete",
         "complete colonoscopy": "Colonoscopy complete",
         "incomplete colonoscopy": "incomplete colonoscopy",
