@@ -34,6 +34,13 @@ For each extracted field, check:
 2. Is the "value" correctly derived from the "evidence"? Flag incorrect interpretations.
 3. Are there important fields that are EMPTY but have data in the source text? Flag missed extractions.
 
+IMPORTANT — Do NOT flag these as issues:
+- first_mdt_treatment_approach being EMPTY when the MDT outcome is just a referral (e.g., "refer for surgical review", "for colonoscopy", "rediscuss at MDT", "for MRI"). These are NOT treatment decisions, so empty is CORRECT.
+- first_mdt_treatment_approach being "downstaging nCRT" when source says "neoadjuvant CRT" or "CRT" — this is a CORRECT mapping per the schema.
+- first_mdt_treatment_approach being "downstaging chemotherapy" when source says "CAPOX" or "FOLFOX" or "neoadjuvant chemo" — this is a CORRECT mapping per the schema.
+- previous_cancer being EMPTY when the source document simply doesn't mention previous cancer history. Empty is correct if the topic isn't discussed.
+- Cosmetic misquotes where the value is correct but evidence is slightly incomplete (e.g., missing trailing punctuation).
+
 Only report ACTUAL issues. Focus on: patient identifiers, staging values, dates, and clinical decisions."""
 
 

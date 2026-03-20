@@ -1,18 +1,203 @@
 {
-  "total_cases": 1,
-  "passed": 1,
+  "total_cases": 9,
+  "passed": 0,
   "review_needed": 0,
-  "failed": 0,
-  "total_issues": 0,
-  "critical_issues": 0,
+  "failed": 9,
+  "total_issues": 16,
+  "critical_issues": 10,
   "cases": [
     {
-      "case_index": 1,
-      "status": "pass",
-      "fields_checked": 29,
-      "fields_ok": 29,
-      "fields_flagged": 0,
-      "issues": []
+      "case_index": 6,
+      "status": "fail",
+      "fields_checked": 11,
+      "fields_ok": 10,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The patient's name is Mason Barker. The extracted initials 'MM' are incorrect; they should be 'MB'.",
+          "suggested_value": "MB",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 7,
+      "status": "fail",
+      "fields_checked": 14,
+      "fields_ok": 13,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The extracted value 'FF' is incorrect. Based on the name 'Freida Smale', the initials should be 'FS'. The evidence provided also includes irrelevant information (NHS number, gender) for deriving initials.",
+          "suggested_value": "FS",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 8,
+      "status": "fail",
+      "fields_checked": 8,
+      "fields_ok": 5,
+      "fields_flagged": 3,
+      "issues": [
+        {
+          "field": "baseline_ct_date",
+          "type": "missing_data",
+          "description": "The baseline CT date '13/03/2024' is present in the source text ('PET\u2011CT performed for ? Vasculitis on 13/03/2024') but was not extracted.",
+          "suggested_value": "13/03/2024",
+          "severity": "critical"
+        },
+        {
+          "field": "baseline_ct_incidental_yn",
+          "type": "missing_data",
+          "description": "The source indicates the PET-CT was performed for '? Vasculitis', suggesting the cancer finding was incidental. This field should be 'Yes'.",
+          "suggested_value": "Yes",
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_incidental_detail",
+          "type": "missing_data",
+          "description": "The incidental detail 'Vasculitis' is present in the source text ('PET\u2011CT performed for ? Vasculitis') but was not extracted.",
+          "suggested_value": "Vasculitis",
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 9,
+      "status": "fail",
+      "fields_checked": 14,
+      "fields_ok": 13,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The initials 'FF' are incorrectly derived from the patient's name 'Freya Hall'. The correct initials should be 'FH'.",
+          "suggested_value": "FH",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 10,
+      "status": "fail",
+      "fields_checked": 9,
+      "fields_ok": 8,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The extracted initials 'EF' are incorrect. Based on the name 'Erin Hall' in the evidence, the correct initials should be 'EH'.",
+          "suggested_value": "EH",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 11,
+      "status": "fail",
+      "fields_checked": 13,
+      "fields_ok": 12,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "first_mdt_treatment_approach",
+          "type": "incorrect_value",
+          "description": "The MDT outcome 'oncology consultation ? CRT and surgical review ? Straight to ELAPE' indicates a discussion of options or a referral for further review, not a definitive treatment decision. Per instructions, 'first_mdt_treatment_approach' should be empty in such cases.",
+          "suggested_value": "",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "case_index": 12,
+      "status": "fail",
+      "fields_checked": 14,
+      "fields_ok": 10,
+      "fields_flagged": 4,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The initials 'LF' are incorrectly derived from the patient's name 'Leah Morris'. The correct initials should be 'LM'.",
+          "suggested_value": "LM",
+          "severity": "critical"
+        },
+        {
+          "field": "baseline_ct_M",
+          "type": "incorrect_value",
+          "description": "The value '1' for baseline_ct_M is an interpretation. The evidence 'avid breast lesion' from a PET-CT does not definitively confirm distant metastasis (M1) for the rectal adenocarcinoma. It could be a separate primary or recurrence of the known breast cancer, especially since the breast cancer is stated to be treated with curative intent. The source does not explicitly state M1 for the rectal cancer.",
+          "suggested_value": "0",
+          "severity": "critical"
+        },
+        {
+          "field": "baseline_ct_incidental_yn",
+          "type": "missing_data",
+          "description": "The source text mentions an 'avid breast lesion' found on PET-CT, which is an incidental finding during the workup for rectal cancer. This field should be populated.",
+          "suggested_value": "Yes",
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_incidental_detail",
+          "type": "missing_data",
+          "description": "The source text mentions an 'avid breast lesion' found on PET-CT, which is an incidental finding during the workup for rectal cancer. This field should be populated with details of the incidental finding.",
+          "suggested_value": "avid breast lesion",
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 13,
+      "status": "fail",
+      "fields_checked": 19,
+      "fields_ok": 16,
+      "fields_flagged": 3,
+      "issues": [
+        {
+          "field": "initials",
+          "type": "incorrect_value",
+          "description": "The extracted initials 'HF' are incorrect. Based on the name 'Hannah Higgins', the initials should be 'HH'.",
+          "suggested_value": "HH",
+          "severity": "critical"
+        },
+        {
+          "field": "baseline_ct_incidental_yn",
+          "type": "missing_data",
+          "description": "The source text indicates a 'suspicious liver lesion' on the CT, which is an incidental finding. This field should be populated.",
+          "suggested_value": "Yes",
+          "severity": "warning"
+        },
+        {
+          "field": "baseline_ct_incidental_detail",
+          "type": "missing_data",
+          "description": "The source text mentions a 'suspicious liver lesion' on the CT, which should be extracted as incidental detail.",
+          "suggested_value": "suspicious liver lesion",
+          "severity": "warning"
+        }
+      ]
+    },
+    {
+      "case_index": 14,
+      "status": "fail",
+      "fields_checked": 13,
+      "fields_ok": 12,
+      "fields_flagged": 1,
+      "issues": [
+        {
+          "field": "first_mdt_treatment_approach",
+          "type": "incorrect_value",
+          "description": "The MDT outcome 'Review ? Local excision Needs CT' is not a definitive treatment decision. It indicates further investigation (CT) and review, meaning no treatment approach has been decided yet. According to instructions, this field should be empty for such outcomes.",
+          "suggested_value": null,
+          "severity": "critical"
+        }
+      ]
     }
   ]
 }

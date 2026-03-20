@@ -95,10 +95,30 @@ STAGING RULES:
 13. For CT M staging: infer "0" from "no metastases"/"no distant disease"/"no distant metastases"/"no liver metastases"/"no mets". Infer "1" from "metastases"/"liver lesions"/"lung metastases"/"metastatic disease". When inferring M or N values from descriptive text (not explicit staging codes), set confidence to "medium", not "high".
 14. CT staging may be embedded in free text like "CT TAP: sigmoid thickening, no metastases" or simply "CT: no mets" — extract what you can. If a CT is mentioned with findings but no date, set the CT date to "Missing".
 
+CRITICAL — BASELINE vs SECOND/FOLLOW-UP IMAGING:
+14a. BASELINE fields (baseline_mri_*, baseline_ct_*) are for the INITIAL diagnostic imaging, typically at first presentation.
+14b. SECOND/FOLLOW-UP fields (second_mri_*, mri_12wk_*) are ONLY for imaging done AFTER treatment (e.g., post-chemoradiation restaging MRI).
+14c. If only ONE MRI or CT is mentioned in the source, populate ONLY the baseline_* fields. Leave second_mri_*, mri_12wk_* fields EMPTY.
+14d. NEVER copy baseline imaging data into second_mri or follow-up fields. These are completely different timepoints in the treatment pathway.
+14e. Look for explicit indicators of follow-up imaging: "restaging MRI", "post-treatment MRI", "repeat MRI", "6 week MRI", "12 week MRI", or a second dated MRI report.
+14f. If uncertain whether an MRI is baseline or follow-up, assume it's baseline and leave follow-up fields empty.
+
 DEMOGRAPHICS RULES:
-15. For initials: first letter of first name + first letter of last name (e.g. "AIDEN O'CONNOR" → "AO", "Ziad Al-Farsi" → "ZA").
-16. For previous_cancer: answer "Yes" ONLY for cancers OTHER than the current colorectal diagnosis. History of breast cancer, prostate cancer, lymphoma, head and neck cancer etc. = "Yes". If prior cancer is explicitly denied or a full history section has no mention, answer "No". If the topic is simply not discussed, leave blank.
-17. For previous_cancer_site: state the site (e.g. "breast", "lymphoma", "prostate"). Leave blank if previous_cancer is blank. "N/A" if previous_cancer is "No".
+15. For initials: Take the FIRST letter of the FIRST name + FIRST letter of the LAST name. Examples:
+    - "AIDEN O'CONNOR" → "AO" (A from Aiden, O from O'Connor)
+    - "Ziad Al-Farsi" → "ZA" (Z from Ziad, A from Al-Farsi)
+    - "AISHA MOHAMMED" → "AM" (A from Aisha, M from Mohammed)
+    - "Ava Clarke" → "AC" (A from Ava, C from Clarke)
+    - "Mason Barker" → "MB" (M from Mason, B from Barker)
+    - "Freida Smale" → "FS" (F from Freida, S from Smale)
+    - "Oliver Turner" → "OT" (O from Oliver, T from Turner)
+    - "Freya Hall" → "FH" (F from Freya, H from Hall)
+    CRITICAL: The last name is the LAST word in the name (e.g., Turner, not Oliver). Do NOT confuse first and last names.
+16. For previous_cancer: CRITICAL RULE — Leave this field BLANK (empty string) by default.
+    - ONLY answer "Yes" if you find EXPLICIT evidence of a cancer DIFFERENT from the current colorectal diagnosis (e.g., "history of breast cancer", "previous lymphoma", "known prostate cancer").
+    - ONLY answer "No" if the document EXPLICITLY states "no previous malignancy" or "no prior cancer history".
+    - If the document simply does not mention previous cancer at all, or only mentions the current colorectal cancer, leave BLANK. Do NOT write "No".
+17. For previous_cancer_site: state the site (e.g. "breast", "lymphoma", "prostate"). Leave blank if previous_cancer is blank. "N/A" ONLY if previous_cancer is explicitly "No".
 
 ENDOSCOPY/HISTOLOGY RULES:
 18. For endoscopy_type: classify as "Colonoscopy complete" ONLY if explicitly described as complete, reaching ileocaecal valve, or reaching terminal ileum. If the text just says "Colonoscopy:" with findings (without completeness stated), classify as "Colonoscopy". Use "incomplete colonoscopy" only if explicitly stated as incomplete. For flexible sigmoidoscopy, classify as "flexi sig".
@@ -143,7 +163,15 @@ Example 3 — CORRECT extraction without adding words:
 Example 4 — CORRECT staging extraction:
   Source: "MRI pelvis: T3b, N1c, CRM clear, EMVI +"
   ✓ Correct for mri_t_stage: {"value": "3b", "evidence": "T3b", "confidence": "high"}
-  ✓ Correct for mri_emvi:    {"value": "positive", "evidence": "EMVI +", "confidence": "high"}"""
+  ✓ Correct for mri_emvi:    {"value": "positive", "evidence": "EMVI +", "confidence": "high"}
+
+Example 5 — CRITICAL: Don't confuse baseline and follow-up imaging:
+  Source mentions ONLY ONE MRI: "MRI 4/3/25: T3c, N1c, EMVI positive, CRM/ISP unsafe, PSW clear"
+  ✓ Correct for baseline_mri_date: {"value": "04/03/2025", "evidence": "MRI 4/3/25", "confidence": "high"}
+  ✓ Correct for baseline_mri_mrT:  {"value": "3c", "evidence": "T3c", "confidence": "high"}
+  ✓ Correct for second_mri_date:   {"value": "", "evidence": "", "confidence": "none"}  ← NO second MRI exists
+  ✓ Correct for second_mri_mrT:    {"value": "", "evidence": "", "confidence": "none"}  ← NO second MRI exists
+  ✗ WRONG for second_mri_date:     {"value": "04/03/2025", ...}  ← This wrongly copies baseline data!"""
 
 
 def _build_extraction_prompt(case: CaseText, skip_keys: set | None = None) -> str:

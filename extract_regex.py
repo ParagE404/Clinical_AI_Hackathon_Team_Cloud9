@@ -266,11 +266,13 @@ def _extract_endoscopy(clinical_text: str, outcome_text: str) -> dict:
             raw_date = ""
             findings = m.group(2).strip()
 
-        endo_type = (
-            "flexi sig"
-            if re.search(r"flexi|sigmoidoscopy", raw_type, re.IGNORECASE)
-            else "Colonoscopy complete"
-        )
+        # Classify endoscopy type - only mark as "complete" if explicitly stated
+        if re.search(r"flexi|sigmoidoscopy", raw_type, re.IGNORECASE):
+            endo_type = "flexi sig"
+        elif re.search(r"complete|ileocaecal|terminal\s+ileum|caecum", raw_type + " " + findings, re.IGNORECASE):
+            endo_type = "Colonoscopy complete"
+        else:
+            endo_type = "Colonoscopy"
         evidence = m.group(0).strip()
 
         field_results = {}
