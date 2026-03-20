@@ -78,7 +78,7 @@ DOCUMENT STRUCTURE — MDT proformas have these sections:
 CRITICAL RULES:
 1. Extract ONLY information explicitly stated in the source text.
 2. For each field, return: {"value": "extracted value", "evidence": "exact verbatim quote from source", "confidence": "high|medium|low|none"}
-3. The "evidence" MUST be a verbatim substring from the SOURCE TEXT. Never paraphrase.
+3. The "evidence" MUST be a verbatim substring from the SOURCE TEXT. Never paraphrase. The evidence quote should be the COMPLETE sentence or line containing the relevant information, not just a minimum matching fragment. For MRI staging lines, quote the entire staging line (e.g., 'T3c, N1c, CRM/ISP unsafe, EMVI positive, PSW clear'), not individual values.
 4. If a field's information is not present, return {"value": "", "evidence": "", "confidence": "none"}.
 5. A blank value is ALWAYS better than a wrong value. When uncertain, leave blank.
 
@@ -92,16 +92,16 @@ STAGING RULES:
 10. For CRM: normalize to "clear", "involved", or "threatened". Map "unsafe" → "threatened", "-" or "–" (dash) → "clear".
 11. For PSW: normalize to "clear" or "unsafe". Map "-" or "–" (dash) → "clear".
 12. MRI staging can appear in BOTH [ROW 5] (Clinical Details) and [ROW 7] (MDT Outcome). Check both.
-13. For CT M staging: infer "0" from "no metastases"/"no distant disease"/"no distant metastases"/"no liver metastases"/"no mets". Infer "1" from "metastases"/"liver lesions"/"lung metastases"/"metastatic disease".
+13. For CT M staging: infer "0" from "no metastases"/"no distant disease"/"no distant metastases"/"no liver metastases"/"no mets". Infer "1" from "metastases"/"liver lesions"/"lung metastases"/"metastatic disease". When inferring M or N values from descriptive text (not explicit staging codes), set confidence to "medium", not "high".
 14. CT staging may be embedded in free text like "CT TAP: sigmoid thickening, no metastases" or simply "CT: no mets" — extract what you can. If a CT is mentioned with findings but no date, set the CT date to "Missing".
 
 DEMOGRAPHICS RULES:
 15. For initials: first letter of first name + first letter of last name (e.g. "AIDEN O'CONNOR" → "AO", "Ziad Al-Farsi" → "ZA").
-16. For previous_cancer: answer "Yes" ONLY for cancers OTHER than the current colorectal diagnosis. History of breast cancer, prostate cancer, lymphoma, head and neck cancer etc. = "Yes". If no prior cancer mentioned, answer "No".
-17. For previous_cancer_site: state the site (e.g. "breast", "lymphoma", "prostate"). "N/A" if previous_cancer is "No".
+16. For previous_cancer: answer "Yes" ONLY for cancers OTHER than the current colorectal diagnosis. History of breast cancer, prostate cancer, lymphoma, head and neck cancer etc. = "Yes". If prior cancer is explicitly denied or a full history section has no mention, answer "No". If the topic is simply not discussed, leave blank.
+17. For previous_cancer_site: state the site (e.g. "breast", "lymphoma", "prostate"). Leave blank if previous_cancer is blank. "N/A" if previous_cancer is "No".
 
 ENDOSCOPY/HISTOLOGY RULES:
-18. For endoscopy_type: classify as "Colonoscopy complete" (if colonoscopy reaches ileocaecal valve, described as complete, or simply described as "Colonoscopy" with findings — default to "Colonoscopy complete" unless explicitly stated as incomplete), "incomplete colonoscopy" (only if explicitly stated as incomplete), or "flexi sig" (flexible sigmoidoscopy / flexi sig). IMPORTANT: If the text says "Colonoscopy: findings..." or "Colonoscopy – findings...", classify as "Colonoscopy complete". If text says "Flexi sig: findings..." or "flexi sig" with findings, classify as "flexi sig".
+18. For endoscopy_type: classify as "Colonoscopy complete" ONLY if explicitly described as complete, reaching ileocaecal valve, or reaching terminal ileum. If the text just says "Colonoscopy:" with findings (without completeness stated), classify as "Colonoscopy". Use "incomplete colonoscopy" only if explicitly stated as incomplete. For flexible sigmoidoscopy, classify as "flexi sig".
 19. For endoscopy_date: if endoscopy happened but no date given, return "Missing".
 20. For biopsy_result: look in both [ROW 3] Diagnosis field AND [ROW 7] Outcome for histology results.
 21. For biopsy_date: if not explicitly stated but biopsy was during a dated endoscopy, use that date. If date unknown, return "Missing".
@@ -114,9 +114,9 @@ TREATMENT APPROACH RULES:
     - TNT (and then specifying CRT first or chemo first) → "TNT"
     - Papillon/contact radiotherapy/EBRT → "Papillon +/- EBRT"
     - Surgery/hemicolectomy/resection/anterior resection/right hemicolectomy/eLAPE/ESD/local excision/TEMS/TAMIS → "straight to surgery"
-    - "surgical review" or "refer for surgical review" alone is ambiguous and should NOT be classified as "straight to surgery" unless a definitive surgery term is also present
     - Watch and wait/active surveillance → "watch and wait"
-    - If the outcome is for further investigations only (e.g. "for colonoscopy", "for MRI", "rediscuss"), return ""
+    - If the outcome is ONLY a referral for review or discussion (e.g. "refer for surgical review", "discuss possible surgery", "for surgical consultation"), return empty — this is not a treatment decision, just a referral.
+    - If the outcome is for further investigations only (e.g. "for colonoscopy", "for MRI", "rediscuss"), return empty.
 23. Look in [ROW 7] (MDT Outcome) for the treatment decision.
 
 IMPORTANT — SEARCH THOROUGHLY:
