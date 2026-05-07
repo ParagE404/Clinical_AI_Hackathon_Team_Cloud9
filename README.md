@@ -6,6 +6,10 @@ An AI-powered pipeline that automatically extracts structured clinical data from
 
 Built for the **Clinical AI Hackathon** — solving the problem of manually transcribing MDT outcomes into longitudinal spreadsheets, a process that currently takes clinicians hours of copy-paste work per patient.
 
+## 🏆 Award
+
+**Winner — Best Understanding Prize** at the Clinical AI Hackathon 2026 for Team Cloud9’s colorectal cancer MDT extraction pipeline.
+
 ## 🎯 Hackathon Compliance
 
 ✅ **Zero cloud API calls** — Uses [Ollama](https://ollama.ai) for 100% local LLM inference
