@@ -4,7 +4,9 @@
 
 An AI-powered pipeline that automatically extracts structured clinical data from colorectal cancer MDT (Multidisciplinary Team) meeting proformas (Word documents) into a searchable Excel database.
 
-Built for the **Clinical AI Hackathon** — solving the problem of manually transcribing MDT outcomes into longitudinal spreadsheets, a process that currently takes clinicians hours of copy-paste work per patient.
+Built for the **NHS Clinical AI Hackathon** — and awarded the **Best Understanding Prize** — this project tackles manual transcription in **colorectal cancer MDT workflows** by extracting structured data from Word-based proformas into a searchable Excel database.
+
+Official hackathon repo: [clinical-ai-hackathon](https://github.com/dsikar/clinical-ai-hackathon)
 
 ## 🏆 Award
 
